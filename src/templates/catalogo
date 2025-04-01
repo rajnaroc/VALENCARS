@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <header class="bg-black py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <h1 class="text-cyan-400 text-lg font-semibold">Catálogo</h1>
+        </div>
+    </header>
+    
+    <div class="max-w-7xl mx-auto bg-gray-800 p-4 rounded-lg mt-4">
+        <nav class="bg-black p-4 flex justify-between items-center">
+            <div class="text-white font-bold text-xl">VALENCARS</div>
+            <div class="flex space-x-6">
+                <a href="#" class="text-white">INICIO</a>
+                <a href="#" class="text-white">QUIÉNES SOMOS</a>
+                <a href="#" class="text-white">CONTACTO</a>
+                <a href="#" class="text-white">CATÁLOGO</a>
+                <a href="#" class="text-white">VENDER TU COCHE</a>
+            </div>
+        </nav>
+        
+        <div class="flex">
+            <!-- Filtros -->
+            <aside class="w-1/4 bg-gray-700 p-4 rounded-lg">
+                <h2 class="text-lg font-semibold">Filtros</h2>
+                <div class="mt-4 space-y-4">
+                    <select class="w-full bg-gray-800 p-2 rounded-md">
+                        <option>Tipo</option>
+                    </select>
+                    <select class="w-full bg-gray-800 p-2 rounded-md">
+                        <option>Filtro 1</option>
+                    </select>
+                    <select class="w-full bg-gray-800 p-2 rounded-md">
+                        <option>Filtro 2</option>
+                    </select>
+                    <select class="w-full bg-gray-800 p-2 rounded-md">
+                        <option>Filtro 3</option>
+                    </select>
+                </div>
+            </aside>
+            
+            <!-- Catálogo -->
+            <main class="w-3/4 p-4">
+                <h2 class="text-2xl font-bold mb-4">Concesionario de coches de segunda mano</h2>
+                <div class="grid grid-cols-3 gap-4">
+                    <!-- Producto -->
+                    <div class="bg-gray-700 p-4 rounded-lg text-center" repeat="9">
+                        <img src="car-placeholder.jpg" alt="Coche" class="rounded-lg">
+                        <div class="text-cyan-400 font-bold mt-2">14.900€</div>
+                        <p class="mt-2">DACIA Sandero Stepway Expression TCe CVT</p>
+                        <p class="text-sm text-gray-400">91 cv</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="bg-black p-4 mt-6 text-center">
+            <div class="grid grid-cols-3 text-sm">
+                <div>
+                    <p>Nuestras redes sociales</p>
+                    <div class="flex justify-center space-x-2 mt-2">
+                        <span>📷</span>
+                        <span>📘</span>
+                        <span>🐦</span>
+                    </div>
+                </div>
+                <div>
+                    <p>Ubicación</p>
+                    <p>Av. de Ecuador 56, 46025</p>
+                    <p>Benicalap (Valencia)</p>
+                </div>
+                <div>
+                    <p>Información</p>
+                    <p>962 118 240</p>
+                    <p>admin@valencars.net</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
