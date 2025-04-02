@@ -1,27 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 text-black">
-    <header class="bg-black py-4">
-        <div class="container mx-auto flex justify-between items-center px-4">
-            <h1 class="text-white font-bold text-xl">VALENCARS</h1>
-                <nav class="bg-black p-4 flex justify-between items-center">
-                    <div class="flex space-x-6">
-                        <a href="#" class="text-white">INICIO</a>
-                        <a href="#" class="text-white">QUIÉNES SOMOS</a>
-                        <a href="#" class="text-white">CONTACTO</a>
-                        <a href="#" class="text-white">CATÁLOGO</a>
-                        <a href="#" class="text-white">VENDER TU COCHE</a>
-                    </div>
-                </nav>
-            </div>
-    </header>
-        <div class="flex">
+{% extends 'plantillas/plantilla.html' %}
+{% block title %}Catalogo{% endblock %}
+{% block main %}
+<div class="flex">
             <!-- Filtros -->
             <aside class="w-1/4 bg-gray-300 p-4">
                 <h2 class="text-lg font-semibold">Filtros</h2>
@@ -100,5 +80,4 @@
             </div>
         </footer>
     </div>
-</body>
-</html>
+{% endblock %} 
