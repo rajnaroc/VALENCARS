@@ -1,1 +1,2 @@
-
+{% extends './plantillas/plantilla.html' %}
+{% block title %}Catalogo{% endblock %}
