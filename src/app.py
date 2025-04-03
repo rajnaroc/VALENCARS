@@ -8,7 +8,7 @@ def index():
     return render_template("catalogo.html")
 
 @app.route("/contacto", methods=["GET"])
-def index():
+def contacto():
     return render_template("contacto.html")
 
 if __name__ == '__main__':
