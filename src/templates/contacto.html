@@ -1,28 +1,28 @@
 {% extends './plantillas/plantilla.html' %}
 {% block title %}Catalogo{% endblock %}
 {% block main %}
- <div className="p-6">
-    <h2 className="text-2xl font-bold text-center mb-4">Contacto valencars</h2>
-    <hr className="mb-4" />
+  <div className="p-10 text-center">
+    <h2 className="text-3xl font-bold mb-4">Contacto valencars</h2>
+    <hr className="border-gray-300 mb-6" />
     
-    <div className="grid grid-cols-2 gap-4">
-      <input type="text" placeholder="Nombre (Obligatorio)" className="border p-2 w-full rounded" />
-      <input type="text" placeholder="Motivo de la consulta (Obligatorio)" className="border p-2 w-full rounded" />
-      <input type="email" placeholder="Correo Electrónico (Obligatorio)" className="border p-2 w-full rounded" />
-      <textarea placeholder="Descripción (Obligatorio)" className="border p-2 w-full h-20 rounded"></textarea>
-      <input type="text" placeholder="Teléfono (Obligatorio)" className="border p-2 w-full rounded" />
+    <div className="grid grid-cols-2 gap-6">
+      <input type="text" placeholder="Nombre (Obligatorio)" className="border p-3 w-full rounded-md" />
+      <input type="text" placeholder="Motivo de la consulta (Obligatorio)" className="border p-3 w-full rounded-md" />
+      <input type="email" placeholder="Correo Electrónico (Obligatorio)" className="border p-3 w-full rounded-md" />
+      <textarea placeholder="Descripción (Obligatorio)" className="border p-3 w-full h-24 rounded-md"></textarea>
+      <input type="text" placeholder="Teléfono (Obligatorio)" className="border p-3 w-full rounded-md" />
     </div>
     
-    <div className="flex items-center my-4">
+    <div className="flex items-center justify-start my-6">
       <input type="checkbox" className="mr-2" />
       <span>Acepto la <a href="#" className="text-blue-500">política de privacidad</a></span>
     </div>
     
-    <button className="bg-black text-white px-6 py-2 rounded w-full">Enviar</button>
+    <button className="bg-black text-white px-6 py-3 rounded-md text-lg">Enviar</button>
     
-    <div className="grid grid-cols-2 gap-4 mt-4">
-      <img src="map_placeholder.png" alt="Mapa" className="w-full h-32 object-cover" />
-      <img src="cars_placeholder.png" alt="Parking" className="w-full h-32 object-cover" />
+    <div className="grid grid-cols-2 gap-6 mt-8">
+      <img src="map_placeholder.png" alt="Mapa" className="w-full h-40 object-cover rounded-md" />
+      <img src="cars_placeholder.png" alt="Parking" className="w-full h-40 object-cover rounded-md" />
     </div>
   </div>
 {% endblock %}
