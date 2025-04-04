@@ -14,6 +14,10 @@ def contacto():
 @app.route("/somos", methods=["GET"])
 def somos():
     return render_template("somos.html")
+@app.route("/vender", methods=["GET"])
+def vender():
+    return render_template("vender.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
