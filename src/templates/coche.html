@@ -10,28 +10,33 @@
   <div class="flex flex-col items-center">
     <!-- Carrusel de imágenes -->
     <div class="relative w-full max-w-md overflow-hidden">
-      <div id="carousel" class="carousel-container flex transition-transform duration-500 ease-in-out">
+      <div id="carousel" class="carousel-container flex transition-transform duration-700 ease-in-out">
         {% for image in images %}
         <div class="carousel-item w-full flex-shrink-0">
-          <img src="{{ url_for('static', filename=image) }}" alt="Coche" class="w-full h-auto rounded-md" />
+          <img 
+            src="{{ url_for('static', filename=image) }}" alt="Coche" class="w-full h-auto rounded-md" onerror="this.src='/static/img/default.jpg'" />
         </div>
         {% endfor %}
       </div>
-
-      <!-- Botones de navegación -->
-      <button id="prev" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full z-10">
+    
+      <!-- Botones -->
+      <button id="prev" aria-label="Imagen anterior" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full z-10">
         &#8249;
       </button>
-      <button id="next" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full z-10">
+      <button id="next" aria-label="Imagen siguiente" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full z-10">
         &#8250;
       </button>
     </div>
+    
 
     <!-- Thumbnails -->
     <div class="flex space-x-2 mt-4">
       {% for image in images %}
         <div class="thumbnail w-14 h-14 cursor-pointer bg-gray-300 border border-black rounded-md">
-          <img src="{{ url_for('static', filename=image) }}" alt="Thumbnail" class="w-full h-full object-cover rounded-md" onclick="changeImage('{{ loop.index0 }}')">
+          <img 
+            src="{{ url_for('static', filename=image) }}" 
+            alt="Thumbnail" 
+            class="w-full h-full object-cover rounded-md" onclick="changeImage(`{{ loop.index0 }}`)" onerror="this.src='/static/img/default.jpg'" />
         </div>
       {% endfor %}
     </div>
@@ -69,58 +74,86 @@
   {% endfor %}
 </section>
 
-{% endblock %}
-
 <!-- Script del carrusel -->
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    let currentIndex = 0;
-    const carouselContainer = document.querySelector('.carousel-container');
-    const images = document.querySelectorAll('.carousel-item');
-    const totalImages = images.length;
+  let currentIndex = 0;
+  let carouselContainer;
+  let images;
+  let totalImages;
+  let thumbnails;
+  let autoplayInterval;
 
-    const prevButton = document.getElementById('prev');
-    const nextButton = document.getElementById('next');
-    const thumbnails = document.querySelectorAll('.thumbnail img');
+  function showImage(index) {
+    const offset = -index * 100;
+    carouselContainer.style.transform = `translateX(${offset}%)`;
 
-    // Función para mostrar la imagen correspondiente
-    function showImage(index) {
-      const offset = -index * 100; // Mover el carrusel
-      carouselContainer.style.transform = `translateX(${offset}%)`;
+    thumbnails.forEach((thumb, i) => {
+      if (i === index) {
+        thumb.classList.add('ring-2', 'ring-blue-500', 'bg-white');
+      } else {
+        thumb.classList.remove('ring-2', 'ring-blue-500', 'bg-white');
+      }
+    });
+  }
 
-      // Resaltar la miniatura activa
-      thumbnails.forEach((thumb, i) => {
-        if (i === index) {
-          thumb.classList.add('ring-2', 'ring-blue-500'); // Resalta la miniatura
-        } else {
-          thumb.classList.remove('ring-2', 'ring-blue-500'); // Quita el resalto
-        }
-      });
-    }
-
-    // Cambiar la imagen al hacer clic en las miniaturas
-    function changeImage(index) {
+  function changeImage(index) {
+    if (index >= 0 && index < totalImages) {
       currentIndex = index;
       showImage(currentIndex);
     }
+  }
 
-    // Eventos para los botones de navegación
-    prevButton.addEventListener('click', () => {
+  window.changeImage = changeImage;
+
+  // Función para iniciar el autoplay
+  function startAutoplay() {
+    autoplayInterval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % totalImages;
+      showImage(currentIndex);
+    }, 3000); // Cambiar cada 3 segundos
+  }
+
+  // Función para pausar el autoplay
+  function stopAutoplay() {
+    clearInterval(autoplayInterval);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    carouselContainer = document.querySelector('.carousel-container');
+    images = document.querySelectorAll('.carousel-item');
+    totalImages = images.length;
+    thumbnails = document.querySelectorAll('.thumbnail img');
+
+    // Establecer el ancho dinámico del contenedor
+    carouselContainer.style.width = `${totalImages * 100}%`;
+    images.forEach(image => {
+      image.style.width = `${100 / totalImages}%`;
+    });
+
+    // Eventos de navegación
+    document.getElementById('prev').addEventListener('click', () => {
       currentIndex = (currentIndex - 1 + totalImages) % totalImages;
       showImage(currentIndex);
     });
 
-    nextButton.addEventListener('click', () => {
+    document.getElementById('next').addEventListener('click', () => {
       currentIndex = (currentIndex + 1) % totalImages;
       showImage(currentIndex);
     });
 
-    // Eventos para las miniaturas
-    thumbnails.forEach((thumb, index) => {
-      thumb.addEventListener('click', () => changeImage(index));
-    });
-
-    // Mostrar la primera imagen al cargar
+    // Inicializar el carrusel
     showImage(currentIndex);
+
+    // Iniciar el autoplay
+    startAutoplay();
+
+    // Pausar el autoplay cuando el ratón esté sobre el carrusel
+    carouselContainer.addEventListener('mouseover', stopAutoplay);
+
+    // Reanudar el autoplay cuando el ratón salga del carrusel
+    carouselContainer.addEventListener('mouseleave', startAutoplay);
   });
 </script>
+{% endblock %}
+
+
