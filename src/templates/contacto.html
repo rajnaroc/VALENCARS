@@ -7,7 +7,7 @@
     
     <div class="grid grid-cols-2 gap-4">
       <input type="text" placeholder="Nombre (Obligatorio)" class="border p-3 w-full rounded-md" />
-      <input type="text" placeholder="Motivo de la consulta (Obligatorio)" class="border p-3 w-full rounded-md" />
+      <input type="text" placeholder="Motivo de la consulta (Obligatorio)" class="border  p-3 w-full rounded-md" />
       <input type="email" placeholder="Correo Electrónico (Obligatorio)" class="border p-3 w-full rounded-md" />
       <textarea placeholder="Descripción (Obligatorio)" class="border p-3 w-full h-20 resize-none rounded-md"></textarea>
       <input type="text" placeholder="Teléfono (Obligatorio)" class="border p-3 w-full rounded-md" />
@@ -19,8 +19,13 @@
     <button class="bg-black text-white px-6 py-3 rounded-md text-lg border-black hover:bg-white hover:cursor-pointer hover:text-black hover:transition-all">Enviar</button>
     
     <div class="grid grid-cols-2 gap-6 mt-8">
-      <img src="map_placeholder.png" alt="Maps" class="w-full h-40 object-cover rounded-md" />
-      <img src="cars_placeholder.png" alt="Foto" class="w-full h-40 object-cover rounded-md" />
+      <div class="w-full max-w-lg mx-auto h-100 mt-8 mb-6 rounded-md overflow-hidden shadow-lg">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3111.3843552714265!2d-0.3938777846471743!3d39.495071571767515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd604579125eb3f9%3A0x14c569861adcebdd!2sValencars%202000%20SL!5e0!3m2!1ses!2ses!4v1712574340501!5m2!1ses!2ses"  class="border-0 w-full h-full"  allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="w-full max-w-lg mx-auto h-100 mt-8 mb-6 rounded-md overflow-hidden shadow-lg">
+        <img src="/static/img/contacto.png" alt="Foto" class="w-full h-full object-cover rounded-md" />
+
+      </div>  
     </div>
   </div>
 {% endblock %}
