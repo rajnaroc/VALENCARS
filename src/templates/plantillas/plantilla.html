@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 </head>
-<body class="bg-gray-100 text-black">
+<body class="min-h-screen flex flex-col bg-gray-100 text-black">
     <header class="bg-black py-4 w-full">
         <div class="container mx-auto flex justify-between items-center px-4">
             <div class="flex flex-col items-center">
@@ -18,18 +18,21 @@
             </div>
                 <nav class="bg-black  flex justify-between items-center w-3/5">
                     <div class="flex justify-between space-x-6 w-full items-center">
-                        <a href="#" class="text-white  hover:bg-white hover:rounded hover:text-black p-3 hover:transition-all">INICIO</a>
+                        <a href=" {{ url_for('inicio' ) }}" class="text-white  hover:bg-white hover:rounded hover:text-black p-3 hover:transition-all">INICIO</a>
                         <a href=" {{ url_for('somos') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-3 hover:transition-all">QUIÉNES SOMOS</a>
                         <a href="{{ url_for('contacto') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-3 hover:transition-all">CONTACTO</a>
-                        <a href="{{ url_for('index') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-3 ">CATÁLOGO</a>
+                        <a href="{{ url_for('catalogo') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-3 ">CATÁLOGO</a>
                         <a href="{{ url_for('vender') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-3 ">VENDER TU COCHE</a>
                     </div>
                 </nav>
             </div>
     </header>
-    {% block main %}
-            
-    {% endblock %}
+    <main class="flex-grow">
+        {% block main %}
+                
+        {% endblock %}
+    </main>
+    
     <!-- Footer -->
     <footer class="w-full bg-black text-white text-center p-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
@@ -60,6 +63,6 @@
             </div>
         </div>
     </footer>
-
+    
 </body>
 </html>

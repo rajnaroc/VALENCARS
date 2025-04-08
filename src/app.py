@@ -5,7 +5,7 @@ from flask import Flask, app, request, jsonify, render_template, redirect, url_f
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
-def index():
+def catalogo():
     return render_template("catalogo.html")
 
 @app.route("/contacto", methods=["GET"])
@@ -34,8 +34,22 @@ def coche():
     datos = zip(labels, values)
     return render_template("coche.html", datos=datos, images=images)
 
+@app.route("/inicio", methods=["GET"])
+def inicio():
+    return render_template("inicio.html")
 
-
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        if username == "admin" and password == "admin":
+            session["username"] = username
+            flash("Login successful!", "success")
+            return redirect(url_for("index"))
+        else:
+            flash("Invalid credentials", "danger")
+    return render_template("login.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
