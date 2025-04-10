@@ -6,11 +6,17 @@
     <hr class="border-black mb-6 border-2" />
     
     <div class="grid grid-cols-2 gap-4">
-      <input type="text" placeholder="Nombre (Obligatorio)" class="border p-3 w-full rounded-md" />
-      <input type="text" placeholder="Motivo de la consulta (Obligatorio)" class="border  p-3 w-full rounded-md" />
-      <input type="email" placeholder="Correo Electrónico (Obligatorio)" class="border p-3 w-full rounded-md" />
-      <textarea placeholder="Descripción (Obligatorio)" class="border p-3 w-full h-20 resize-none rounded-md"></textarea>
-      <input type="text" placeholder="Teléfono (Obligatorio)" class="border p-3 w-full rounded-md" />
+      {{form.email.label}}
+      {{form.email class="border p-3 w-full rounded-md"}}
+      {{form.nombre.label}}
+      {{form.nombre class="border p-3 w-full rounded-md"}}
+      {{form.telefono.label}}
+      {{form.telefono class="border p-3 w-full rounded-md"}}
+      {{form.motivo.label}}
+      {{form.motivo class="border p-3 w-full rounded-md"}}
+      {{form.descripcion.label}}
+      {{form.descripcion class="border p-3 w-full h-20 resize-none rounded-md"}}
+      {{form.csrf_token}}
     </div>
     <div class="flex items-center justify-start my-6">
       <input type="checkbox" class="mr-2" />

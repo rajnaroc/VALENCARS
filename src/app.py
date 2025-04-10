@@ -14,11 +14,11 @@ def contacto():
     contactForm = contactsForm()
     if request.method == "POST":
         if contactForm.validate_on_submit():
-            nombre = contactForm.nombre.data
-            email = contactForm.email.data
-            telefono = contactForm.telefono.data
-            motivo = contactForm.motivo.data
-            descripcion = contactForm.descripcion.data
+            nombre = contactForm.nombre
+            email = contactForm.email
+            telefono = contactForm.telefono
+            motivo = contactForm.motivo
+            descripcion = contactForm.descripcion
 
             # Aquí podrías agregar la lógica para enviar el formulario o guardarlo en una base de datos
 
