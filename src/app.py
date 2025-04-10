@@ -20,9 +20,7 @@ def contacto():
             descripcion = contactForm.descripcion.data
             # Aquí podrías agregar la lógica para enviar el formulario o guardarlo en una base de datos
             flash("Formulario enviado con éxito", "success")
-            return redirect(url_for("catalogo"))
-        
-    return render_template("contacto.html")
+    return render_template("contacto.html", form=contactForm)
 
 @app.route("/somos", methods=["GET"])
 def somos():
