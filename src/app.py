@@ -1,6 +1,6 @@
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
 from forms import loginform, contactsForm
-
+from config import config
 
 app = Flask(__name__)
 
@@ -67,4 +67,5 @@ def pagina_no_encontrada(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.config.from_object(config["dev"])
+    app.run()
