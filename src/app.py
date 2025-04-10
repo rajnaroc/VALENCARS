@@ -1,5 +1,6 @@
 from turtle import st
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
+from forms import loginform, contactsForm
 
 
 app = Flask(__name__)
@@ -10,6 +11,19 @@ def catalogo():
 
 @app.route("/contacto", methods=["GET"])
 def contacto():
+    contactForm = contactsForm()
+    if request.method == "POST":
+        if contactForm.validate_on_submit():
+            nombre = contactForm.nombre.data
+            email = contactForm.email.data
+            telefono = contactForm.telefono.data
+            motivo = contactForm.motivo.data
+            descripcion = contactForm.descripcion.data
+
+            # Aquí podrías agregar la lógica para enviar el formulario o guardarlo en una base de datos
+
+            flash("Formulario enviado con éxito", "success")
+            return redirect(url_for("catalogo"))
     return render_template("contacto.html")
 
 @app.route("/somos", methods=["GET"])

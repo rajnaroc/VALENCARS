@@ -22,12 +22,12 @@ class contactsForm(FlaskForm):
     ])
     email = EmailField("email", validators=[
         DataRequired(),
-        Length(max=25),
+        Length(min=11,max=25),
         Email()
     ])
     telefono = StringField("telefono", validators=[
         DataRequired(),
-        Length(max=12)
+        Length(min=9,max=9)
     ])
     motivo = SelectField("motivo", choices=[
         ('Comprar', 'Comprar'),
@@ -36,6 +36,6 @@ class contactsForm(FlaskForm):
     
     descripcion = StringField("descripcion", validators=[
         DataRequired(),
-        Length(max=100)
+        Length(max=200)
     ])
     enviar = SubmitField("enviar")
