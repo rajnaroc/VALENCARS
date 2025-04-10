@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField,StringField,EmailField,PasswordField
-from wtforms.validators import DataRequired,Length,Email,EqualTo
+from wtforms.validators import DataRequired,Length,Email
+from wtforms import SelectField
 
 class loginform(FlaskForm):
     email = EmailField("email", validators=[
@@ -14,32 +15,27 @@ class loginform(FlaskForm):
     ])
     enviar = SubmitField("Iniciar sesion")
 
-class registerForm(FlaskForm):
-    fullname = StringField("fullname", validators=[
+class contactsForm(FlaskForm):
+    nombre = StringField("nombre", validators=[
         DataRequired(),
-        Length(min=4)
+        Length(max=25)
     ])
     email = EmailField("email", validators=[
         DataRequired(),
         Length(max=25),
         Email()
     ])
-    password = PasswordField("password", validators=[
+    telefono = StringField("telefono", validators=[
         DataRequired(),
-        Length(min=6,max=12),
-        EqualTo("confirme",message="Repite la contrasela")
+        Length(max=12)
     ])
-    confirme = PasswordField("confirme", validators=[
-        DataRequired(),
-        Length(min=6, max=12)
-    ])
-    enviar = SubmitField("Register")
-
-class contactsForm(FlaskForm):
-    img = StringField("img", validators=[
-        DataRequired()
-    ])
+    motivo = SelectField("motivo", choices=[
+        ('Comprar', 'Comprar'),
+        ('Venta', 'Venta'),
+    ], validators=[DataRequired()])
+    
     descripcion = StringField("descripcion", validators=[
-        DataRequired()
+        DataRequired(),
+        Length(max=100)
     ])
-    enviar = SubmitField("agregar")
+    enviar = SubmitField("enviar")
