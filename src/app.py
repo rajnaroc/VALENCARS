@@ -1,4 +1,3 @@
-from turtle import st
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
 from forms import loginform, contactsForm
 
@@ -19,9 +18,7 @@ def contacto():
             telefono = contactForm.telefono
             motivo = contactForm.motivo
             descripcion = contactForm.descripcion
-
             # Aquí podrías agregar la lógica para enviar el formulario o guardarlo en una base de datos
-
             flash("Formulario enviado con éxito", "success")
     return render_template("contacto.html", form=contactForm)
 
