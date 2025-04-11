@@ -30,7 +30,6 @@ def somos():
 def vender():
     return render_template("vender.html")
 
-
 @app.route("/coche")
 def coche():
     # Datos del coche
