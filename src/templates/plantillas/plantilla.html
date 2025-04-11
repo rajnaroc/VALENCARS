@@ -8,34 +8,87 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/fontawesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
 </head>
 <body class="min-h-screen flex flex-col text-black">
-    <header class="bg-black py-4 w-full">
-        <div class="container mx-auto flex justify-between items-center px-4">
-            <div class="flex flex-col items-center">
+    <!-- Header -->
+    <header class="bg-black py-4 w-full relative z-50">
+        <div class="container mx-auto flex items-center justify-between px-4">
+            <!-- Logo alineado a la izquierda -->
+            <div class="flex items-center space-x-2">
                 <img class="w-14" src="{{url_for('static', filename='img/logo.png')}}" alt="logo valencars">
                 <h1 class="text-white font-bold text-lg">VALENCARS</h1>
             </div>
-                <nav class="bg-black  flex justify-between items-center w-3/5">
-                    <div class="flex justify-between space-x-6 w-full items-center">
-                        <a href=" {{ url_for('inicio' ) }}" class="text-white  hover:bg-white hover:rounded hover:text-black p-3 hover:transition-all">INICIO</a>
-                        <a href=" {{ url_for('somos') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-3 hover:transition-all">QUIÉNES SOMOS</a>
-                        <a href="{{ url_for('contacto') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-3 hover:transition-all">CONTACTO</a>
-                        <a href="{{ url_for('catalogo') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-3 ">CATÁLOGO</a>
-                        <a href="{{ url_for('vender') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-3 ">VENDER TU COCHE</a>
-                    </div>
-                </nav>
+    
+            <!-- Botón hamburguesa solo visible en móvil -->
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-white focus:outline-none">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
             </div>
+    
+            <!-- Menú visible solo en escritorio -->
+            <nav class="hidden md:flex flex-wrap justify-end items-center w-3/5">
+                <div class="flex space-x-6 items-center">
+                    <a href="{{ url_for('inicio') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 md:p-3">INICIO</a>
+                    <a href="{{ url_for('somos') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 md:p-3">QUIÉNES SOMOS</a>
+                    <a href="{{ url_for('contacto') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 md:p-3">CONTACTO</a>
+                    <a href="{{ url_for('catalogo') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 md:p-3">CATÁLOGO</a>
+                    <a href="{{ url_for('vender') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 md:p-3">VENDER TU COCHE</a>
+                </div>
+            </nav>
+        </div>
+    
+        <!-- Menú lateral desde la derecha -->
+        <div id="side-menu" class="fixed top-0 right-0 h-full w-64 bg-black transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-40">
+            <div class="p-6 flex flex-col space-y-4 h-full">
+                <button id="close-menu" class="text-white self-end text-2xl">✕</button>
+                <a href="{{ url_for('inicio') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2">INICIO</a>
+                <a href="{{ url_for('somos') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2">QUIÉNES SOMOS</a>
+                <a href="{{ url_for('contacto') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2">CONTACTO</a>
+                <a href="{{ url_for('catalogo') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2">CATÁLOGO</a>
+                <a href="{{ url_for('vender') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2">VENDER TU COCHE</a>
+            </div>
+        </div>
+    
+        <!-- Overlay transparente clicable -->
+        <div id="overlay" class="fixed inset-0 bg-transparent hidden z-30 md:hidden"></div>
     </header>
+    
+    <!-- Script para abrir/cerrar menú y capturar clic fuera -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeMenu = document.getElementById('close-menu');
+        const sideMenu = document.getElementById('side-menu');
+        const overlay = document.getElementById('overlay');
+    
+        const closeSideMenu = () => {
+            sideMenu.classList.add('translate-x-full');
+            overlay.classList.add('hidden');
+        };
+    
+        menuToggle.addEventListener('click', () => {
+            sideMenu.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+        });
+    
+        closeMenu.addEventListener('click', closeSideMenu);
+        overlay.addEventListener('click', closeSideMenu);
+    </script>    
+    
+    <!-- Main Content -->
     <main class="flex-grow">
-    {% block main %}
-
-    {% endblock %}
+        {% block main %}
+        {% endblock %}
     </main>
+
     <!-- Footer -->
     <footer class="w-full bg-black text-white text-center p-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+            <!-- Redes sociales -->
             <div>
                 <h1 class="font-semibold">Nuestras redes sociales</h1>
                 <div class="flex justify-center space-x-2 mt-2 bg-black p-2 rounded">
@@ -44,16 +97,19 @@
                     <i class="fa-brands fa-facebook text-white"></i>
                 </div>                
             </div>
+            <!-- Ubicación -->
             <div>
                 <h1 class="font-semibold">Ubicación</h1>
                 <p>Av. de Ecuador 56, 46025</p>
                 <p>Benicalap (Valencia)</p>
             </div>
+            <!-- Información -->
             <div>
                 <h1 class="font-semibold">Información</h1>
                 <p>962 118 240</p>
                 <p>admin@valencars.net</p>
             </div>
+            <!-- Horario -->
             <div>
                 <h1 class="font-semibold">Horario</h1>
                 <p>Lunes - Viernes</p>
@@ -63,6 +119,5 @@
             </div>
         </div>
     </footer>
-    
 </body>
 </html>

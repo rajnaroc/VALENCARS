@@ -5,24 +5,34 @@
     <h2 class="text-3xl font-bold mb-4">Contacto valencars</h2>
     <hr class="border-black mb-6 border-2" />
     
-    <div class="grid grid-cols-2 gap-4">
-      {{form.email.label}}
-      {{form.email class="border p-3 w-full rounded-md"}}
-      {{form.nombre.label}}
-      {{form.nombre class="border p-3 w-full rounded-md"}}
-      {{form.telefono.label}}
-      {{form.telefono class="border p-3 w-full rounded-md"}}
-      {{form.motivo.label}}
-      {{form.motivo class="border p-3 w-full rounded-md"}}
-      {{form.descripcion.label}}
-      {{form.descripcion class="border p-3 w-full h-20 resize-none rounded-md"}}
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class=" flex flex-col ">
+        {{ form.nombre.label(class="") }}
+        {{form.nombre(class="border p-3 w-full rounded-md", placeholder="Nombre")}}
+      </div>
+      <div>
+        {{ form.email.label() }}
+        {{form.email(class="border p-3 w-full rounded-md", placeholder="Correo Eletronico")}}
+      </div>
+      <div>
+        {{ form.telefono.label() }}
+        {{form.telefono(class="border p-3 w-full rounded-md", placeholder="Telefono")}}
+      </div>
+      <div>
+        {{ form.motivo.label() }}
+        {{form.motivo(class="border p-3 w-full rounded-md")}}
+      </div>
+      <div>
+        {{ form.descripcion.label() }}
+        {{form.descripcion(class="border p-3 w-full h-20 resize-none rounded-md", placeholder="Descripcion del motivo" )}}
+      </div>
       {{form.csrf_token}}
     </div>
     <div class="flex items-center justify-start my-6">
       <input type="checkbox" class="mr-2" />
       <span>Acepto la <a href="#" class="text-blue-500">política de privacidad</a></span>
     </div>
-    <button class="bg-black text-white px-6 py-3 rounded-md text-lg border-black hover:bg-white hover:cursor-pointer hover:text-black hover:transition-all">Enviar</button>
+    {{form.enviar(class="bg-black text-white px-6 py-3 rounded-md text-lg border-black hover:bg-white hover:cursor-pointer hover:text-black hover:transition-all")}}
     
     <div class="grid grid-cols-2 gap-6 mt-8">
       <div class="w-full max-w-lg mx-auto h-100 mt-8 mb-6 rounded-md overflow-hidden shadow-lg">

@@ -38,4 +38,8 @@ class contactsForm(FlaskForm):
         DataRequired(),
         Length(max=200)
     ])
+    aceptar = SelectField("aceptar", choices=[
+        ('Si', 'Si'),
+        ('No', 'No')
+    ], validators=[DataRequired()])
     enviar = SubmitField("enviar")
