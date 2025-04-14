@@ -23,8 +23,11 @@
         {{ form.motivo(class="border p-3 w-full rounded-md") }}
       </div>
       <div class="flex flex-col md:col-span-2">
-        {{ form.descripcion.label(class="text-left mb-1") }}
-        {{ form.descripcion(class="border p-3 w-full h-28 resize-none rounded-md", placeholder="Descripción del motivo") }}
+        {{ form.descripcion.label(class_="text-left mb-1") }}
+        {{ form.descripcion(class_="border p-3 w-full h-28 resize-none rounded-md", placeholder="Descripción del motivo", id="descripcion") }}
+        <div class="text-right text-sm text-gray-500 mt-1">
+          <span id="contador">0</span>/200 caracteres
+        </div>
       </div>
       {{ form.csrf_token }}
     </div>
@@ -45,4 +48,23 @@
       </div>
     </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const descripcionInput = document.getElementById('descripcion');
+      const contador = document.getElementById('contador');
+      const maxCaracteres = 200;
+
+      descripcionInput.addEventListener('input', () => {
+        const caracteresActuales = descripcionInput.value.length;
+        contador.textContent = caracteresActuales;
+
+        // Cambiar el color si se excede el límite
+        if (caracteresActuales > maxCaracteres) {
+          contador.classList.add('text-red-500');
+        } else {
+          contador.classList.remove('text-red-500');
+        }
+      });
+    });
+  </script>
 {% endblock %}
