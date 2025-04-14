@@ -1,52 +1,54 @@
 {% extends './plantillas/plantilla.html' %}
 {% block title %}Catalogo{% endblock %}
 {% block main %}
-<div class="flex">
-            <!-- Filtros -->
-            <aside class=" ml-10 w-1/4 bg-gray-300 p-4">
-                <h2 class="text-lg font-semibold">Filtros</h2>
-                <div class="mt-4 space-y-4">
-                    <div class="p-2 rounded">
-                        <label class="block text-sm font-semibold">Filtro 1</label>
-                        <select class="w-full bg-white p-2 border rounded-md">
-                            <option>Tipo</option>
-                        </select>
-                    </div>
-                    <div class="p-2 rounded">
-                        <label class="block text-sm font-semibold">Filtro 2</label>
-                        <select class="w-full bg-white p-2 border rounded-md">
-                            <option>Filtro 1</option>
-                        </select>
-                    </div>
-                    <div class="p-2 rounded">
-                        <label class="block text-sm font-semibold">Filtro 3</label>
-                        <select class="w-full bg-white p-2 border rounded-md">
-                            <option>Filtro 2</option>
-                        </select>
-                    </div>
-                    <div class="p-2 rounded">
-                        <label class="block text-sm font-semibold">Filtro 4</label>
-                        <select class="w-full bg-white p-2 border rounded-md">
-                            <option>Filtro 3</option>
-                        </select>
-                    </div>
-                </div>
-            </aside>
-            <!-- Catálogo -->
-            <main class="w-3/4 p-4">
-                <h2 class="text-2xl font-bold mb-4 text-center">Concesionario de coches de segunda mano</h2>
-                <div class="grid grid-cols-3 gap-4">
-                    <!-- Producto -->
-                    <div>
-                        <div class="relative">
-                            <img src="{{url_for('static', filename="img/foto.jpg")}}" alt="Coche" class="rounded-lg">
-                            <span class="absolute top-1 right-2 bg-blue-600 text-white text-sm px-2 py-1 rounded">14.900€</span>
-                        </div>
-                        <p class="mt-2 font-semibold">DACIA Sandero Stepway Expression TCe CVT</p>
-                        <p class="text-sm text-gray-600">91 cv</p>
-                    </div>
-                </div>
-            </main>
+<div class="flex flex-col md:flex-row px-4 md:px-10 py-6 gap-6">
+    <!-- Filtros -->
+    <aside class="w-full md:w-1/4 bg-gray-300 p-4 rounded-md">
+        <h2 class="text-lg font-semibold">Filtros</h2>
+        <div class="mt-4 space-y-4">
+            <div class="p-2 rounded">
+                <label class="block text-sm font-semibold">Filtro 1</label>
+                <select class="w-full bg-white p-2 border rounded-md">
+                    <option>Tipo</option>
+                </select>
+            </div>
+            <div class="p-2 rounded">
+                <label class="block text-sm font-semibold">Filtro 2</label>
+                <select class="w-full bg-white p-2 border rounded-md">
+                    <option>Filtro 1</option>
+                </select>
+            </div>
+            <div class="p-2 rounded">
+                <label class="block text-sm font-semibold">Filtro 3</label>
+                <select class="w-full bg-white p-2 border rounded-md">
+                    <option>Filtro 2</option>
+                </select>
+            </div>
+            <div class="p-2 rounded">
+                <label class="block text-sm font-semibold">Filtro 4</label>
+                <select class="w-full bg-white p-2 border rounded-md">
+                    <option>Filtro 3</option>
+                </select>
+            </div>
         </div>
-    </div>
-{% endblock %} 
+    </aside>
+
+    <!-- Catálogo -->
+    <main class="w-full md:w-3/4 p-4">
+        <h2 class="text-2xl font-bold mb-4 text-center">Concesionario de coches de segunda mano</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <!-- Producto -->
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="relative">
+                    <img src="{{url_for('static', filename='img/foto.jpg')}}" alt="Coche" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-blue-600 text-white text-sm px-2 py-1 rounded">14.900€</span>
+                </div>
+                <div class="p-4">
+                    <p class="font-semibold">DACIA Sandero Stepway Expression TCe CVT</p>
+                    <p class="text-sm text-gray-600">91 cv</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
