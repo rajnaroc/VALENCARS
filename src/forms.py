@@ -16,30 +16,26 @@ class loginform(FlaskForm):
     enviar = SubmitField("Iniciar sesion")
 
 class contactsForm(FlaskForm):
-    nombre = StringField("nombre", validators=[
+    nombre = StringField("Nombre", validators=[
         DataRequired(),
         Length(max=25)
     ])
-    email = EmailField("email", validators=[
+    email = EmailField("Email", validators=[
         DataRequired(),
         Length(min=11,max=25),
         Email()
     ])
-    telefono = StringField("telefono", validators=[
+    telefono = StringField("Telefono", validators=[
         DataRequired(),
         Length(min=9,max=9)
     ])
-    motivo = SelectField("motivo", choices=[
+    motivo = SelectField("Motivo", choices=[
         ('Comprar', 'Comprar'),
         ('Venta', 'Venta'),
     ], validators=[DataRequired()])
     
-    descripcion = StringField("descripcion", validators=[
+    descripcion = StringField("Descripcion", validators=[
         DataRequired(),
         Length(max=200)
     ])
-    aceptar = SelectField("aceptar", choices=[
-        ('Si', 'Si'),
-        ('No', 'No')
-    ], validators=[DataRequired()])
-    enviar = SubmitField("enviar")
+    enviar = SubmitField("Enviar")
