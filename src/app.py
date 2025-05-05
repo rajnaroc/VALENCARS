@@ -56,11 +56,10 @@ def login():
     loginForm = loginform()
 
     if request.method == "POST":
-        username = request.form["username"]
+        email = request.form["email"]
         password = request.form["password"]
-        if username == "admin" and password == "admin":
-            session["username"] = username
-            flash("Login successful!", "success")
+        if email == "admin@admin" and password == "admin123":
+            ModelUser.login(email, password)
             return redirect(url_for("index"))
         else:
             flash("Invalid credentials", "danger")

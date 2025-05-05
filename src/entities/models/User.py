@@ -7,7 +7,6 @@ class User(UserMixin):
         self.email = email
         self.password = password
 
-
     @classmethod
     def check_password(cls,hashed_password,password):
         return check_password_hash(hashed_password,password)
@@ -15,5 +14,3 @@ class User(UserMixin):
     @classmethod
     def hash_password(cls,password):
         return generate_password_hash(password)
-
-    
