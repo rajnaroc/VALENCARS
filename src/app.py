@@ -2,6 +2,7 @@ from math import log
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
 from forms import loginform, contactsForm
 from config import config
+from entities.ModelUser import ModelUser 
 
 app = Flask(__name__)
 
@@ -54,11 +55,10 @@ def login():
     loginForm = loginform()
 
     if request.method == "POST":
-        username = request.form["username"]
+        email = request.form["email"]
         password = request.form["password"]
-        if username == "admin" and password == "admin":
-            session["username"] = username
-            flash("Login successful!", "success")
+        if email == "admin@admin" and password == "admin123":
+            ModelUser.login(email, password)
             return redirect(url_for("index"))
         else:
             flash("Invalid credentials", "danger")
