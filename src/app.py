@@ -9,6 +9,8 @@ app = Flask(__name__)
 
 db = MySQL(app)
 
+login_manager = LoginManager()
+
 @login_manager.user_loader
 def load_user(id):
     return ModelUser.get_by_id(db, id)
@@ -64,9 +66,10 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        if email == "admin@admin" and password == "admin123":
-            ModelUser.login(db, email, password)
-            return redirect(url_for("inicio"))
+        logged_user = ModelUser.login(db, email, password)
+        if logged_user:
+            login_user(logged_user)
+            return redirect(url_for("panel"))
         else:
             flash("Invalid credentials", "danger")
 
