@@ -20,3 +20,12 @@ CREATE TABLE fotos(
     ruta VARCHAR(255) NOT NULL,
     FOREIGN KEY (coche_id) REFERENCES coches(id) ON DELETE CASCADE
 );
+
+CREATE TABLE admin (  
+    id INT AUTO_INCREMENT PRIMARY KEY,  
+    nombre VARCHAR(100) NOT NULL,  
+    email VARCHAR(100) NOT NULL UNIQUE,  
+    contraseña VARCHAR(255) NOT NULL,  
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
+    es_super_admin BOOLEAN DEFAULT FALSE  
+);  
