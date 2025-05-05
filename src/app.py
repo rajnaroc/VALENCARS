@@ -2,8 +2,10 @@ from math import log
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
 from forms import loginform, contactsForm
 from config import config
+from flask_mysqldb import MySQL
 
 app = Flask(__name__)
+
 
 @app.route("/", methods=["GET"])
 def catalogo():
@@ -62,7 +64,7 @@ def login():
             return redirect(url_for("index"))
         else:
             flash("Invalid credentials", "danger")
-            
+
     return render_template("login.html", form=loginForm)
 
 @app.errorhandler(404)
