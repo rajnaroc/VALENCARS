@@ -9,11 +9,12 @@ app = Flask(__name__)
 
 db = MySQL(app)
 
-login_manager = LoginManager()
+login_manager = LoginManager(app)
 
 @login_manager.user_loader
 def load_user(id):
     return ModelUser.get_by_id(db, id)
+    
 
 @app.route("/", methods=["GET"])
 def catalogo():

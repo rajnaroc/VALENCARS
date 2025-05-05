@@ -23,6 +23,19 @@ class ModelUser:
             print(e)
 
     @classmethod
+    def register(cls, db, username, password, fullname):
+
+        try:
+            hushed_pass = User.hush_password(password)
+            cursor = db.connection.cursor()
+            cursor.execute('INSERT INTO user (username, password, fullname) VALUES (%s, %s, %s)', (username, str(hushed_pass) , fullname))
+            db.connection.commit()
+        
+        except Exception as e:
+            
+            raise Exception(e)
+        
+    @classmethod
     def login(cls,db,email,password):
         try:
             cur = db.connection.cursor()
