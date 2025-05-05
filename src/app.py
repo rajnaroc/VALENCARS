@@ -4,6 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 from config import config
 from flask_mysqldb import MySQL
 from entities.ModelUser import ModelUser
+from utils.security import Security
 
 app = Flask(__name__)
 
@@ -87,6 +88,7 @@ def login():
         logged_user = ModelUser.login(db, email, password)
         if logged_user:
             login_user(logged_user)
+            jwt_token = Security.generate_token(logged_user)
             return redirect(url_for("panel"))
         else:
             flash("Invalid credentials", "danger")

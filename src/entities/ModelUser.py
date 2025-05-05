@@ -21,7 +21,8 @@ class ModelUser:
             return None
         except Exception as e:
             print(e)
-    
+
+
     @classmethod
     def register(cls, db, nombre, correo, contraseña, es_super_admin=False):
         try:
