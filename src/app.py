@@ -6,6 +6,7 @@ from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 
+db = MySQL(app)
 
 @app.route("/", methods=["GET"])
 def catalogo():
