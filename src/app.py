@@ -1,5 +1,6 @@
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
 from forms import loginform, contactsForm
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from config import config
 from flask_mysqldb import MySQL
 from entities.ModelUser import ModelUser
@@ -7,6 +8,10 @@ from entities.ModelUser import ModelUser
 app = Flask(__name__)
 
 db = MySQL(app)
+
+@login_manager.user_loader
+def load_user(id):
+    return ModelUser.get_by_id(db, id)
 
 @app.route("/", methods=["GET"])
 def catalogo():
@@ -66,6 +71,7 @@ def login():
             flash("Invalid credentials", "danger")
 
     return render_template("login.html", form=loginForm)
+
 
 @app.route("/panel", methods=["GET"])
 def panel():
