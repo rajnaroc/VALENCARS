@@ -13,3 +13,10 @@ CREATE TABLE coches (
     modelo VARCHAR(50) NOT NULL,
     fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE fotos(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    coche_id INT NOT NULL,
+    ruta VARCHAR(255) NOT NULL,
+    FOREIGN KEY (coche_id) REFERENCES coches(id) ON DELETE CASCADE
+);

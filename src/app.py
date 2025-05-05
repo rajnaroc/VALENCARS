@@ -43,6 +43,7 @@ def coche():
     datos = zip(labels, values)
     return render_template("coche.html", datos=datos, images=images)
 
+
 @app.route("/inicio", methods=["GET"])
 def inicio():
     return render_template("inicio.html")
