@@ -4,12 +4,12 @@ from wtforms.validators import DataRequired,Length,Email
 from wtforms import SelectField
 
 class loginform(FlaskForm):
-    email = EmailField("email", validators=[
+    email = EmailField("Escribe tu email", validators=[
         DataRequired(),
         Length(max=25),
         Email()
     ])
-    password = PasswordField("password", validators=[
+    password = PasswordField("Escribe tu password", validators=[
         DataRequired(),
         Length(min=6,max=12)
     ])

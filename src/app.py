@@ -1,3 +1,4 @@
+from math import log
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
 from forms import loginform, contactsForm
 from config import config
@@ -50,6 +51,8 @@ def inicio():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    loginForm = loginform()
+
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -59,7 +62,8 @@ def login():
             return redirect(url_for("index"))
         else:
             flash("Invalid credentials", "danger")
-    return render_template("login.html")
+            
+    return render_template("login.html", form=loginForm)
 
 @app.errorhandler(404)
 def pagina_no_encontrada(e):
