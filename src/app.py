@@ -85,6 +85,11 @@ def panel():
 def pagina_no_encontrada(e):
     return render_template("404.html"), 404
 
+@app.route("/cerrar_sesion", methods=["GET"])
+def logout():
+    logout_user()
+    flash("Logged out successfully", "success")
+    return redirect(url_for("login"))
 
 if __name__ == '__main__':
     app.config.from_object(config["dev"])
