@@ -21,6 +21,46 @@ class ModelUser:
             return None
         except Exception as e:
             print(e)
+    
+    @classmethod
+    def register(cls, db, nombre, correo, contraseña, es_super_admin=False):
+        try:
+            cursor = db.connection.cursor()
+
+            # Verificar si el correo ya existe
+            cursor.execute("SELECT * FROM admin WHERE email = %s", (correo,))
+            resultado = cursor.fetchone()
+
+            if resultado is not None:
+                print("Error: El correo ya está registrado en admin.")
+                cursor.close()
+                return False
+
+            # Hashear la contraseña
+            hashed_password = User.hash_password(contraseña)
+
+            print(f"Contraseña hasheada: {hashed_password}")
+
+            # Insertar el nuevo administrador
+            cursor.execute(
+                "INSERT INTO admin (nombre, email, contraseña, fecha_creacion, es_super_admin) "
+                "VALUES (%s, %s, %s, NOW(), %s)",
+                (nombre, correo, hashed_password, int(es_super_admin))
+            )
+
+            db.connection.commit()
+            cursor.close()
+
+            return True
+        except Exception as e:
+            print("Error al registrar administrador:", e)
+            try:
+                cursor.close()
+            except:
+                pass
+            return False
+
+
 
     @classmethod
     def login(cls,db,email,password):
