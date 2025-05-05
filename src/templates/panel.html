@@ -1,0 +1,77 @@
+{% extends './plantillas/plantilla.html' %}
+{% block title %}Panel de administración{% endblock %}
+{% block main %}
+<div class="min-h-screen bg-white text-black">
+        <!-- Header -->
+        <header class="bg-black text-white p-4 flex justify-between items-center">
+            <span class="font-bold text-lg">Nombre del usuario</span>
+            <nav class="space-x-4">
+                <a href="#" class="hover:underline">Vehículos</a>
+                <a href="#" class="hover:underline">Solicitudes</a>
+                <a href="#" class="hover:underline">Cerrar sesión</a>
+            </nav>
+        </header>
+    
+        <!-- Formulario -->
+        <section class="bg-gray-200 p-6 m-4 rounded-lg">
+        <h2 class="text-center font-bold text-lg mb-6">Formulario Coches</h2>
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" placeholder="Nombre del coche" class="p-2 rounded border" />
+            <input type="text" placeholder="Consumo" class="p-2 rounded border" />
+            <input type="text" placeholder="Combustible" class="p-2 rounded border" />
+            <input type="text" placeholder="Cambio" class="p-2 rounded border" />
+            <input type="text" placeholder="Kilómetros" class="p-2 rounded border" />
+            <input type="text" placeholder="Puertas/Plazas" class="p-2 rounded border" />
+            <input type="text" placeholder="Motor" class="p-2 rounded border" />
+            <textarea placeholder="Comentarios del anunciante" class="p-2 rounded border md:row-span-2"></textarea>
+            <input type="text" placeholder="Color" class="p-2 rounded border" />
+    
+            <div class="flex flex-col">
+            <label class="font-semibold mb-1">Adjuntos</label>
+            <input type="file" class="mb-2" />
+            <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Añadir</button>
+            </div>
+        </form>
+        </section>
+    
+        <!-- Lista de Coches -->
+        <section class="p-6">
+        <h2 class="text-center font-bold text-xl mb-4">LISTA DE COCHES</h2>
+        <div class="overflow-auto">
+            <table class="min-w-full border border-black text-sm text-center">
+            <thead class="bg-gray-100">
+                <tr>
+                <th class="border px-2 py-1">Nombre</th>
+                <th class="border px-2 py-1">Combustible</th>
+                <th class="border px-2 py-1">Kilómetros</th>
+                <th class="border px-2 py-1">Motor</th>
+                <th class="border px-2 py-1">Color</th>
+                <th class="border px-2 py-1">Consumo</th>
+                <th class="border px-2 py-1">Cambio</th>
+                <th class="border px-2 py-1">Puertas/Plazas</th>
+                <th class="border px-2 py-1">Descripción</th>
+                <th class="border px-2 py-1">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td class="border px-2 py-1">Seat Ibiza</td>
+                <td class="border px-2 py-1">Gasolina 95P</td>
+                <td class="border px-2 py-1">95.000 KM</td>
+                <td class="border px-2 py-1">100/101 C.V.</td>
+                <td class="border px-2 py-1">Blanco</td>
+                <td class="border px-2 py-1">5.3/100 KM</td>
+                <td class="border px-2 py-1">Manual</td>
+                <td class="border px-2 py-1">5/5</td>
+                <td class="border px-2 py-1">Coche en buen estado, perfecto para ciudad</td>
+                <td class="border px-2 py-1">
+                    <button class="px-2 py-1 bg-gray-300 hover:bg-gray-400 rounded">≡</button>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </section>
+    </div>
+    
+{% endblock %}
