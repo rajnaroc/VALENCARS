@@ -31,12 +31,11 @@ class ModelUser:
 
             if data:
                 id = data[0]
-                nombre = data[1]
-                email = data[2]
-                password = data[3]
+                password = data[2]
+                email = data[3]
                 valor = User.check_password(password,user.password)
                 if valor:
-                    user = User(id,nombre,None,email)
+                    user = User(id,None,email)
 
                     return user
                 return print("error password")
