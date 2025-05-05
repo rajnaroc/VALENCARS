@@ -67,6 +67,10 @@ def login():
 
     return render_template("login.html", form=loginForm)
 
+@app.route("/panel", methods=["GET"])
+def panel():
+    return render_template("panel.html")
+
 @app.errorhandler(404)
 def pagina_no_encontrada(e):
     return render_template("404.html"), 404
