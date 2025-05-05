@@ -46,12 +46,11 @@ class ModelUser:
 
             if data:
                 id = data[0]
-                fullname = data[1]
                 password = data[2]
                 email = data[3]
                 valor = User.check_password(password,user.password)
                 if valor:
-                    user = User(id,fullname,None,email)
+                    user = User(id,None,email)
 
                     return user
                 return print("error password")
