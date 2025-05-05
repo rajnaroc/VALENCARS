@@ -60,8 +60,8 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
         if email == "admin@admin" and password == "admin123":
-            ModelUser.login(email, password)
-            return redirect(url_for("index"))
+            ModelUser.login(db, email, password)
+            return redirect(url_for("inicio"))
         else:
             flash("Invalid credentials", "danger")
 
