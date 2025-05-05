@@ -11,10 +11,10 @@ class User(UserMixin):
 
     @classmethod
     def check_password(cls,hashed_password,password):
-        check_password_hash(hashed_password,password)
+        return check_password_hash(hashed_password,password)
     
     @classmethod
     def hash_password(cls,password):
-        generate_password_hash(password)
+        return generate_password_hash(password)
 
     
