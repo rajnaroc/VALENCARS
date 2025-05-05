@@ -1,8 +1,8 @@
-from math import log
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
 from forms import loginform, contactsForm
 from config import config
 from flask_mysqldb import MySQL
+from entities.ModelUser import ModelUser
 
 app = Flask(__name__)
 
