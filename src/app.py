@@ -1,5 +1,5 @@
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
-from forms import loginform, contactsForm
+from forms import loginform, contactsForm, registerform
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from config import config
 from flask_mysqldb import MySQL
@@ -19,6 +19,23 @@ def load_user(id):
 @app.route("/", methods=["GET"])
 def catalogo():
     return render_template("catalogo.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    registerForm = registerform()
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        correo = request.form["email"]
+        contraseña = request.form["password"]
+        es_super_admin = request.form.get("es_super_admin", False)
+        
+        if ModelUser.register(db, nombre, correo, contraseña, es_super_admin):
+            flash("Usuario registrado con éxito", "success")
+            return redirect(url_for("login"))
+        else:
+            flash("Error al registrar el usuario", "danger")
+    
+    return render_template("register.html", form=registerForm)
 
 @app.route("/contacto", methods=["GET"])
 def contacto():

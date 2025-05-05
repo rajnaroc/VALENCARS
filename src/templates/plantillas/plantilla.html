@@ -14,14 +14,14 @@
     {% if current_user.is_authenticated %}
     <!-- Header -->
     <header class="bg-black text-white p-4 flex justify-between items-center">
-        <span class="font-bold text-lg">Nombre del usuario</span>
+        <span class="font-bold text-lg">{{current_user.nombre}}</span>
         <nav class="space-x-4">
             <a href="#" class="hover:underline">Vehículos</a>
             <a href="#" class="hover:underline">Solicitudes</a>
             <a href="{{ url_for('logout' ) }}" class="hover:underline">Cerrar sesión</a>
         </nav>
     </header>
-    {% endif %}
+    {% else %}
     <header class="bg-black py-4 w-full relative z-50">
         <div class="container mx-auto flex items-center justify-between px-4">
             <!-- Logo alineado a la izquierda -->
@@ -41,7 +41,7 @@
                 </button>
             </div>
     
-           <!-- Menú visible solo en escritorio -->
+            <!-- Menú visible solo en escritorio -->
             <nav class="hidden md:flex flex-wrap justify-end items-center w-3/5">
                 <div class="flex space-x-6 items-center">
                     <a href="{{ url_for('inicio') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 md:p-3 transition-all duration-300 ease-in-out transform hover:scale-105">INICIO</a>
@@ -63,7 +63,9 @@
                     <a href="{{ url_for('vender') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 transition-all duration-300 ease-in-out transform hover:scale-105">VENDER TU COCHE</a>
                 </div>
             </div>
-</header>
+    </header>
+    {% endif %}
+
     
     <!-- Script para abrir/cerrar menú y capturar clic fuera -->
     <script>

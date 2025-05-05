@@ -7,15 +7,15 @@ class ModelUser:
         try: 
 
             cur = db.connection.cursor()
-            cur.execute("SELECT * FROM users WHERE id = %s", (id,))
+            cur.execute("SELECT * FROM admin WHERE id = %s", (id,))
             data = cur.fetchone()
 
             if data:
                 id = data[0]
-                fullname = data[1]
+                nombre = data[1]
                 email = data[3]
                 
-                user = User(id,fullname,None,email)
+                user = User(id,nombre,None,email)
 
                 return user
             return None
@@ -61,20 +61,6 @@ class ModelUser:
             return False
 
 
-
-    @classmethod
-    def register(cls, db, username, password, fullname):
-
-        try:
-            hushed_pass = User.hush_password(password)
-            cursor = db.connection.cursor()
-            cursor.execute('INSERT INTO user (username, password, fullname) VALUES (%s, %s, %s)', (username, str(hushed_pass) , fullname))
-            db.connection.commit()
-        
-        except Exception as e:
-            
-            raise Exception(e)
-        
     @classmethod
     def login(cls,db,email,password):
         try:
@@ -84,9 +70,9 @@ class ModelUser:
 
             if data:
                 id = data[0]
-                password = data[3]
+                hashed_password = data[3]
                 email = data[2]
-                valor = User.check_password(password,user.password)
+                valor = User.check_password(hashed_password,password)
                 if valor:
                     user = User(id,None,email)
                     return user

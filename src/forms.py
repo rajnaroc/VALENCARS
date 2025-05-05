@@ -15,6 +15,27 @@ class loginform(FlaskForm):
     ])
     enviar = SubmitField("Iniciar sesion")
 
+class registerform(FlaskForm):
+    nombre = StringField("Nombre", validators=[
+        DataRequired(),
+        Length(max=25)
+    ])
+    email = EmailField("Email", validators=[
+        DataRequired(),
+        Length(min=11,max=25),
+        Email()
+    ])
+    password = PasswordField("Password", validators=[
+        DataRequired(),
+        Length(min=6,max=12)
+    ])
+    es_super_admin = SelectField("Es super admin", choices=[
+        ('0', 'No'),
+        ('1', 'Si')
+    ], validators=[DataRequired()])
+    
+    enviar = SubmitField("Registrar")
+
 class contactsForm(FlaskForm):
     nombre = StringField("Nombre", validators=[
         DataRequired(),
