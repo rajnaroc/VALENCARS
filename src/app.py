@@ -99,6 +99,7 @@ def login():
 @app.route("/panel", methods=["GET", "POST"])
 def panel():
     if request.method == 'GET' and current_user.is_authenticated:
+        print("Usuario autenticado")
         return render_template("panel.html")
     
     if request.method == "POST":
@@ -109,7 +110,6 @@ def panel():
         estado = request.form["estado"].strip()
         descripcion = request.form["marca"]
         ModelUser.agregar_coche(db,marca,modelo,año,precio,estado,descripcion,None,current_user.id)
-
         return redirect(url_for("panel"))
 
 
