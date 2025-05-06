@@ -79,7 +79,7 @@ class ModelUser:
                 valor = User.check_password(hashed_password,password)
                 if valor:
                     
-                    user = User(id,None,email)
+                    user = User(id, None, None, email)
                     
                     return user
                 return flash("error password")
