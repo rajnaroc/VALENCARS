@@ -87,9 +87,12 @@ def login():
         password = request.form["password"]
         logged_user = ModelUser.login(db, email, password)
         if logged_user:
-            login_user(logged_user)
-            jwt_token = Security.generate_token(logged_user)
-            return redirect(url_for("panel"))
+            if logged_user.password:
+                # jwt_token = Security.generate_token(logged_user)
+                login_user(logged_user)
+                return redirect(url_for("panel"))
+            else:
+                print("error password")
         else:
             flash("Invalid credentials", "danger")
 
@@ -99,6 +102,7 @@ def login():
 @app.route("/panel", methods=["GET", "POST"])
 def panel():
     if request.method == 'GET':
+        print(current_user.is_authenticated)
         if not current_user.is_authenticated:
             return redirect(url_for("login"))
         return render_template("panel.html")
