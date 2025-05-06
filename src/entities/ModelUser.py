@@ -1,6 +1,4 @@
-from colorama import Cursor
 from flask import flash
-from sqlalchemy import desc, false
 from .models.User import User
 
 class ModelUser:
@@ -74,13 +72,16 @@ class ModelUser:
 
             if data:
                 id = data[0]
-                hashed_password = data[3]
                 email = data[2]
+                hashed_password = data[3]
+
                 valor = User.check_password(hashed_password,password)
                 if valor:
+                    
                     user = User(id,None,email)
+                    
                     return user
-                return print("error password")
+                return flash("error password")
             
         except Exception as e:
             print(e)
