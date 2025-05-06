@@ -100,3 +100,13 @@ class ModelUser:
 
         except Exception as e:
             print(e)
+
+    @classmethod
+    def obtener_coches(cls,db):
+        cur = db.connection.cursor()
+        cur.execute("SELECT nombre, precio, cv, imagen FROM coches")
+        coches = cur.fetchall()
+        cur.close()
+        
+        return coches
+        

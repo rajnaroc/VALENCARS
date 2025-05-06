@@ -19,7 +19,9 @@ def load_user(id):
 
 @app.route("/", methods=["GET"])
 def catalogo():
-    return render_template("catalogo.html")
+    # Aquí puedes obtener los coches de la base de datos y pasarlos al template
+    coches = ModelUser.obtener_coches(db)
+    return render_template("catalogo.html",coches=coches)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -110,6 +112,7 @@ def panel():
         precio = request.form["precio"].strip()
         estado = request.form["estado"].strip()
         descripcion = request.form["marca"]
+        foto = request.form["foto"]
         ModelUser.agregar_coche(db,marca,modelo,año,precio,estado,descripcion,None,current_user.id)
         return redirect(url_for("panel"))
 
