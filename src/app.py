@@ -45,14 +45,23 @@ def contacto():
     contactForm = contactsForm()
     if request.method == "POST":
         if contactForm.validate_on_submit():
-            nombre = contactForm.nombre
-            email = contactForm.email
-            telefono = contactForm.telefono
-            motivo = contactForm.motivo
-            descripcion = contactForm.descripcion
-            # Aquí podrías agregar la lógica para enviar el formulario o guardarlo en una base de datos
-            flash("Formulario enviado con éxito", "success")
+            nombre = request.form["nombre"]
+            email = request.form["email"]
+            telefono = request.form["telefono"]
+            motivo = request.form["motivo"]
+            descripcion = request.form["descripcion"]
+            
+            ModelUser.enviar_contacto(db, nombre, email, telefono, motivo, descripcion)
     return render_template("contacto.html", form=contactForm)
+
+def ver_mensajes():
+    if not current_user.is_authenticated:
+        return redirect("/")
+    
+    mensajes = ModelUser.obtener_mensajes(db)
+    
+    return render_template("mensajes_admin.html", mensajes=mensajes)
+
 
 @app.route("/somos", methods=["GET"])
 def somos():

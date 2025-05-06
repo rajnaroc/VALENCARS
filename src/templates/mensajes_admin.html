@@ -1,0 +1,27 @@
+{% extends './plantillas/plantilla.html' %}
+
+{% block title %}Mensajes de contacto{% endblock %}
+
+{% block main %}
+<h1>Mensajes recibidos</h1>
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Motivo</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+    </tr>
+    {% for msg in mensajes %}
+    <tr>
+        <td>{{ msg.nombre }}</td>
+        <td>{{ msg.email }}</td>
+        <td>{{ msg.telefono }}</td>
+        <td>{{ msg.motivo }}</td>
+        <td>{{ msg.descripcion }}</td>
+        <td>{{ msg.fecha_envio }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
