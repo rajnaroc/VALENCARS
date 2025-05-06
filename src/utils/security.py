@@ -13,7 +13,7 @@ class Security():
         payload = {
             'iat':datetime.datetime.now(tz=cls.tz),
             'exp':datetime.datetime.now(tz=cls.tz)+datetime.timedelta(minutes=10),
-            'username':authenticated_user.email,
+            'email':authenticated_user.email,
         }
 
         return encode(payload,cls.secret, algorithm='HS256')
