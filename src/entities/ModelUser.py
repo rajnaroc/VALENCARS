@@ -102,3 +102,33 @@ class ModelUser:
 
         except Exception as e:
             print(e)
+
+    @classmethod
+    def obtener_coches(cls,db):
+        cur = db.connection.cursor()
+        cur.execute("SELECT nombre, precio, cv FROM coches")
+        coches = cur.fetchall()
+        cur.close()
+        
+        return coches
+    
+    @classmethod
+    def enviar_contacto(cls,db,nombre,email,telefono,motivo,descripcion):
+        try:
+            cur = db.connection.cursor()
+            cur.execute("INSERT INTO contacto (nombre,email,telefono,motivo,descripcion) VALUES (%s,%s,%s,%s,%s)",(nombre,email,telefono,motivo,descripcion))
+            db.connection.commit()
+            cur.close()
+
+            return flash("Formulario enviado correctamente")
+
+        except Exception as e:
+            print(e)
+    @classmethod
+    def obtener_mensajes(cls,db):
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM mensajes ORDER BY fecha_envio DESC")
+        mensajes = cursor.fetchall()
+        cursor.close()
+        db.close()
+        return mensajes
