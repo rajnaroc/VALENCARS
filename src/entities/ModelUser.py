@@ -16,7 +16,8 @@ class ModelUser:
                 nombre = data[1]
                 email = data[2]
                 
-                user = User(id,nombre,None,email)
+                user = User(id, nombre, None, email)
+
 
                 return user
             return None
