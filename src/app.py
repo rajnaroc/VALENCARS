@@ -98,8 +98,9 @@ def login():
 
 @app.route("/panel", methods=["GET", "POST"])
 def panel():
-    if request.method == 'GET' and current_user.is_authenticated:
-        print("Usuario autenticado")
+    if request.method == 'GET':
+        if not current_user.is_authenticated:
+            return redirect(url_for("login"))
         return render_template("panel.html")
     
     if request.method == "POST":
