@@ -97,8 +97,20 @@ def login():
 
 
 @app.route("/panel", methods=["GET"])
+@login_required
 def panel():
-    return render_template("panel.html")
+    if request.method == 'GET':
+        return render_template("panel.html")
+    
+    if request.method == "POST":
+        marca = request.form["marca"].strip()
+        modelo = request.form["modelo"].strip()
+        año = request.form["año"].strip()
+        precio = request.form["precio"].strip()
+        estado = request.form["estado"].strip()
+        descripcion = request.form["marca"]
+        ModelUser.agregar_coche(db,marca,modelo,año,precio,estado,descripcion,None,current_user.id)
+
 
 @app.errorhandler(404)
 def pagina_no_encontrada(e):

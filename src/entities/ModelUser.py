@@ -1,3 +1,6 @@
+from colorama import Cursor
+from flask import flash
+from sqlalchemy import desc, false
 from .models.User import User
 
 class ModelUser:
@@ -79,5 +82,19 @@ class ModelUser:
                     return user
                 return print("error password")
             
+        except Exception as e:
+            print(e)
+
+    # funcion para añadir el coche
+    @classmethod
+    def agregar_coche(cls,db,marca,modelo,año,precio,estado,descripcion,fecha_agregada,admin_id):
+        try:
+            cur = db.connection.cursor()
+            cur.execute("INSERT INTO coches (marca,modelo,año,precio,estado,descripcion,fecha_agregado,admin_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(marca,modelo,año,precio,estado,descripcion,fecha_agregada,admin_id))
+            db.connection.commit()
+            cur.close()
+
+            return flash("Coche insertado correctamente")
+
         except Exception as e:
             print(e)
