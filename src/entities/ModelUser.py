@@ -73,13 +73,14 @@ class ModelUser:
 
             if data:
                 id = data[0]
+                nombre = data[1]
                 email = data[2]
                 hashed_password = data[3]
 
                 valor = User.check_password(hashed_password,password)
                 if valor:
                     
-                    user = User(id,None,email)
+                    user = User(id,nombre,None,email)
                     
                     return user
                 return flash("error password")
