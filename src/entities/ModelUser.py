@@ -72,6 +72,7 @@ class ModelUser:
             data = cur.fetchone()
 
             if data:
+                print(data)
                 id = data[0]
                 nombre = data[1]
                 email = data[2]

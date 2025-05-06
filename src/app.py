@@ -1,10 +1,11 @@
-from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash
+from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash, make_response
 from forms import loginform, contactsForm, registerform
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from config import config
 from flask_mysqldb import MySQL
 from entities.ModelUser import ModelUser
 from utils.security import Security
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -87,12 +88,11 @@ def login():
         password = request.form["password"]
         logged_user = ModelUser.login(db, email, password)
         if logged_user:
-            if logged_user.password:
-                # jwt_token = Security.generate_token(logged_user)
-                login_user(logged_user)
-                return redirect(url_for("panel"))
-            else:
-                print("error password")
+            jwt_token = Security.generate_token(logged_user)
+            login_user(logged_user)
+            response = make_response(redirect(url_for("panel")))
+            response.set_cookie("jwt_token", jwt_token, httponly=True, secure=True, samesite="Lax")
+            return response
         else:
             flash("Invalid credentials", "danger")
 
@@ -101,12 +101,18 @@ def login():
 
 @app.route("/panel", methods=["GET", "POST"])
 def panel():
+    token = request.cookies.get("jwt_token")
+    has_access, user_data = Security.verify_token(token)
+
+    if not has_access:
+        flash("Sesion no válida. Inicia sesion nuevamente", "warning")
+        return redirect(url_for("login"))
     if request.method == 'GET':
         print(current_user.is_authenticated)
         if not current_user.is_authenticated:
             return redirect(url_for("login"))
         return render_template("panel.html")
-    
+        
     if request.method == "POST":
         marca = request.form["marca"].strip()
         modelo = request.form["modelo"].strip()
@@ -116,6 +122,8 @@ def panel():
         descripcion = request.form["marca"]
         ModelUser.agregar_coche(db,marca,modelo,año,precio,estado,descripcion,None,current_user.id)
         return redirect(url_for("panel"))
+    else:
+        return jsonify({"error": "Unauthorized"}), 401
 
 
 @app.errorhandler(404)
