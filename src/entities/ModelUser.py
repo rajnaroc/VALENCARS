@@ -14,7 +14,7 @@ class ModelUser:
             if data:
                 id = data[0]
                 nombre = data[1]
-                email = data[3]
+                email = data[2]
                 
                 user = User(id,None,email)
 
