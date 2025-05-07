@@ -110,6 +110,7 @@ class ModelUser:
         coches = cur.fetchall()
         cur.close()
         
+        print(coches)
         return coches
     
     @classmethod

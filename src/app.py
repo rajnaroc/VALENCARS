@@ -22,6 +22,8 @@ def load_user(id):
 def catalogo():
     # Aquí puedes obtener los coches de la base de datos y pasarlos al template
     coches = ModelUser.obtener_coches(db)
+    for i in coches:
+        print(i)
     return render_template("catalogo.html",coches=coches)
 
 @app.route("/register", methods=["GET", "POST"])
