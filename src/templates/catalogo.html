@@ -34,18 +34,18 @@
     </aside>
 
     <!-- Catálogo -->
-    {% for coche in coches %}
     <main class="w-full md:w-3/4 p-4">
         <h2 class="text-2xl font-bold mb-4 text-center">Concesionario de coches de segunda mano</h2>
+        {% for coche in coches %}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <!-- Producto -->
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="relative">
                     <img src="{{url_for('static', filename='img/foto.jpg')}}" alt="Coche" class="w-full h-48 object-cover">
-                    <span class="absolute top-2 right-2 bg-blue-600 text-white text-sm px-2 py-1 rounded">{{coche.precio}}</span>
+                    <span class="absolute top-2 right-2 bg-blue-600 text-white text-sm px-2 py-1 rounded">{{coche.1}}</span>
                 </div>
                 <div class="p-4">
-                    <p class="font-semibold">{{coche.marca}}</p>
+                    <p class="font-semibold">{{coche.0}}</p>
                     <p class="text-sm text-gray-600">{{coche.cv}}</p>
                 </div>
             </div>
