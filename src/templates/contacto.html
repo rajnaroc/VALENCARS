@@ -4,8 +4,8 @@
   <div class="p-6 md:p-10 text-center">
     <h2 class="text-3xl font-bold mb-4">Contacto valencars</h2>
     <hr class="border-black mb-6 border-2" />
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    
+    <form action="/contacto" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div class="flex flex-col">
         {{ form.nombre.label(class="text-left mb-1") }}
         {{ form.nombre(class="border p-3 w-full rounded-md", placeholder="Nombre") }}
@@ -30,14 +30,14 @@
         </div>
       </div>
       {{ form.csrf_token }}
-    </div>
-
-    <div class="flex items-start justify-start my-6 text-left">
-      <input type="checkbox" class="mr-2 mt-1" />
-      <span>Acepto la <a href="#" class="text-blue-500">política de privacidad</a></span>
-    </div>
-
-    {{ form.enviar(class="bg-black text-white px-6 py-3 rounded-md text-lg border-black hover:bg-white hover:cursor-pointer hover:text-black transition-all") }}
+      
+      <div class="flex items-start justify-start my-6 text-left">
+        <input type="checkbox" class="mr-2 mt-1" />
+        <span>Acepto la <a href="#" class="text-blue-500">política de privacidad</a></span>
+      </div>
+      
+      {{ form.enviar(class="bg-black text-white px-6 py-3 rounded-md text-lg border-black hover:bg-white hover:cursor-pointer hover:text-black transition-all") }}
+    </form>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
       <div class="w-full h-72 md:h-96 rounded-md overflow-hidden shadow-lg">

@@ -17,11 +17,20 @@ def load_user(id):
     return ModelUser.get_by_id(db, id)
     
 
+    
 @app.route("/", methods=["GET"])
 def catalogo():
     # Aquí puedes obtener los coches de la base de datos y pasarlos al template
     coches = ModelUser.obtener_coches(db)
     return render_template("catalogo.html",coches=coches)
+
+@app.route("/solicitudes", methods=["GET"])
+def solicitudes():
+    if not current_user.is_authenticated:
+        return redirect("/")
+    
+    solicitudes = ModelUser.obtener_mensajes(db)
+    return render_template("mensajes_admin.html", solicitudes=solicitudes)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -40,9 +49,11 @@ def register():
     
     return render_template("register.html", form=registerForm)
 
-@app.route("/contacto", methods=["GET"])
+@app.route("/contacto", methods=["POST", "GET"])
 def contacto():
+
     contactForm = contactsForm()
+    
     if request.method == "POST":
         if contactForm.validate_on_submit():
             nombre = request.form["nombre"]
@@ -52,7 +63,9 @@ def contacto():
             descripcion = request.form["descripcion"]
             
             ModelUser.enviar_contacto(db, nombre, email, telefono, motivo, descripcion)
-    return render_template("contacto.html", form=contactForm)
+            return redirect(url_for("catalogo"))
+    if request.method == "GET":
+        return render_template("contacto.html", form=contactForm)
 
 def ver_mensajes():
     if not current_user.is_authenticated:
