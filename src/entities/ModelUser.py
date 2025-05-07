@@ -107,10 +107,10 @@ class ModelUser:
     def obtener_coches(cls,db):
         cur = db.connection.cursor()
         cur.execute("SELECT marca, precio FROM coches")
-        coches = cur.fetchall()
+        coche = cur.fetchall()
         cur.close()
         
-        return coches
+        return coche
     
     @classmethod
     def enviar_contacto(cls,db,nombre,email,telefono,motivo,descripcion):

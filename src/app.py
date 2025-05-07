@@ -5,7 +5,6 @@ from config import config
 from flask_mysqldb import MySQL
 from entities.ModelUser import ModelUser
 from utils.security import Security
-from functools import wraps
 
 app = Flask(__name__)
 
