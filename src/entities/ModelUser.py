@@ -106,7 +106,7 @@ class ModelUser:
     @classmethod
     def obtener_coches(cls,db):
         cur = db.connection.cursor()
-        cur.execute("SELECT nombre, precio, cv FROM coches")
+        cur.execute("SELECT marca, precio FROM coches")
         coches = cur.fetchall()
         cur.close()
         
