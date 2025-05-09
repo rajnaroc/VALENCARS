@@ -12,8 +12,9 @@
                     <th class="text-left px-4 py-2 border-b">ID</th>
                     <th class="text-left px-4 py-2 border-b">Nombre</th>
                     <th class="text-left px-4 py-2 border-b">Correo</th>
-                    <th class="text-left px-4 py-2 border-b">Mensaje</th>
-                    <th class="text-left px-4 py-2 border-b">Fecha</th>
+                    <th class="text-left px-4 py-2 border-b">Telefono</th>
+                    <th class="text-left px-4 py-2 border-b">Motivo</th>
+                    <th class="text-left px-4 py-2 border-b">Descripción</th>
                     <th class="text-center px-4 py-2 border-b">Eliminar</th>
                 </tr>
             </thead>
@@ -22,6 +23,7 @@
                     {% for mensaje in mensajes %}
                     <tr>
                         <td class="text-left px-4 py-2 border-b">{{ mensaje.0 }}</td>
+                        <td class="text-left px-4 py-2 border-b">{{ mensaje.1 }}</td>
                         <td class="text-left px-4 py-2 border-b">{{ mensaje.2 }}</td>
                         <td class="text-left px-4 py-2 border-b">{{ mensaje.3 }}</td>
                         <td class="text-left px-4 py-2 border-b">{{ mensaje.4 }}</td>
