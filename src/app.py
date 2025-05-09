@@ -55,7 +55,6 @@ def contacto():
     contactForm = contactsForm()
     
     if request.method == "POST":
-        if contactForm.validate_on_submit():
             nombre = request.form["nombre"]
             email = request.form["email"]
             telefono = request.form["telefono"]
@@ -63,10 +62,21 @@ def contacto():
             descripcion = request.form["descripcion"]
             
             ModelUser.enviar_contacto(db, nombre, email, telefono, motivo, descripcion)
-            return redirect(url_for("catalogo"))
+            return redirect(url_for("contacto"))
+    
     if request.method == "GET":
         return render_template("contacto.html", form=contactForm)
 
+@app.route("/mensaje/<int:id>", methods=["GET"])
+def eleminar_mensaje(id):
+    if not current_user.is_authenticated:
+        return redirect("/")
+    
+    ModelUser.eliminar_mensaje(db, id)
+    flash("Mensaje eliminado con éxito", "success")
+    return redirect(url_for("ver_mensajes"))
+
+@app.route("/mensaje", methods=["GET"])
 def ver_mensajes():
     if not current_user.is_authenticated:
         return redirect("/")
