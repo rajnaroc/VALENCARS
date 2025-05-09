@@ -1,0 +1,28 @@
+{% extends './plantillas/plantilla.html' %}
+{% block title %}Solicitudes{% endblock %}
+{% block main %}
+<h1>Solicitudes recibidas</h1>
+    {% if solicitudes %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Mensaje</th>
+            <th>Fecha</th>
+        </tr>
+        {% for solicitud in solicitudes %}
+        <tr>
+            <td>{{ solicitud.id }}</td>
+            <td>{{ solicitud.nombre }}</td>
+            <td>{{ solicitud.email }}</td>
+            <td>{{ solicitud.telefono }}</td>
+            <td>{{ solicitud.fecha }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No hay solicitudes aún.</p>
+    {% endif %}
+</body>
+{% endblock %}

@@ -116,19 +116,29 @@ class ModelUser:
     def enviar_contacto(cls,db,nombre,email,telefono,motivo,descripcion):
         try:
             cur = db.connection.cursor()
-            cur.execute("INSERT INTO contacto (nombre,email,telefono,motivo,descripcion) VALUES (%s,%s,%s,%s,%s)",(nombre,email,telefono,motivo,descripcion))
+            cur.execute("INSERT INTO mensajes (nombre,email,telefono,motivo,descripcion) VALUES (%s,%s,%s,%s,%s)",(nombre,email,telefono,motivo,descripcion))
             db.connection.commit()
             cur.close()
 
-            return flash("Formulario enviado correctamente")
+            return True
 
         except Exception as e:
             print(e)
     @classmethod
     def obtener_mensajes(cls,db):
-        cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM mensajes ORDER BY fecha_envio DESC")
+        cursor = db.connection.cursor()
+        cursor.execute("SELECT * FROM mensajes")
         mensajes = cursor.fetchall()
         cursor.close()
-        db.close()
         return mensajes
+    @classmethod
+    def eliminar_mensaje(cls,db,id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("DELETE FROM mensajes WHERE id = %s", (id,))
+            db.connection.commit()
+            cursor.close()
+            return True
+        except Exception as e:
+            print(e)
+            return False
