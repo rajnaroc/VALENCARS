@@ -5,10 +5,12 @@ from config import config
 from flask_mysqldb import MySQL
 from entities.ModelUser import ModelUser
 from utils.security import Security
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
 
 db = MySQL(app)
+csrf = CSRFProtect(app)
 
 login_manager = LoginManager(app)
 
@@ -55,15 +57,19 @@ def contacto():
     contactForm = contactsForm()
     
     if request.method == "POST":
-            nombre = request.form["nombre"]
-            email = request.form["email"]
-            telefono = request.form["telefono"]
-            motivo = request.form["motivo"]
-            descripcion = request.form["descripcion"]
-            
-            ModelUser.enviar_contacto(db, nombre, email, telefono, motivo, descripcion)
-            return redirect(url_for("contacto"))
-    
+            print(contactForm.errors)
+            if contactForm.validate_on_submit():
+                nombre = request.form["nombre"]
+                email = request.form["email"]
+                telefono = request.form["telefono"]
+                motivo = request.form["motivo"]
+                descripcion = request.form["descripcion"]
+                
+                ModelUser.enviar_contacto(db, nombre, email, telefono, motivo, descripcion)
+                return redirect(url_for("contacto"))
+            else:
+                flash("Error al enviar el mensaje", "danger")
+                return redirect(url_for("contacto"))
     if request.method == "GET":
         return render_template("contacto.html", form=contactForm)
 
