@@ -8,6 +8,7 @@ from utils.security import Security
 from werkzeug.utils import secure_filename
 import os
 import shutil
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
 
@@ -60,15 +61,18 @@ def contacto():
     contactForm = contactsForm()
     
     if request.method == "POST":
-            nombre = request.form["nombre"]
-            email = request.form["email"]
-            telefono = request.form["telefono"]
-            motivo = request.form["motivo"]
-            descripcion = request.form["descripcion"]
-            
-            ModelUser.enviar_contacto(db, nombre, email, telefono, motivo, descripcion)
-            return redirect(url_for("contacto"))
-    
+            if contactForm.validate_on_submit():
+                nombre = request.form["nombre"]
+                email = request.form["email"]
+                telefono = request.form["telefono"]
+                motivo = request.form["motivo"]
+                descripcion = request.form["descripcion"]
+                
+                ModelUser.enviar_contacto(db, nombre, email, telefono, motivo, descripcion)
+                return redirect(url_for("contacto"))
+            else:
+                flash("Error al enviar el mensaje", "danger")
+                return render_template("contacto.html", form=contactForm)
     if request.method == "GET":
         return render_template("contacto.html", form=contactForm)
 

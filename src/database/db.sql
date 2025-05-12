@@ -29,3 +29,13 @@ CREATE TABLE admin (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
     es_super_admin BOOLEAN DEFAULT FALSE  
 );  
+
+CREATE TABLE mensajes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20),
+    motivo VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL,
+    fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
