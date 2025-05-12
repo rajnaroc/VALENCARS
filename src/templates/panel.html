@@ -5,8 +5,12 @@
         <!-- Formulario -->
         <section class="bg-gray-200 p-6 m-4 rounded-lg">
         <h2 class="text-center font-bold text-lg mb-6">Formulario Coches</h2>
-        <form class="grid grid-cols-1 md:grid-cols-2 gap-4" >
-            <input type="text" placeholder="Nombre del coche" class="p-2 rounded border"  name="nombre" />
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="/panel" method="POST">
+            <input type="text" placeholder="Marca" class="p-2 rounded border" name="marca" />
+            <input type="text" placeholder="Modelo" class="p-2 rounded border" name="modelo" />
+            <input type="text" placeholder="Precio" class="p-2 rounded border" name="precio" />
+            <input type="text" placeholder="Año" class="p-2 rounded border" name="ano" />
+            <input type="text" placeholder="Descripción" class="p-2 rounded border md:col-span-2 resize-none" name="descripcion" />
             <input type="text" placeholder="Consumo" class="p-2 rounded border" name="consumo" />
             <input type="text" placeholder="Combustible" class="p-2 rounded border"  name="combustible"/>
             <input type="text" placeholder="Cambio" class="p-2 rounded border" name="cambio" />
