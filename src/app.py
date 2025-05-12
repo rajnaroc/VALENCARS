@@ -10,7 +10,6 @@ from flask_wtf.csrf import CSRFProtect
 app = Flask(__name__)
 
 db = MySQL(app)
-csrf = CSRFProtect(app)
 
 login_manager = LoginManager(app)
 
