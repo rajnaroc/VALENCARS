@@ -57,7 +57,6 @@ def contacto():
     contactForm = contactsForm()
     
     if request.method == "POST":
-            print(contactForm.errors)
             if contactForm.validate_on_submit():
                 nombre = request.form["nombre"]
                 email = request.form["email"]
@@ -69,7 +68,7 @@ def contacto():
                 return redirect(url_for("contacto"))
             else:
                 flash("Error al enviar el mensaje", "danger")
-                return redirect(url_for("contacto"))
+                return render_template("contacto.html", form=contactForm)
     if request.method == "GET":
         return render_template("contacto.html", form=contactForm)
 
