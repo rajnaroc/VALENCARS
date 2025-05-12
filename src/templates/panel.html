@@ -16,13 +16,19 @@
             <input type="text" placeholder="Motor" class="p-2 rounded border" name="motor" />
             <textarea placeholder="Comentarios del anunciante" class="p-2 rounded border md:row-span-2 resize-none" name="comentario"></textarea>
             <input type="text" placeholder="Color" class="p-2 rounded border" name="color" />
-    
-            <div class="flex flex-col">
-            <label class="font-semibold mb-1">Adjuntos</label>
-            <input type="file" class="mb-2" name="foto" />
-            <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Añadir</button>
-            </div>
+            <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Enviar</button>
         </form>
+            <form method="POST" action="/subir_foto_temp" enctype="multipart/form-data">
+                <label for="imagen">Subir imagen:</label>
+                <input type="file" name="foto" class="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0
+                file:text-sm file:font-semibold
+                file:bg-black file:text-white
+                hover:file:bg-gray-800
+                transition">
+                <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Subir imagen</button>
+            </form>
         </section>
     
         <!-- Lista de Coches -->

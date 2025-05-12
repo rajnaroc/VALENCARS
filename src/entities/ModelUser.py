@@ -1,5 +1,8 @@
-from flask import flash
+from flask import flash, request
 from .models.User import User
+from werkzeug.utils import secure_filename
+import os
+import shutil
 
 class ModelUser:
 
@@ -96,9 +99,12 @@ class ModelUser:
             cur = db.connection.cursor()
             cur.execute("INSERT INTO coches (marca,modelo,año,precio,estado,descripcion,fecha_agregado,admin_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(marca,modelo,año,precio,estado,descripcion,fecha_agregada,admin_id))
             db.connection.commit()
+
+            
+            coche_id = cur.lastrowid  # ← AQUÍ obtienes el ID del coche insertado
             cur.close()
 
-            return flash("Coche insertado correctamente")
+            return coche_id
 
         except Exception as e:
             print(e)
@@ -106,7 +112,7 @@ class ModelUser:
     @classmethod
     def obtener_coches(cls,db):
         cur = db.connection.cursor()
-        cur.execute("SELECT marca, precio FROM coches")
+        cur.execute("SELECT * FROM coches WHERE EXISTS (SELECT 1 FROM fotos WHERE fotos.coche_id = coches.id)")
         coche = cur.fetchall()
         cur.close()
         
@@ -142,3 +148,16 @@ class ModelUser:
         except Exception as e:
             print(e)
             return False
+        
+    # @classmethod
+    # def subir_foto(cls,db,ruta,):
+    #     try:
+    #         cur = db.connection.cursor()
+    #         cur.execute("INSERT INTO fotos (nombre, ruta) VALUES (%s, %s)",(foto,id))
+    #         db.connection.commit()
+    #         cur.close()
+
+    #         return True
+    #     except Exception as e:
+    #         print(e)
+    #         return False

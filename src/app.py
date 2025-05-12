@@ -5,6 +5,9 @@ from config import config
 from flask_mysqldb import MySQL
 from entities.ModelUser import ModelUser
 from utils.security import Security
+from werkzeug.utils import secure_filename
+import os
+import shutil
 
 app = Flask(__name__)
 
@@ -137,7 +140,7 @@ def login():
 @app.route("/panel", methods=["GET", "POST"])
 def panel():
     token = request.cookies.get("jwt_token")
-    has_access, user_data = Security.verify_token(token)
+    has_access = Security.verify_token(token)
 
     if not has_access:
         flash("Sesion no válida. Inicia sesion nuevamente", "warning")
@@ -155,11 +158,49 @@ def panel():
         precio = request.form["precio"].strip()
         estado = request.form["estado"].strip()
         descripcion = request.form["marca"]
-        foto = request.form["foto"]
         ModelUser.agregar_coche(db,marca,modelo,año,precio,estado,descripcion,None,current_user.id)
+
+        id_coche = ModelUser.agregar_coche(db, marca, modelo, año, precio, estado, descripcion, None, current_user.id)
+        
+        
+        carpeta_temp = os.path.join("static/temp", str(current_user.id))
+        carpeta_final = os.path.join("static/uploads", str(id_coche))
+        os.makedirs(carpeta_final, exist_ok=True)
+
+        for foto_nombre in os.listdir(carpeta_temp):
+            origen = os.path.join(carpeta_temp, foto_nombre)
+            destino = os.path.join(carpeta_final, foto_nombre)
+            os.rename(origen, destino)
+
+            ruta_relativa = os.path.relpath(destino)  # o solo el nombre del archivo
+            cursor = db.connection.cursor()
+            cursor.execute("INSERT INTO fotos (id_coche, ruta_foto) VALUES (%s, %s)", (id_coche, ruta_relativa))
+            db.connection.commit()
+            cursor.close()
+
+        # Eliminar carpeta temporal del usuario
+        os.rmdir(carpeta_temp)
+
         return redirect(url_for("panel"))
     else:
         return jsonify({"error": "Unauthorized"}), 401
+    
+
+@app.route("/subir_foto_temp", methods=["POST"])
+def subir_foto_temp():
+    foto = request.files.get("foto")
+    if not foto:
+        return jsonify({"error": "No se recibió ninguna foto"}), 400
+
+    user_id = current_user.id
+    carpeta_temp = os.path.join("static/temp", str(user_id))
+    os.makedirs(carpeta_temp, exist_ok=True)
+    
+    filename = secure_filename(foto.filename)
+    ruta_foto = os.path.join(carpeta_temp, filename)
+    foto.save(ruta_foto)
+
+    return redirect(url_for("panel"))
 
 
 @app.errorhandler(404)
