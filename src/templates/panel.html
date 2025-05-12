@@ -8,16 +8,16 @@
         <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="/panel" method="POST">
             <input type="text" placeholder="Marca" class="p-2 rounded border" name="marca" />
             <input type="text" placeholder="Modelo" class="p-2 rounded border" name="modelo" />
-            <input type="text" placeholder="Precio" class="p-2 rounded border" name="precio" />
-            <input type="text" placeholder="Año" class="p-2 rounded border" name="ano" />
-            <input type="text" placeholder="Descripción" class="p-2 rounded border md:col-span-2 resize-none" name="descripcion" />
-            <input type="text" placeholder="Consumo" class="p-2 rounded border" name="consumo" />
+            <input type="Number" placeholder="Precio Contado" class="p-2 rounded border" name="precio_contado" />
+            <input type="Number" placeholder="Precio Financiado" class="p-2 rounded border " name="precio_financiado" />
+            <input type="text" placeholder="Año" class="p-2 rounded border" name="ano"/>
+            <input type="number" placeholder="Consumo" class="p-2 rounded border" name="consumo" />
             <input type="text" placeholder="Combustible" class="p-2 rounded border"  name="combustible"/>
             <input type="text" placeholder="Cambio" class="p-2 rounded border" name="cambio" />
-            <input type="text" placeholder="Kilómetros" class="p-2 rounded border" name="kilometros" />
-            <input type="text" placeholder="Puertas" class="p-2 rounded border" name="puertas" />
-            <input type="text" placeholder="plazas" class="p-2 rounded border" name="plazas" />
-            <input type="text" placeholder="Motor" class="p-2 rounded border" name="motor" />
+            <input type="number" placeholder="Kilómetros" class="p-2 rounded border" name="kilometros" />
+            <input type="number" placeholder="Puertas" class="p-2 rounded border" name="puertas" />
+            <input type="number" placeholder="plazas" class="p-2 rounded border" name="plazas" />
+            <input type="number" placeholder="Motor" class="p-2 rounded border" name="motor" />
             <textarea placeholder="Comentarios del anunciante" class="p-2 rounded border md:row-span-2 resize-none" name="comentario"></textarea>
             <input type="text" placeholder="Color" class="p-2 rounded border" name="color" />
             <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Enviar</button>
