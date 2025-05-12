@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField,StringField,EmailField,PasswordField
-from wtforms.validators import DataRequired,Length,Email
-from wtforms import SelectField
+from wtforms import SubmitField,StringField,EmailField,PasswordField,SelectField
+from wtforms.validators import DataRequired,Length,Email,Regexp
 
 class loginform(FlaskForm):
     email = EmailField("Email", validators=[
@@ -37,18 +36,18 @@ class registerform(FlaskForm):
     enviar = SubmitField("Registrar")
 
 class contactsForm(FlaskForm):
-    nombre = StringField("Nombre", validators=[
+    nombre = StringField('Nombre', validators=[
         DataRequired(),
-        Length(max=25)
+        Length(min=2, max=50),
+        Regexp('^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$', message="Solo letras y espacios.")
     ])
-    email = EmailField("Email", validators=[
+    email = StringField('Correo electrónico', validators=[
         DataRequired(),
-        Length(min=11,max=25),
         Email()
     ])
-    telefono = StringField("Telefono", validators=[
+    telefono = StringField('Teléfono', validators=[
         DataRequired(),
-        Length(min=9,max=9)
+        Regexp('^[0-9]{9}$', message="Debe tener 9 dígitos.")
     ])
     motivo = SelectField("Motivo", choices=[
         ('Comprar', 'Comprar'),
