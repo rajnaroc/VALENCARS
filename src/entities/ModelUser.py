@@ -94,20 +94,26 @@ class ModelUser:
 
     # funcion para añadir el coche
     @classmethod
-    def agregar_coche(cls,db,marca,modelo,año,precio,estado,descripcion,fecha_agregada,admin_id):
+    def agregar_coche(cls, db, marca, modelo, precio_contado, precio_financiado, ano, consumo, combustible,
+                    cambio, kilometros, puertas, plazas, motor, comentario, color, admin_id):
         try:
             cur = db.connection.cursor()
-            cur.execute("INSERT INTO coches (marca,modelo,año,precio,estado,descripcion,fecha_agregado,admin_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(marca,modelo,año,precio,estado,descripcion,fecha_agregada,admin_id))
+            cur.execute("""
+                INSERT INTO coches 
+                (marca, modelo, precio_contado, precio_financiado, ano, consumo, combustible, cambio, kilometros, puertas, plazas, motor, comentario, color, fecha_agregado, admin_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), %s)
+            """, (marca, modelo, precio_contado, precio_financiado, ano, consumo, combustible, cambio,
+                kilometros, puertas, plazas, motor, comentario, color, admin_id))
+
             db.connection.commit()
-
-            
-            coche_id = cur.lastrowid  # ← AQUÍ obtienes el ID del coche insertado
+            coche_id = cur.lastrowid
             cur.close()
-
             return coche_id
 
         except Exception as e:
-            print(e)
+            print("Error al insertar coche:", e)
+            return None
+
 
     @classmethod
     def obtener_coches(cls,db):
