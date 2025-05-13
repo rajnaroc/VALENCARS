@@ -204,10 +204,33 @@ def ver_vehiculos():
         return redirect("/")
     else:
         cur = db.connection.cursor()
+
+        # Obtener todos los coches
         cur.execute("SELECT * FROM coches")
         coches = cur.fetchall()
+
+        # Obtener todas las fotos
+        cur.execute("SELECT coche_id , ruta FROM fotos")
+        fotos = cur.fetchall()
         cur.close()
-        return render_template('vehiculos.html', coches=coches)
+
+        # Agrupar fotos por id_coche
+        fotos_por_coche = {}
+        for foto in fotos:
+            id_coche = foto[0]  # id_coche
+            ruta = foto[1]      # ruta
+            if id_coche not in fotos_por_coche:
+                fotos_por_coche[id_coche] = []
+                fotos_por_coche[id_coche].append(ruta)
+
+            # Convertir lista de tuplas a lista de listas + añadir fotos
+        coches_con_fotos = []
+        for coche in coches:
+            id_coche = coche[0]
+            fotos = fotos_por_coche.get(id_coche, [])
+            coches_con_fotos.append((coche, fotos))
+
+        return render_template('vehiculos.html', coches=coches_con_fotos)
 
 @app.route("/eliminar_vehiculo/<int:id>", methods=["POST"])
 def eliminar_vehiculo(id):
