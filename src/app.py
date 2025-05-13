@@ -197,8 +197,34 @@ def panel():
         return redirect(url_for("panel"))
     else:
         return jsonify({"error": "Unauthorized"}), 401
-    
 
+@app.route('/vehiculos', methods=["POST", "GET"])
+def ver_vehiculos():
+    if not current_user.is_authenticated:
+        return redirect("/")
+    else:
+        cur = db.connection.cursor()
+        cur.execute("SELECT * FROM coches")
+        coches = cur.fetchall()
+        cur.close()
+        return render_template('vehiculos.html', coches=coches)
+
+@app.route("/eliminar_vehiculo/<int:id>", methods=["POST"])
+def eliminar_vehiculo(id):
+    if not current_user.is_authenticated:
+        return redirect("/")
+    else:
+        # Eliminar el coche de la base de datos
+        ModelUser.eliminar_coche(db, id)
+
+        # Eliminar la carpeta del coche
+        carpeta_vehiculo = os.path.join("static/uploads", str(id))
+        if os.path.exists(carpeta_vehiculo):
+            shutil.rmtree(carpeta_vehiculo)
+
+        flash("Vehículo eliminado con éxito", "success")
+        return redirect(url_for("ver_vehiculos"))
+    
 @app.route("/subir_foto_temp", methods=["POST"])
 def subir_foto_temp():
     foto = request.files.get("foto")

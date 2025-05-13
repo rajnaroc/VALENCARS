@@ -16,7 +16,8 @@
     <header class="bg-black text-white p-4 flex justify-between items-center">
         <span class="font-bold text-lg">{{current_user.nombre}}</span>
         <nav class="space-x-4">
-            <a href="{{ url_for('panel' ) }}" class="hover:underline">Vehículos</a>
+            <a href="{{ url_for('panel' ) }}" class="hover:underline">Inicio</a>
+            <a href="{{ url_for('ver_vehiculos' ) }}">Vehiculos</a>
             <a href="{{ url_for('ver_mensajes' ) }}" class="hover:underline">Solicitudes</a>
             <a href="{{ url_for('logout' ) }}" class="hover:underline">Cerrar sesión</a>
         </nav>

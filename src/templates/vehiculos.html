@@ -1,0 +1,39 @@
+{% extends './plantillas/plantilla.html' %}
+
+{% block title %}Listado de Vehículos{% endblock %}
+
+{% block main %}
+<h1 class="text-2xl font-bold mb-6">Listado de Vehículos</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for coche in coches %}
+    <div class="border p-4 rounded shadow bg-white">
+        <h2 class="text-xl font-semibold mb-2">{{ coche.1 }} {{ coche.2 }} ({{ coche.3 }})</h2>
+        <ul class="text-sm text-gray-700 space-y-1">
+            <li><strong>Precio contado:</strong> {{ coche.4 }} €</li>
+            <li><strong>Precio financiado:</strong> {{ coche.5 }} €</li>
+            <li><strong>Estado:</strong> {{ coche.6 }}</li>
+            <li><strong>Kilómetros:</strong> {{ coche.7 }} km</li>
+            <li><strong>Motor:</strong> {{ coche.8 }} cc</li>
+            <li><strong>Combustible:</strong> {{ coche.9 }}</li>
+            <li><strong>Cambio:</strong> {{ coche.10 }}</li>
+            <li><strong>Consumo:</strong> {{ coche.11 }} L/100km</li>
+            <li><strong>Color:</strong> {{ coche.12 }}</li>
+            <li><strong>Puertas:</strong> {{ coche.13 }}</li>
+            <li><strong>Plazas:</strong> {{ coche.14 }}</li>
+            <li><strong>Descripción:</strong> {{ coche.15 }}</li>
+        </ul>
+        <div class="mt-4 flex gap-2">
+            <a href="" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+                Editar
+            </a>
+            <form action="/eliminar_vehiculo/{{coche.0}}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este vehículo?')">
+                <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition">
+                    Eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

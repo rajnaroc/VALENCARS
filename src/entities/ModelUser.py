@@ -122,8 +122,6 @@ class ModelUser:
             print("Error al insertar coche:", e)
             return None
 
-
-
     @classmethod
     def obtener_coches(cls,db):
         cur = db.connection.cursor()
@@ -152,6 +150,7 @@ class ModelUser:
         mensajes = cursor.fetchall()
         cursor.close()
         return mensajes
+    
     @classmethod
     def eliminar_mensaje(cls,db,id):
         try:
@@ -164,15 +163,14 @@ class ModelUser:
             print(e)
             return False
         
-    # @classmethod
-    # def subir_foto(cls,db,ruta,):
-    #     try:
-    #         cur = db.connection.cursor()
-    #         cur.execute("INSERT INTO fotos (nombre, ruta) VALUES (%s, %s)",(foto,id))
-    #         db.connection.commit()
-    #         cur.close()
-
-    #         return True
-    #     except Exception as e:
-    #         print(e)
-    #         return False
+    @classmethod
+    def eliminar_coche(cls,db,id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("DELETE FROM coches WHERE id = %s", (id,))
+            db.connection.commit()
+            cursor.close()
+            return True
+        except Exception as e:
+            print(e)
+            return False

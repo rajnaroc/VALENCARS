@@ -27,17 +27,24 @@
             <input type="text" placeholder="Color" class="p-2 rounded border" name="color" />
             <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Enviar</button>
         </form>
-            <form method="POST" action="/subir_foto_temp" enctype="multipart/form-data">
-                <label for="imagen">Subir imagen:</label>
-                <input type="file" name="foto" class="block w-full text-sm text-gray-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-black file:text-white
-                hover:file:bg-gray-800
-                transition">
-                <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Subir imagen</button>
-            </form>
+        <form method="POST" action="/subir_foto_temp" enctype="multipart/form-data">
+        <div>
+            <label for="imagen" class="block mb-2">Subir imagen:</label>
+            <input type="file" name="foto" class="block w-full text-sm text-gray-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-black file:text-white
+            hover:file:bg-gray-800
+            transition">
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">
+                Subir imagen
+            </button>
+        </div>
+    </form>
+
         </section>
     
         <!-- Lista de Coches -->
