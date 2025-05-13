@@ -8,9 +8,9 @@
         <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="/panel" method="POST">
             <input type="text" placeholder="Marca" class="p-2 rounded border" name="marca" />
             <input type="text" placeholder="Modelo" class="p-2 rounded border" name="modelo" />
-            <input type="Number" placeholder="Precio Contado" class="p-2 rounded border" name="precio_contado" />
-            <input type="Number" placeholder="Precio Financiado" class="p-2 rounded border " name="precio_financiado" />
-            <input type="text" placeholder="Año" class="p-2 rounded border" name="ano"/>
+            <input type="number" placeholder="Precio Contado" class="p-2 rounded border" name="precio_contado" />
+            <input type="number" placeholder="Precio Financiado" class="p-2 rounded border " name="precio_financiado" />
+            <input type="text" min="1900" max="2025" placeholder="Año" class="p-2 rounded border" name="ano"/>
             <input type="number" placeholder="Consumo" class="p-2 rounded border" name="consumo" />
             <input type="text" placeholder="Combustible" class="p-2 rounded border"  name="combustible"/>
             <input type="text" placeholder="Cambio" class="p-2 rounded border" name="cambio" />
