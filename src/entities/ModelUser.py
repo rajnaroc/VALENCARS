@@ -100,13 +100,14 @@ class ModelUser:
             cur = db.connection.cursor()
             cur.execute("""
                 INSERT INTO coches 
-                (marca, modelo, precio_contado, precio_financiado, ano, consumo, combustible, cambio, kilometros, puertas, plazas, motor, comentario, color, fecha_agregado, admin_id)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), %s)
+                (marca, modelo, precio_contado, precio_financiado, anio, consumo, combustible, cambio, kilometros, puertas, plazas, motor, descripcion, fecha_agregado, admin_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), %s)
             """, (marca, modelo, precio_contado, precio_financiado, ano, consumo, combustible, cambio,
                 kilometros, puertas, plazas, motor, comentario, color, admin_id))
 
             db.connection.commit()
             coche_id = cur.lastrowid
+            print(coche_id)
             cur.close()
             return coche_id
 

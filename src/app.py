@@ -150,7 +150,6 @@ def panel():
         flash("Sesion no válida. Inicia sesion nuevamente", "warning")
         return redirect(url_for("login"))
     if request.method == 'GET':
-        print(current_user.is_authenticated)
         if not current_user.is_authenticated:
             return redirect(url_for("login"))
         return render_template("panel.html")
@@ -175,7 +174,6 @@ def panel():
                                             consumo, combustible, cambio, kilometros, puertas,
                                             plazas, motor, comentario, color, current_user.id)
         
-        
         carpeta_temp = os.path.join("static/temp", str(current_user.id))
         carpeta_final = os.path.join("static/uploads", str(id_coche))
         os.makedirs(carpeta_final, exist_ok=True)
@@ -187,7 +185,7 @@ def panel():
 
             ruta_relativa = os.path.relpath(destino)  # o solo el nombre del archivo
             cursor = db.connection.cursor()
-            cursor.execute("INSERT INTO fotos (id_coche, ruta_foto) VALUES (%s, %s)", (id_coche, ruta_relativa))
+            cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (id_coche, ruta_relativa))
             db.connection.commit()
             cursor.close()
 
