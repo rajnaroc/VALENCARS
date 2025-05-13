@@ -170,8 +170,8 @@ def panel():
         motor = request.form.get('motor')
         comentario = request.form.get('comentario')
         color = request.form.get('color')
-
-        id_coche = ModelUser.coche_id(db, marca, modelo, precio_contado, precio_financiado, ano,
+        
+        id_coche = ModelUser.agregar_coche(db, marca, modelo, precio_contado, precio_financiado, ano,
                                             consumo, combustible, cambio, kilometros, puertas,
                                             plazas, motor, comentario, color, current_user.id)
         
