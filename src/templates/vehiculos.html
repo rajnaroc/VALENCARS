@@ -9,6 +9,7 @@
     {% for coche in coches %}
     <div class="border p-4 rounded shadow bg-white">
         <h2 class="text-xl font-semibold mb-2">{{ coche.1 }} {{ coche.2 }} ({{ coche.3 }})</h2>
+        <img src="{{coche[1]}}" alt="">
         <ul class="text-sm text-gray-700 space-y-1">
             <li><strong>Precio contado:</strong> {{ coche.4 }} €</li>
             <li><strong>Precio financiado:</strong> {{ coche.5 }} €</li>
