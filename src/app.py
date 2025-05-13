@@ -158,13 +158,12 @@ def panel():
     if request.method == "POST":
         marca = request.form["marca"].strip()
         modelo = request.form["modelo"].strip()
-        año = request.form["año"].strip()
+        ano = request.form["ano"].strip()
         precio = request.form["precio"].strip()
-        estado = request.form["estado"].strip()
         descripcion = request.form["marca"]
-        ModelUser.agregar_coche(db,marca,modelo,año,precio,estado,descripcion,None,current_user.id)
+        ModelUser.agregar_coche(db,marca,modelo,ano,precio,descripcion,None,current_user.id)
 
-        id_coche = ModelUser.agregar_coche(db, marca, modelo, año, precio, estado, descripcion, None, current_user.id)
+        id_coche = ModelUser.agregar_coche(db, marca, modelo, ano, precio, descripcion, None, current_user.id)
         
         
         carpeta_temp = os.path.join("static/temp", str(current_user.id))
