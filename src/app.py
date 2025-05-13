@@ -1,4 +1,3 @@
-from turtle import mode
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash, make_response
 from forms import loginform, contactsForm, registerform
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
@@ -7,7 +6,7 @@ from flask_mysqldb import MySQL
 from entities.ModelUser import ModelUser
 from utils.security import Security
 from werkzeug.utils import secure_filename
-import os
+import os,datetime
 import shutil
 from flask_wtf.csrf import CSRFProtect
 
@@ -158,10 +157,10 @@ def panel():
     if request.method == "POST":
         marca = request.form.get('marca')
         modelo = request.form.get('modelo')
-        anio = request.form.get('ano')  # del formulario, aunque se llame "ano"
+        anio = request.form.get('ano')
         precio_contado = request.form.get('precio_contado')
         precio_financiado = request.form.get('precio_financiado')
-        estado = request.form.get('estado')  # Asegúrate de que lo incluyes en el formulario
+        estado = request.form.get('estado')
         descripcion = request.form.get('comentario')
         motor = request.form.get('motor')
         consumo = request.form.get('consumo')
@@ -172,29 +171,34 @@ def panel():
         plazas = request.form.get('plazas')
         admin_id = session.get('admin_id')
 
-        coche_id = ModelUser.agregar_coche(db, marca, modelo, anio, precio_financiado, estado, descripcion,
-                                    admin_id, motor, precio_contado, consumo, cambio,
-                                    combustible, kilometros, puertas, plazas)
-        
-        carpeta_temp = os.path.join("static/temp", str(current_user.id))
-        carpeta_final = os.path.join("static/uploads", str(coche_id))
+        coche_id = ModelUser.agregar_coche(
+            db, marca, modelo, anio, precio_contado, precio_financiado, estado,
+            descripcion, admin_id, motor, consumo, cambio,
+            combustible, kilometros, puertas, plazas
+        )
+
+        if not coche_id:
+            flash("Error al insertar el coche", "danger")
+            return redirect('/panel')
+
+        carpeta_temp = os.path.join("static", "temp", str(current_user.id))
+        carpeta_final = os.path.join("static", "uploads", str(coche_id))
         os.makedirs(carpeta_final, exist_ok=True)
 
-        for foto_nombre in os.listdir(carpeta_temp):
-            origen = os.path.join(carpeta_temp, foto_nombre)
-            destino = os.path.join(carpeta_final, foto_nombre)
-            os.rename(origen, destino)
+        if os.path.exists(carpeta_temp):
+            for foto_nombre in os.listdir(carpeta_temp):
+                origen = os.path.join(carpeta_temp, foto_nombre)
+                destino = os.path.join(carpeta_final, foto_nombre)
+                os.rename(origen, destino)
 
-            ruta_relativa = os.path.relpath(destino)  # o solo el nombre del archivo
-            cursor = db.connection.cursor()
-            cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
-            db.connection.commit()
-            cursor.close()
+                ruta_relativa = os.path.relpath(destino)
+                cursor = db.connection.cursor()
+                cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
+                db.connection.commit()
+                cursor.close()
 
-        # Eliminar carpeta temporal del usuario
-        os.rmdir(carpeta_temp)
-
-        return redirect(url_for("panel"))
+        flash("Coche insertado correctamente", "success")
+        return redirect('/panel')
     else:
         return jsonify({"error": "Unauthorized"}), 401
 
