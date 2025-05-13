@@ -1,3 +1,4 @@
+from turtle import mode
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash, make_response
 from forms import loginform, contactsForm, registerform
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
@@ -157,25 +158,26 @@ def panel():
     if request.method == "POST":
         marca = request.form.get('marca')
         modelo = request.form.get('modelo')
+        anio = request.form.get('ano')  # del formulario, aunque se llame "ano"
         precio_contado = request.form.get('precio_contado')
         precio_financiado = request.form.get('precio_financiado')
-        ano = request.form.get('ano')
+        estado = request.form.get('estado')  # Asegúrate de que lo incluyes en el formulario
+        descripcion = request.form.get('comentario')
+        motor = request.form.get('motor')
         consumo = request.form.get('consumo')
-        combustible = request.form.get('combustible')
         cambio = request.form.get('cambio')
+        combustible = request.form.get('combustible')
         kilometros = request.form.get('kilometros')
         puertas = request.form.get('puertas')
         plazas = request.form.get('plazas')
-        motor = request.form.get('motor')
-        comentario = request.form.get('comentario')
-        color = request.form.get('color')
-        
-        id_coche = ModelUser.agregar_coche(db, marca, modelo, precio_contado, precio_financiado, ano,
-                                            consumo, combustible, cambio, kilometros, puertas,
-                                            plazas, motor, comentario, color, current_user.id)
+        admin_id = session.get('admin_id')
+
+        coche_id = ModelUser.agregar_coche(db, marca, modelo, anio, precio_financiado, estado, descripcion,
+                                    admin_id, motor, precio_contado, consumo, cambio,
+                                    combustible, kilometros, puertas, plazas)
         
         carpeta_temp = os.path.join("static/temp", str(current_user.id))
-        carpeta_final = os.path.join("static/uploads", str(id_coche))
+        carpeta_final = os.path.join("static/uploads", str(coche_id))
         os.makedirs(carpeta_final, exist_ok=True)
 
         for foto_nombre in os.listdir(carpeta_temp):
@@ -185,7 +187,7 @@ def panel():
 
             ruta_relativa = os.path.relpath(destino)  # o solo el nombre del archivo
             cursor = db.connection.cursor()
-            cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (id_coche, ruta_relativa))
+            cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
             db.connection.commit()
             cursor.close()
 

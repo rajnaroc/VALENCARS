@@ -8,6 +8,11 @@
         <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="/panel" method="POST">
             <input type="text" placeholder="Marca" class="p-2 rounded border" name="marca" />
             <input type="text" placeholder="Modelo" class="p-2 rounded border" name="modelo" />
+            <select name="estado" class="p-2 rounded border">
+                <option value="">Selecciona estado</option>
+                <option value="nuevo">Nuevo</option>
+                <option value="usado">Usado</option>
+            </select>
             <input type="number" placeholder="Precio Contado" class="p-2 rounded border" name="precio_contado" />
             <input type="number" placeholder="Precio Financiado" class="p-2 rounded border " name="precio_financiado" />
             <input type="text" min="1900" max="2025" placeholder="Año" class="p-2 rounded border" name="ano"/>
