@@ -108,6 +108,7 @@ class ModelUser:
             db.connection.commit()
             coche_id = cur.lastrowid
             cur.close()
+            print("Coche agregado con ID:", coche_id)
             return coche_id
 
         except Exception as e:
