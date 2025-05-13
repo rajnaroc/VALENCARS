@@ -170,10 +170,10 @@ def panel():
         motor = request.form.get('motor')
         comentario = request.form.get('comentario')
         color = request.form.get('color')
-
-        ModelUser.agregar_coche(db,marca,modelo,ano,precio,estado,descripcion,None,current_user.id)
-
-        id_coche = ModelUser.agregar_coche(db, marca, modelo, ano, precio, estado, descripcion, None, current_user.id)
+        
+        id_coche = ModelUser.agregar_coche(db, marca, modelo, precio_contado, precio_financiado, ano,
+                                            consumo, combustible, cambio, kilometros, puertas,
+                                            plazas, motor, comentario, color, current_user.id)
         
         
         carpeta_temp = os.path.join("static/temp", str(current_user.id))
