@@ -8,8 +8,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for coche in coches %}
     <div class="border p-4 rounded shadow bg-white">
-        <h2 class="text-xl font-semibold mb-2">{{ coche.1 }} {{ coche.2 }} ({{ coche.3 }})</h2>
-        <img src="{{coche[1]}}" alt="">
+        <img src="{{ url_for('static', filename=coche[1])}}">
         <ul class="text-sm text-gray-700 space-y-1">
             <li><strong>Precio contado:</strong> {{ coche.4 }} €</li>
             <li><strong>Precio financiado:</strong> {{ coche.5 }} €</li>
