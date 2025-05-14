@@ -169,7 +169,7 @@ def panel():
         kilometros = request.form.get('kilometros')
         puertas = request.form.get('puertas')
         plazas = request.form.get('plazas')
-        admin_id = session.get('admin_id')
+        admin_id = current_user.id
 
         coche_id = ModelUser.agregar_coche(
             db, marca, modelo, anio, precio_contado, precio_financiado, estado,
@@ -237,7 +237,7 @@ def ver_vehiculos():
 
         return render_template('vehiculos.html', coches=coches_con_fotos)
 
-@app.route("/eliminar_vehiculo/<int:id>", methods=["POST"])
+@app.route("/eliminar_vehiculo/<int:id>")
 def eliminar_vehiculo(id):
     if not current_user.is_authenticated:
         return redirect("/")
