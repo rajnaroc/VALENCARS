@@ -104,8 +104,8 @@ class ModelUser:
                 (marca, modelo, anio, precio_financiado, estado, descripcion, fecha_agregado,
                 motor, precio_contado, consumo, cambio, combustible,
                 kilometros, puertas, plazas)
-                VALUES (%s, %s, %s, %s, %s, NOW(),
-                        %s, %s, %s, %s, %s, %s,
+                VALUES (%s, %s, %s, %s, %s,
+                        %s, NOW(), %s, %s, %s, %s, %s,
                         %s, %s, %s)
             """, (
                 marca, modelo, anio, precio_financiado, estado, descripcion,
