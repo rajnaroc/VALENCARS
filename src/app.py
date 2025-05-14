@@ -172,7 +172,7 @@ def panel():
 
         coche_id = ModelUser.agregar_coche(
             db, marca, modelo, anio, precio_contado, precio_financiado, estado,
-            descripcion, motor, consumo, cambio,
+            descripcion,motor, consumo, cambio,
             combustible, kilometros, puertas, plazas
         )
 
