@@ -220,11 +220,12 @@ def ver_vehiculos():
         # Agrupar fotos por id_coche
         fotos_por_coche = {}
         for foto in fotos:
-            id_coche = foto[0]  # id_coche
-            ruta = foto[1]      # ruta
+            id_coche = foto[0]
+            ruta = foto[1].replace("\\", "/")  # corregimos las barras
             if id_coche not in fotos_por_coche:
                 fotos_por_coche[id_coche] = []
-                fotos_por_coche[id_coche].append(ruta)
+            fotos_por_coche[id_coche].append(ruta)
+
 
             # Convertir lista de tuplas a lista de listas + añadir fotos
         coches_con_fotos = []
