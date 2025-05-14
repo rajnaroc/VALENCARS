@@ -225,6 +225,7 @@ def ver_vehiculos():
             if id_coche not in fotos_por_coche:
                 fotos_por_coche[id_coche] = []
             fotos_por_coche[id_coche].append(ruta)
+            
 
 
             # Convertir lista de tuplas a lista de listas + añadir fotos
