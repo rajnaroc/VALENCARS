@@ -9,6 +9,7 @@ class ProductionConfig(Config):
     MYSQL_USER=os.getenv("MYSQL_USER")
     MYSQL_PASSWORD=os.getenv("MYSQL_PASSWORD")
     MYSQL_DB=os.getenv("MYSQL_DB")
+    UPlOAD_FOLDER='static/img'
 
 class DevelopConfig(Config):
     DEBUG=True
@@ -16,6 +17,7 @@ class DevelopConfig(Config):
     MYSQL_USER=os.getenv("MYSQL_USER")
     MYSQL_PASSWORD=os.getenv("MYSQL_PASSWORD")
     MYSQL_DB=os.getenv("MYSQL_DB")
+    UPlOAD_FOLDER='static/img'
 
 config = {
     "dev" : DevelopConfig,

@@ -10,10 +10,9 @@
     <div class="border p-4 rounded shadow bg-white">
         <img src="{{ url_for('static', filename='uploads/4/barcelona_png.png') }}" class="w-full h-48 object-cover rounded mb-4">
         <img src="{{ url_for('static', filename=coche[1][0])}}" class="w-full h-48 object-cover rounded mb-4" alt="Imagen del coche">
-        <h1>{{coche[1][0]}}</h1>ç
-        <h1>{{coche[0]}}</h1>
+        <h1>{{coche[1][0]}}</h1>
         <ul class="text-sm text-gray-700 space-y-1">
-            <li><strong>Precio contado:</strong> {{ coche[0][4] }} €</li>
+            <li><strong>Precio contado:</strong> {{ coche.4 }} €</li>
             <li><strong>Precio financiado:</strong> {{ coche.5 }} €</li>
             <li><strong>Estado:</strong> {{ coche.6 }}</li>
             <li><strong>Kilómetros:</strong> {{ coche.7 }} km</li>
