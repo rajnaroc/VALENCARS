@@ -10,7 +10,9 @@ import os,datetime
 import shutil
 from flask_wtf.csrf import CSRFProtect
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Esto apunta a src/
+
+app = Flask(__name__, static_folder='static', template_folder='templates')
 
 db = MySQL(app)
 
@@ -180,8 +182,8 @@ def panel():
             flash("Error al insertar el coche", "danger")
             return redirect('/panel')
 
-        carpeta_temp = os.path.join("static", "temp", str(current_user.id))
-        carpeta_final = os.path.join("static", "uploads", str(coche_id))
+        carpeta_temp = os.path.join(BASE_DIR, "static", "temp", str(current_user.id))
+        carpeta_final = os.path.join(BASE_DIR, "static", "uploads", str(coche_id))
         os.makedirs(carpeta_final, exist_ok=True)
 
         if os.path.exists(carpeta_temp):
