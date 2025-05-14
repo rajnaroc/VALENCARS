@@ -191,6 +191,7 @@ def panel():
                 os.rename(origen, destino)
 
                 ruta_relativa = os.path.relpath(destino, "static")
+                print(ruta_relativa)
                 cursor = db.connection.cursor()
                 cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
                 db.connection.commit()
