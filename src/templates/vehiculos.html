@@ -8,6 +8,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for coche in coches %}
     <div class="border p-4 rounded shadow bg-white">
+        <img src="{{ url_for('static', filename='uploads/4/barcelona_png.png') }}" class="w-full h-48 object-cover rounded mb-4">
         <img src="{{ url_for('static', filename=coche[1][0])}}" class="w-full h-48 object-cover rounded mb-4" alt="Imagen del coche">
         <h1>{{coche[1][0]}}</h1>ç
         <h1>{{coche[0]}}</h1>
