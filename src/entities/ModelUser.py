@@ -102,9 +102,9 @@ class ModelUser:
             cur.execute("""
                 INSERT INTO coches 
                 (marca, modelo, anio, precio_financiado, estado, descripcion, fecha_agregado,
-                admin_id, motor, precio_contado, consumo, cambio, combustible,
+                motor, precio_contado, consumo, cambio, combustible,
                 kilometros, puertas, plazas)
-                VALUES (%s, %s, %s, %s, %s, %s, NOW(),
+                VALUES (%s, %s, %s, %s, %s, NOW(),
                         %s, %s, %s, %s, %s, %s,
                         %s, %s, %s)
             """, (
