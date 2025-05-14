@@ -109,7 +109,7 @@ class ModelUser:
                         %s, %s, %s)
             """, (
                 marca, modelo, anio, precio_financiado, estado, descripcion,
-                admin_id, motor, precio_contado, consumo, cambio, combustible,
+                motor, precio_contado, consumo, cambio, combustible,
                 kilometros, puertas, plazas
             ))
             db.connection.commit()
