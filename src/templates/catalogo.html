@@ -33,11 +33,12 @@
         </div>
     </aside>
 
-    <!-- Catálogo -->
     <main class="w-full md:w-3/4 p-4">
         <h2 class="text-2xl font-bold mb-4 text-center">Concesionario de coches de segunda mano</h2>
-        {% for coche in coches %}
+        
+        <!-- Contenedor grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for coche in coches %}
             <!-- Producto -->
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="relative">
@@ -45,12 +46,12 @@
                     <span class="absolute top-2 right-2 bg-blue-600 text-white text-sm px-2 py-1 rounded">{{ coche.1 }}</span>
                 </div>
                 <div class="p-4">
-                    <p class="font-semibold">{{coche.0}}</p>
-                    <p class="text-sm text-gray-600">{{coche.cv}}</p>
+                    <p class="font-semibold">{{ coche.0 }}</p>
+                    <p class="text-sm text-gray-600">{{ coche.1 }}</p>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </main>
-    {% endfor %}
 </div>
 {% endblock %}
