@@ -174,3 +174,14 @@ class ModelUser:
         except Exception as e:
             print(e)
             return False
+    @classmethod
+    def obtener_fotos(cls,db,id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("SELECT * FROM fotos WHERE coche_id = %s", (id,))
+            fotos = cursor.fetchall()
+            cursor.close()
+            return fotos
+        except Exception as e:
+            print(e)
+            return False
