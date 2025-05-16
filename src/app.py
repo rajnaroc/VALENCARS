@@ -6,10 +6,8 @@ from flask_mysqldb import MySQL
 from entities.ModelUser import ModelUser
 from utils.security import Security
 from werkzeug.utils import secure_filename
-import os,datetime
+import os
 import shutil
-from flask_wtf.csrf import CSRFProtect
-
 app = Flask(__name__)
 
 db = MySQL(app)
@@ -24,11 +22,16 @@ def load_user(id):
     
 @app.route("/", methods=["GET"])
 def catalogo():
+    total = []
     # Aquí puedes obtener los coches de la base de datos y pasarlos al template
     coches = ModelUser.obtener_coches(db)
     for i in coches:
-        print(i)
-    return render_template("catalogo.html",coches=coches)
+        id = i[0] 
+        foto = ModelUser.obtener_fotos(db, id)
+        total.append(foto)
+    
+
+    return render_template("catalogo.html",coches=coches, fotos=total)
 
 @app.route("/solicitudes", methods=["GET"])
 def solicitudes():
