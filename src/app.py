@@ -170,6 +170,10 @@ def panel():
         puertas = request.form.get('puertas')
         plazas = request.form.get('plazas')
 
+        print(db, marca, modelo, anio, precio_contado, precio_financiado, estado,
+            descripcion, motor, consumo, cambio,
+            combustible, kilometros, puertas, plazas)
+
         coche_id = ModelUser.agregar_coche(
             db, marca, modelo, anio, precio_contado, precio_financiado, estado,
             descripcion,motor, consumo, cambio,

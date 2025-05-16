@@ -94,8 +94,8 @@ class ModelUser:
 
     # funcion para añadir el coche
     @classmethod
-    def agregar_coche(cls, db, marca, modelo, anio, precio_financiado, estado, descripcion,
-                    motor, precio_contado, consumo, cambio, combustible,
+    def agregar_coche(cls, db, marca, modelo, anio, precio_contado, precio_financiado, estado, descripcion,
+                    motor, consumo, cambio, combustible,
                     kilometros, puertas, plazas):
         try:
             cur = db.connection.cursor()
