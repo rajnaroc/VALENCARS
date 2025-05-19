@@ -185,7 +185,8 @@ class ModelUser:
                     SELECT coche_id, MIN(id) as min_foto_id
                     FROM fotos
                     GROUP BY coche_id
-                ) primera_foto ON c.id = primera_foto.coche_id
+                ) primera_foto
+                            ON c.id = primera_foto.coche_id
                 LEFT JOIN fotos f ON f.id = primera_foto.min_foto_id
             """)
             coches = cursor.fetchall()
