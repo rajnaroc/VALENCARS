@@ -17,21 +17,12 @@ login_manager = LoginManager(app)
 @login_manager.user_loader
 def load_user(id):
     return ModelUser.get_by_id(db, id)
-    
-
-    
+        
 @app.route("/", methods=["GET"])
 def catalogo():
-    total = []
-    # Aquí puedes obtener los coches de la base de datos y pasarlos al template
-    coches = ModelUser.obtener_coches(db)
-    for i in coches:
-        id = i[0] 
-        foto = ModelUser.obtener_fotos(db, id)
-        total.append(foto)
-    
 
-    return render_template("catalogo.html",coches=coches, fotos=total)
+    coches = ModelUser.obtener_coches_con_foto_principal(db)
+    return render_template("catalogo.html",coches=coches)
 
 @app.route("/solicitudes", methods=["GET"])
 def solicitudes():
