@@ -178,8 +178,8 @@ class ModelUser:
     def obtener_fotos(cls,db,id):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("SELECT * FROM fotos WHERE coche_id = %s", (id,))
-            fotos = cursor.fetchall()
+            cursor.execute("SELECT ruta FROM fotos WHERE coche_id = %s", (id,))
+            fotos = cursor.fetchone()
             cursor.close()
             return fotos
         except Exception as e:

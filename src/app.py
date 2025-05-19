@@ -1,4 +1,4 @@
-from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash, make_response
+from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash, make_response, current_app
 from forms import loginform, contactsForm, registerform
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from config import config
@@ -29,6 +29,8 @@ def catalogo():
         id = i[0] 
         foto = ModelUser.obtener_fotos(db, id)
         total.append(foto)
+        print(foto)
+        print(total)
     
 
     return render_template("catalogo.html",coches=coches, fotos=total)
@@ -173,10 +175,6 @@ def panel():
         puertas = request.form.get('puertas')
         plazas = request.form.get('plazas')
 
-        print(db, marca, modelo, anio, precio_contado, precio_financiado, estado,
-            descripcion, motor, consumo, cambio,
-            combustible, kilometros, puertas, plazas)
-
         coche_id = ModelUser.agregar_coche(
             db, marca, modelo, anio, precio_contado, precio_financiado, estado,
             descripcion,motor, consumo, cambio,
@@ -198,7 +196,6 @@ def panel():
                 os.rename(origen, destino)
 
                 ruta_relativa = os.path.relpath(destino, "static")
-                print(ruta_relativa)
                 cursor = db.connection.cursor()
                 cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
                 db.connection.commit()
@@ -242,6 +239,7 @@ def ver_vehiculos():
             id_coche = coche[0]
             fotos = fotos_por_coche.get(id_coche, [])
             coches_con_fotos.append((coche, fotos))
+        print(coches_con_fotos)
 
         return render_template('vehiculos.html', coches=coches_con_fotos)
 
@@ -263,17 +261,18 @@ def eliminar_vehiculo(id):
     
 @app.route("/subir_foto_temp", methods=["POST"])
 def subir_foto_temp():
-    foto = request.files.get("foto")
-    if not foto:
+    fotos = request.files.getlist("fotos[]")
+    if not fotos:
         return jsonify({"error": "No se recibió ninguna foto"}), 400
-
-    user_id = current_user.id
-    carpeta_temp = os.path.join("static/temp", str(user_id))
-    os.makedirs(carpeta_temp, exist_ok=True)
     
-    filename = secure_filename(foto.filename)
-    ruta_foto = os.path.join(carpeta_temp, filename)
-    foto.save(ruta_foto)
+    user_id = current_user.id
+    carpeta_temp = os.path.join(current_app.root_path, "static", "temp", str(user_id))
+    os.makedirs(carpeta_temp, exist_ok=True)
+    for foto in fotos:
+        if foto.filename != "":
+            filename = secure_filename(foto.filename)
+            ruta_foto = os.path.join(carpeta_temp, filename)
+            foto.save(ruta_foto)
 
     return redirect(url_for("panel"))
 
