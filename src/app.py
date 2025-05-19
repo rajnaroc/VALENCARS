@@ -17,23 +17,24 @@ login_manager = LoginManager(app)
 @login_manager.user_loader
 def load_user(id):
     return ModelUser.get_by_id(db, id)
-    
-
-    
+        
 @app.route("/", methods=["GET"])
 def catalogo():
-    total = []
-    # Aquí puedes obtener los coches de la base de datos y pasarlos al template
-    coches = ModelUser.obtener_coches(db)
-    for i in coches:
-        id = i[0] 
-        foto = ModelUser.obtener_fotos(db, id)
-        total.append(foto)
-        print(foto)
-        print(total)
-    
 
-    return render_template("catalogo.html",coches=coches, fotos=total)
+    coches = ModelUser.obtener_coches_con_foto_principal(db)
+    coches_limpios = []
+    for coche in coches:
+        if coche[-1] is not None:
+            print(coche[-1])
+            coche = list(coche)
+            coche[-1] = coche[-1].replace('\\', '/')
+            coches_limpios.append(coche)
+            print(coche[-1])
+        else:
+            coche = list(coche)
+            coche[-1] = "img/no_image.jpg"
+            coches_limpios.append(coche)
+    return render_template("catalogo.html",coches=coches_limpios)
 
 @app.route("/solicitudes", methods=["GET"])
 def solicitudes():

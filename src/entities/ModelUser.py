@@ -1,8 +1,7 @@
 from flask import flash, request
 from .models.User import User
 from werkzeug.utils import secure_filename
-import os
-import shutil
+
 
 class ModelUser:
 
@@ -175,13 +174,24 @@ class ModelUser:
             print(e)
             return False
     @classmethod
-    def obtener_fotos(cls,db,id):
+    def obtener_coches_con_foto_principal(cls,db):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("SELECT ruta FROM fotos WHERE coche_id = %s", (id,))
-            fotos = cursor.fetchone()
+            cursor.execute("""
+                SELECT 
+                    c.*, f.ruta
+                FROM coches c
+                LEFT JOIN (
+                    SELECT coche_id, MIN(id) as min_foto_id
+                    FROM fotos
+                    GROUP BY coche_id
+                ) primera_foto ON c.id = primera_foto.coche_id
+                LEFT JOIN fotos f ON f.id = primera_foto.min_foto_id
+            """)
+            coches = cursor.fetchall()
             cursor.close()
-            return fotos
+            return coches
         except Exception as e:
-            print(e)
-            return False
+            print("Error:", e)
+            return []
+
