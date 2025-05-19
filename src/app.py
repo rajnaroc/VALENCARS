@@ -1,4 +1,5 @@
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for,flash, make_response, current_app
+from numpy import imag
 from forms import loginform, contactsForm, registerform
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from config import config
@@ -115,12 +116,11 @@ def coche(id):
     # Datos del coche
     id = id
     obtener_coche = ModelUser.obtener_coche(db, id)
-    images = [
-        'img/Coche_img.png',
-        'img/contacto.png',
-        'img/foto.jpg'
-    ]
+    obtener_fotos = ModelUser.obtener_fotos(db, id)
+    images = []
     values = []
+    for obtener in obtener_fotos:
+        images.append(obtener)
     for obtener in obtener_coche:
         values.append(obtener)
     labels = ["Año", "Combustible", "Kilómetros", "Motor", "Color", "Consumo", "Cambio", "Puertas/Plazas"]
