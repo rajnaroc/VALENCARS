@@ -196,3 +196,14 @@ class ModelUser:
             print("Error:", e)
             return []
 
+    @classmethod
+    def obtener_coche(cls,db,id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("SELECT * FROM coches WHERE id = %s", (id,))
+            coche = cursor.fetchone()
+            cursor.close()
+            return coche
+        except Exception as e:
+            print(e)
+            return None

@@ -37,11 +37,12 @@
         <h2 class="text-2xl font-bold mb-4 text-center">Concesionario de coches de segunda mano</h2>
         
         <!-- Contenedor grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {% for coche in coches %}
+        <div  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {% for coche in coches %}
+        <a href="/coche/{{ coche[0] }}">
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="relative">
-                    <img id="ruta" src="{{ url_for('static', filename=coche[-1]) }}" alt="Foto del coche" class="w-full h-48 object-cover">
+                    <img src="{{ url_for('static', filename=coche[-1]) }}" alt="Foto del coche" class="w-full h-48 object-cover">
                     <span class="absolute top-2 right-2 bg-blue-600 text-white text-sm px-2 py-1 rounded">{{ coche[2] }}</span>
                 </div>
                 <div class="p-4">
@@ -50,15 +51,8 @@
                     <p class="text-gray-600">Kilómetros: {{ coche[12] }} km</p>
                 </div>
             </div>
+            </a>
             {% endfor %}
-            <script>
-                ;
-                const rutaModificada = rutaOriginal.replace(/\\/g, "/");
-                console.log(rutaModificada); // Muestra: uploads/9/barcelona_png.png
-
-                // Ejemplo en una imagen
-                document.getElementById("mi-imagen").src = rutaModificada;
-            </script>
         </div>
     </main>
 </div>
