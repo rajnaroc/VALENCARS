@@ -42,8 +42,8 @@
             <!-- Producto -->
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="relative">
-                    {% for foto in fotos %}
-                    <img src="{{url_for('static', filename='{{ fotos}}')}}" alt="Coche" class="w-full h-48 object-cover">
+                    {% for foto in fotos %} 
+                    <img src="{{ url_for('static', filename=fotos[0][1]) }}" alt="Coche" class="w-full h-48 object-cover">
                     {% endfor %}
                     <span class="absolute top-2 right-2 bg-blue-600 text-white text-sm px-2 py-1 rounded">{{ coche.1 }}</span>
                 </div>

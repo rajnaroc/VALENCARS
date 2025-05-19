@@ -1,8 +1,7 @@
 from flask import flash, request
 from .models.User import User
 from werkzeug.utils import secure_filename
-import os
-import shutil
+
 
 class ModelUser:
 
@@ -178,9 +177,10 @@ class ModelUser:
     def obtener_fotos(cls,db,id):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("SELECT * FROM fotos WHERE coche_id = %s", (id,))
-            fotos = cursor.fetchall()
+            cursor.execute("SELECT ruta FROM fotos WHERE coche_id = %s", (id,))
+            rows = cursor.fetchall()
             cursor.close()
+            fotos = [{'ruta': row[0]} for row in rows]
             return fotos
         except Exception as e:
             print(e)
