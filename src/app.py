@@ -115,17 +115,13 @@ def coche(id):
     # Datos del coche
     id = id
     obtener_coche = ModelUser.obtener_coche(db, id)
-    images = [
-        'img/Coche_img.png',
-        'img/contacto.png',
-        'img/foto.jpg'
-    ]
+    obtener_fotos = ModelUser.obtener_fotos(db, id)
     values = []
     for obtener in obtener_coche:
         values.append(obtener)
     labels = ["Año", "Combustible", "Kilómetros", "Motor", "Color", "Consumo", "Cambio", "Puertas/Plazas"]
     datos = zip(labels, values)
-    return render_template("coche.html", datos=datos, images=images)
+    return render_template("coche.html", datos=datos, images=obtener_fotos)
 
 
 @app.route("/inicio", methods=["GET"])
