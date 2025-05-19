@@ -1,4 +1,4 @@
-from flask import Flask, app, request, jsonify, render_template, redirect, url_for, session, flash, make_response
+from flask import Flask, app, request, jsonify, render_template, redirect, url_for,flash, make_response
 from forms import loginform, contactsForm, registerform
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from config import config
@@ -8,6 +8,7 @@ from utils.security import Security
 from werkzeug.utils import secure_filename
 import os
 import shutil
+
 app = Flask(__name__)
 
 db = MySQL(app)
