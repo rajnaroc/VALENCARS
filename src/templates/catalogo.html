@@ -41,11 +41,7 @@
             {% for coche in coches %}
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="relative">
-                    {% if coche[16] %}
-                        <img src="{{ url_for('static', filename=coche[-1]) }}" alt="Foto del coche" class="w-full h-48 object-cover">
-                    {% else %}
-                        <img src="{{ url_for('static', filename='default.jpg') }}" alt="Sin imagen" class="w-full h-48 object-cover">
-                    {% endif %}
+                    <img id="ruta" src="{{ url_for('static', filename=coche[-1]) }}" alt="Foto del coche" class="w-full h-48 object-cover">
                     <span class="absolute top-2 right-2 bg-blue-600 text-white text-sm px-2 py-1 rounded">{{ coche[2] }}</span>
                 </div>
                 <div class="p-4">
@@ -55,7 +51,14 @@
                 </div>
             </div>
             {% endfor %}
+            <script>
+                ;
+                const rutaModificada = rutaOriginal.replace(/\\/g, "/");
+                console.log(rutaModificada); // Muestra: uploads/9/barcelona_png.png
 
+                // Ejemplo en una imagen
+                document.getElementById("mi-imagen").src = rutaModificada;
+            </script>
         </div>
     </main>
 </div>
