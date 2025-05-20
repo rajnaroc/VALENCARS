@@ -118,16 +118,24 @@ def coche(id):
 
     columnas = obtener_coche[1]
 
-    print(columnas)
 
-    images = [foto[0] for foto in obtener_fotos] 
+    imagenes_limpias = []
 
+    print(obtener_fotos)
+    count = 0
+    for foto in obtener_fotos:
+        if foto[count] is not None:
+            imagenes_limpias.append(foto[count].replace("\\", "/"))
+        else:
+            imagenes_limpias.append("img/no_image.jpg")
+        count+=1
+
+    print(imagenes_limpias)
     values = [dato for dato in obtener_coche[0]]
 
-    
     datos = dict(zip(columnas, values))
     
-    return render_template("coche.html", datos=datos, images=images)
+    return render_template("coche.html", datos=datos, images=imagenes_limpias)
 
 
 

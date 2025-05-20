@@ -213,7 +213,7 @@ class ModelUser:
         try:
             cursor = db.connection.cursor()
             cursor.execute("SELECT ruta FROM fotos WHERE coche_id = %s", (id,))
-            fotos = cursor.fetchone()
+            fotos = cursor.fetchall()
             cursor.close()
             return fotos
         except Exception as e:
