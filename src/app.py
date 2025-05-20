@@ -125,7 +125,7 @@ def coche(id):
     values = [dato for dato in obtener_coche[0]]
 
     
-    datos = zip(columnas, values)
+    datos = dict(zip(columnas, values))
     
     return render_template("coche.html", datos=datos, images=images)
 
