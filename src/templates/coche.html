@@ -54,7 +54,7 @@
     <div class="mb-6">
       <p class="text-sm">Precio financiado:</p>
       <p class="text-3xl font-bold text-black">{{ "{:,.0f}".format(datos['precio_financiado']).replace(",", ".") }}€</p>
-      <p class="text-sm mt-2 text-gray-500">Precio al contado: <span class="line-through">{{ "{:,.0f}".format(datos['precio_contado']).replace(",", ".")€ }}</span></p>
+      <p class="text-sm mt-2 text-gray-500">Precio al contado: <span class="line-through">{{ "{:,.0f}".format(datos['precio_contado']).replace(",", ".")}}€</span></p>
     </div>
 
     <a href="{{ url_for('contacto' ) }}" class="bg-black text-white px-6 py-2 rounded text-sm w-fit">Más información</a>
