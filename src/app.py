@@ -121,7 +121,9 @@ def coche(id):
     print(columnas)
 
     images = [foto[0] for foto in obtener_fotos] 
+    
     print(images)
+
     values = [dato for dato in obtener_coche[0]]
 
     
