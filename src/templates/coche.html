@@ -14,7 +14,7 @@
         {% for image in images %}
         <div class="carousel-item w-full flex-shrink-0">
           <img 
-            src="{{ url_for('static', filename=image) }}" alt="Coche" class="w-full h-auto rounded-md" onerror="this.src='/static/img/default.jpg'" />
+            src="{{ url_for('static', filename=image) }}" alt="Coche" class="w-full h-auto rounded-md"/>
         </div>
         {% endfor %}
       </div>
@@ -36,7 +36,7 @@
           <img 
             src="{{ url_for('static', filename=image) }}" 
             alt="Thumbnail" 
-            class="w-full h-full object-cover rounded-md" onclick="changeImage(`{{ loop.index0 }}`)" onerror="this.src='/static/img/default.jpg'" />
+            class="w-full h-full object-cover rounded-md" onclick="changeImage(`{{ loop.index0 }}`)"/>
         </div>
       {% endfor %}
     </div>

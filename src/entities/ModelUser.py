@@ -202,8 +202,9 @@ class ModelUser:
             cursor = db.connection.cursor()
             cursor.execute("SELECT * FROM coches WHERE id = %s", (id,))
             coche = cursor.fetchone()
+            columnas = [col[0] for col in cursor.description]
             cursor.close()
-            return coche
+            return coche, columnas
         except Exception as e:
             print(e)
             return None

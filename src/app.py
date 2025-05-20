@@ -113,19 +113,22 @@ def vender():
 
 @app.route("/coche/<id>", methods=["GET"])
 def coche(id):
-    # Datos del coche
-    id = id
     obtener_coche = ModelUser.obtener_coche(db, id)
     obtener_fotos = ModelUser.obtener_fotos(db, id)
-    images = []
-    values = []
-    for obtener in obtener_fotos:
-        images.append(obtener)
-    labels = ["Año", "Combustible", "Kilómetros", "Motor", "Color", "Consumo", "Cambio", "Puertas/Plazas"]
-    datos = zip(labels, values)
-    print(obtener_fotos[-1])
-    print(obtener_coche)
-    return render_template("coche.html", datos=datos, images=obtener_fotos)
+
+    columnas = obtener_coche[1]
+
+    print(columnas)
+
+    images = [foto[0] for foto in obtener_fotos] 
+
+    values = [dato for dato in obtener_coche[0]]
+
+    
+    datos = zip(columnas, values)
+    
+    return render_template("coche.html", datos=datos, images=images)
+
 
 
 @app.route("/inicio", methods=["GET"])
