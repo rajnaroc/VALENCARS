@@ -7,14 +7,24 @@ from flask_mysqldb import MySQL
 from entities.ModelUser import ModelUser
 from utils.security import Security
 from werkzeug.utils import secure_filename
+from flask_toastr import Toastr
 import os
 import shutil
+
 
 app = Flask(__name__)
 
 db = MySQL(app)
 
+toastr = Toastr(app)
+
+
+
 login_manager = LoginManager(app)
+
+@app.context_processor
+def inject_toastr():
+    return dict(toastr=toastr)
 
 @login_manager.user_loader
 def load_user(id):
@@ -77,6 +87,7 @@ def contacto():
                 descripcion = request.form["descripcion"]
                 
                 ModelUser.enviar_contacto(db, nombre, email, telefono, motivo, descripcion)
+                flash("Mensaje enviado con éxito", "success")
                 return redirect(url_for("contacto"))
             else:
                 flash("Error al enviar el mensaje", "danger")
@@ -301,7 +312,7 @@ def pagina_no_encontrada(e):
 @app.route("/cerrar_sesion", methods=["GET"])
 def logout():
     logout_user()
-    flash("Logged out successfully", "success")
+    flash("sesion cerrada con exito", "success")
     return redirect(url_for("login"))
 
 if __name__ == '__main__':
