@@ -36,10 +36,12 @@
     <header class="bg-black py-4 w-full relative z-50">
         <div class="container mx-auto flex items-center justify-between px-4">
             <!-- Logo alineado a la izquierda -->
+            <a href="{{ url_for('inicio' ) }}">
             <div class="flex items-center space-x-2">
-                <img class="w-14" src="{{url_for('static', filename='img/logo.png')}}" alt="logo valencars">
-                <h1 class="text-white font-bold text-lg">VALENCARS</h1>
+                    <img class="w-14" src="{{url_for('static', filename='img/logo.png')}}" alt="logo valencars">
+                    <h1 class="text-white font-bold text-lg">VALENCARS</h1>
             </div>
+            </a>
     
             <!-- Botón hamburguesa solo visible en móvil -->
             <div class="md:hidden">
