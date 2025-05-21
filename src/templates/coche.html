@@ -48,7 +48,7 @@
 
     <div class="w-full max-w-md">
       <hr class="h-[2px] bg-black border-0 my-4" />
-      <p class="text-lg text-gray-700 mb-6">{{datos['anio']}} | {{datos['motor']}} | {{datos['kilometros']}} | {{datos['combustible']}}</p>
+      <p class="text-lg text-gray-700 mb-6">{{datos['anio']}} año | {{datos['motor']}}cv | {{ "{:,.0f}".format(datos['kilometros']).replace(",", ".") }}km | {{datos['combustible']}}</p>
     </div>
 
     <div class="mb-6">
