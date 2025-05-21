@@ -64,16 +64,31 @@
 <!-- Divider Line -->
 <hr class="h-[2px] bg-black border-0 my-6 mx-8" />
 
-<!-- Details Section -->
-{% set claves_mostrar = ['estado', 'descripcion', 'consumo','cambio','combustible','puertas','plazas'] %}
-<section class="px-8 pb-8 grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-8 text-center text-sm">
-  {% for label, value in datos.items() if label in claves_mostrar %}
-    <div>
-      <p class="text-gray-500 uppercase">{{ label }}</p>
-      <p class="font-semibold">{{ value }}</p>
-    </div>
+<!-- Ejemplo con iconos -->
+{% set claves_mostrar = ['estado', 'consumo', 'cambio', 'combustible', 'puertas', 'plazas', 'descripcion'] %}
+{% set iconos = {
+  'estado': 'fa-car',
+  'consumo': 'fa-gas-pump',
+  'cambio': 'fa-cogs',
+  'combustible': 'fa-burn',
+  'puertas': 'fa-door-closed',
+  'descripcion': 'fa-align-left',
+  'plazas': 'fa-users'
+} %}
+<section class="px-8 pb-8 grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-8 text-center text-sm">
+  {% for clave in claves_mostrar %}
+    {% if clave in datos %}
+      <div {% if clave == 'descripcion' %}class="col-span-2 md:col-span-3"{% endif %}>
+        <p class="text-gray-500 uppercase flex items-center justify-center gap-2">
+          <i class="fas {{ iconos[clave] }}"></i> {{ clave }}
+        </p>
+        <p class="font-semibold">{{ datos[clave] }}</p>
+      </div>
+    {% endif %}
   {% endfor %}
 </section>
+
+
 
 
 <!-- Script del carrusel -->

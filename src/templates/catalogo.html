@@ -47,8 +47,8 @@
                 </div>
                 <div class="p-4">
                     <p class="font-bold text-lg">{{ coche[1] }} {{ coche[2] }} ({{ coche[3] }})</p>
-                    <p class="text-gray-600">Precio contado: {{ coche[9] }} €</p>
-                    <p class="text-gray-600">Kilómetros: {{ coche[12] }} km</p>
+                    <p class="text-gray-600">Precio contado: {{ "{:,.0f}".format( coche[9]).replace(",", ".") }}€</p>
+                    <p class="text-gray-600">Kilómetros: {{ "{:,.0f}".format( coche[13]).replace(",", ".") }}km</p>
                 </div>
             </div>
             </a>
