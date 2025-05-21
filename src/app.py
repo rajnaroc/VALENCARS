@@ -142,6 +142,7 @@ def coche(id):
         count+=1
 
     print(imagenes_limpias)
+    
     values = [dato for dato in obtener_coche[0]]
 
     datos = dict(zip(columnas, values))

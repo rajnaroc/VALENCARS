@@ -65,14 +65,16 @@
 <hr class="h-[2px] bg-black border-0 my-6 mx-8" />
 
 <!-- Details Section -->
+{% set claves_mostrar = ['estado', 'descripcion', 'consumo','cambio','combustible','puertas','plazas'] %}
 <section class="px-8 pb-8 grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-8 text-center text-sm">
-  {% for label, value in datos.items() %}
+  {% for label, value in datos.items() if label in claves_mostrar %}
     <div>
       <p class="text-gray-500">{{ label }}</p>
       <p class="font-semibold">{{ value }}</p>
     </div>
   {% endfor %}
 </section>
+
 
 <!-- Script del carrusel -->
 <script>
