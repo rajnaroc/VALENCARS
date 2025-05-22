@@ -7,6 +7,9 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="16x16"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/fontawesome.min.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-DnFzU5nXkW+fFpYFuf0WfQK5g5hPTGKhIaRk+m0KU+oOi+ZpQZmv4kl28Cko5rR9LwMGH9UkQocAlvRC1X1kUg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
@@ -27,6 +30,7 @@
         <span class="font-bold text-lg">{{current_user.nombre}}</span>
         <nav class="space-x-4">
             <a href="{{ url_for('panel' ) }}" class="hover:underline">Inicio</a>
+            <a href="{{ url_for('register' ) }}">Register</a>
             <a href="{{ url_for('ver_vehiculos' ) }}">Vehiculos</a>
             <a href="{{ url_for('ver_mensajes' ) }}" class="hover:underline">Solicitudes</a>
             <a href="{{ url_for('logout' ) }}" class="hover:underline">Cerrar sesión</a>

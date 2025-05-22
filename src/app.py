@@ -57,6 +57,11 @@ def solicitudes():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     registerForm = registerform()
+    if request.method == "GET":
+        if not current_user.is_authenticated:
+            return redirect("/")
+        return render_template("register.html", form=registerForm)
+
     if request.method == "POST":
         nombre = request.form["nombre"]
         correo = request.form["email"]
@@ -68,8 +73,6 @@ def register():
             return redirect(url_for("login"))
         else:
             flash("Error al registrar el usuario", "danger")
-    
-    return render_template("register.html", form=registerForm)
 
 @app.route("/contacto", methods=["POST", "GET"])
 def contacto():

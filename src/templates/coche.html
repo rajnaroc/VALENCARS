@@ -48,7 +48,7 @@
 
     <div class="w-full max-w-md">
       <hr class="h-[2px] bg-black border-0 my-4" />
-      <p class="text-lg text-gray-700 mb-6">{{datos['anio']}} | {{datos['motor']}} | {{datos['kilometros']}} | {{datos['combustible']}}</p>
+      <p class="text-lg text-gray-700 mb-6">{{datos['anio']}} año | {{datos['motor']}}cv | {{ "{:,.0f}".format(datos['kilometros']).replace(",", ".") }}km | {{datos['combustible']}}</p>
     </div>
 
     <div class="mb-6">
@@ -64,15 +64,32 @@
 <!-- Divider Line -->
 <hr class="h-[2px] bg-black border-0 my-6 mx-8" />
 
-<!-- Details Section -->
-<section class="px-8 pb-8 grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-8 text-center text-sm">
-  {% for label, value in datos.items() %}
-    <div>
-      <p class="text-gray-500">{{ label }}</p>
-      <p class="font-semibold">{{ value }}</p>
-    </div>
+<!-- Ejemplo con iconos -->
+{% set claves_mostrar = ['estado', 'consumo', 'cambio', 'combustible', 'puertas', 'plazas', 'descripcion'] %}
+{% set iconos = {
+  'estado': 'fa-car',
+  'consumo': 'fa-gas-pump',
+  'cambio': 'fa-cogs',
+  'combustible': 'fa-burn',
+  'puertas': 'fa-door-closed',
+  'descripcion': 'fa-align-left',
+  'plazas': 'fa-users'
+} %}
+<section class="px-8 pb-8 grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-8 text-center text-sm">
+  {% for clave in claves_mostrar %}
+    {% if clave in datos %}
+      <div {% if clave == 'descripcion' %}class="col-span-2 md:col-span-3"{% endif %}>
+        <p class="text-gray-500 uppercase flex items-center justify-center gap-2">
+          <i class="fas {{ iconos[clave] }}"></i> {{ clave }}
+        </p>
+        <p class="font-semibold">{{ datos[clave] }}</p>
+      </div>
+    {% endif %}
   {% endfor %}
 </section>
+
+
+
 
 <!-- Script del carrusel -->
 <script>
