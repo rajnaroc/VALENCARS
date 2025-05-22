@@ -114,40 +114,38 @@
   }
 
   function changeImage(index) {
-    if (index >= 0 && index < totalImages) {
-      currentIndex = index;
-      showImage(currentIndex);
-    }
+    currentIndex = index;
+    showImage(currentIndex);
   }
 
   window.changeImage = changeImage;
 
-  // Función para iniciar el autoplay
   function startAutoplay() {
     autoplayInterval = setInterval(() => {
       currentIndex = (currentIndex + 1) % totalImages;
       showImage(currentIndex);
-    }, 9000); // Cambiar cada 9 segundos
+    }, 9000);
   }
 
-  // Función para pausar el autoplay
   function stopAutoplay() {
     clearInterval(autoplayInterval);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    carouselContainer = document.querySelector('.carousel-container');
+    carouselContainer = document.querySelector('#carousel');
     images = document.querySelectorAll('.carousel-item');
     totalImages = images.length;
     thumbnails = document.querySelectorAll('.thumbnail img');
 
-    // Establecer el ancho dinámico del contenedor
-    carouselContainer.style.width = `${totalImages * 100}%`;
+    // Asegura que cada item tenga el 100% del ancho
     images.forEach(image => {
-      image.style.width = `${100 / totalImages}%`;
+      image.style.flex = '0 0 100%';
     });
 
-    // Eventos de navegación
+    showImage(currentIndex);
+    startAutoplay();
+
+    // Botones
     document.getElementById('prev').addEventListener('click', () => {
       currentIndex = (currentIndex - 1 + totalImages) % totalImages;
       showImage(currentIndex);
@@ -158,16 +156,7 @@
       showImage(currentIndex);
     });
 
-    // Inicializar el carrusel
-    showImage(currentIndex);
-
-    // Iniciar el autoplay
-    startAutoplay();
-
-    // Pausar el autoplay cuando el ratón esté sobre el carrusel
     carouselContainer.addEventListener('mouseover', stopAutoplay);
-
-    // Reanudar el autoplay cuando el ratón salga del carrusel
     carouselContainer.addEventListener('mouseleave', startAutoplay);
   });
 </script>
