@@ -217,3 +217,14 @@ class ModelUser:
         except Exception as e:
             print(e)
             return None
+    @classmethod
+    def todas_fotos(cls,db):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("SELECT ruta FROM fotos")
+            fotos = cursor.fetchall()
+            cursor.close()
+            return fotos
+        except Exception as e:
+            print(e)
+            return None

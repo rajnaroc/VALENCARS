@@ -145,7 +145,11 @@ def coche(id):
 
 @app.route("/inicio", methods=["GET"])
 def inicio():
-    return render_template("inicio.html")
+    fotos = ModelUser.todas_fotos(db)
+    
+    images = [img[0] for img in fotos]
+
+    return render_template("inicio.html", images=images)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
