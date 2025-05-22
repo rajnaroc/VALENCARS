@@ -9,15 +9,18 @@
   <!-- Car Image & Thumbnails -->
   <div class="flex flex-col items-center">
     <!-- Carrusel de imágenes -->
-    <div class="relative w-full max-w-md overflow-hidden">
-      <div id="carousel" class="carousel-container flex transition-transform duration-700 ease-in-out">
+    <div class="relative w-full max-w-md aspect-square overflow-hidden">
+      <div id="carousel" class="carousel-container flex transition-transform duration-700 ease-in-out h-full">
         {% for image in images %}
-        <div class="carousel-item w-full flex-shrink-0">
+        <div class="carousel-item w-full h-full flex-shrink-0">
           <img 
-            src="{{ url_for('static', filename=image) }}" alt="Coche" class="h-auto rounded-md"/>
+            src="{{ url_for('static', filename=image) }}" 
+            alt="Coche" 
+            class="w-full h-full object-contain rounded-md"/>
         </div>
         {% endfor %}
       </div>
+
     
       <!-- Botones -->
       <button id="prev" aria-label="Imagen anterior" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full z-10">
