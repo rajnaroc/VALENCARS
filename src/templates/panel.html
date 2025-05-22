@@ -5,7 +5,7 @@
         <!-- Formulario -->
         <section class="bg-gray-200 p-6 m-4 rounded-lg">
         <h2 class="text-center font-bold text-lg mb-6">Formulario Coches</h2>
-        <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="/panel" method="POST">
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="/panel" method="POST" enctype="multipart/form-data">
             <input type="text" placeholder="Marca" class="p-2 rounded border" name="marca" />
             <input type="text" placeholder="Modelo" class="p-2 rounded border" name="modelo" />
             <select name="estado" class="p-2 rounded border">
@@ -25,10 +25,6 @@
             <input type="number" placeholder="Motor" class="p-2 rounded border" name="motor" />
             <textarea placeholder="Comentarios del anunciante" class="p-2 rounded border md:row-span-2 resize-none" name="comentario"></textarea>
             <input type="text" placeholder="Color" class="p-2 rounded border" name="color" />
-            <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Enviar</button>
-        </form>
-        <form method="POST" action="/subir_foto_temp" enctype="multipart/form-data">
-        <div>
             <label for="imagen" class="block mb-2">Subir imagen:</label>
             <input type="file" multiple name="fotos[]" class="block w-full text-sm text-gray-500
             file:mr-4 file:py-2 file:px-4
@@ -37,13 +33,8 @@
             file:bg-black file:text-white
             hover:file:bg-gray-800
             transition">
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">
-                Subir imagen
-            </button>
-        </div>
-    </form>
+            <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Enviar</button>
+        </form>
 
         </section>
     

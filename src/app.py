@@ -37,11 +37,9 @@ def catalogo():
     coches_limpios = []
     for coche in coches:
         if coche[-1] is not None:
-            print(coche[-1])
             coche = list(coche)
             coche[-1] = coche[-1].replace('\\', '/')
             coches_limpios.append(coche)
-            print(coche[-1])
         else:
             coche = list(coche)
             coche[-1] = "img/no_image.jpg"
@@ -127,24 +125,16 @@ def coche(id):
     obtener_coche = ModelUser.obtener_coche(db, id)
     obtener_fotos = ModelUser.obtener_fotos(db, id)
 
-    columnas = obtener_coche[1]
+    if not obtener_coche:
+        flash("Coche no encontrado", "warning")
+        return redirect(url_for("home"))
 
+    imagenes_limpias = [
+    (f[0].replace("\\", "/") if f[0] else "img/no_image.jpg")
+    for f in obtener_fotos
+    ]
 
-    imagenes_limpias = []
-
-    print(obtener_fotos)
-    count = 0
-    for foto in obtener_fotos:
-        if foto[count] is not None:
-            imagenes_limpias.append(foto[count].replace("\\", "/"))
-        else:
-            imagenes_limpias.append("img/no_image.jpg")
-        count+=1
-
-    print(imagenes_limpias)
-    values = [dato for dato in obtener_coche[0]]
-
-    datos = dict(zip(columnas, values))
+    datos = dict(zip(obtener_coche[1], obtener_coche[0]))
     
     return render_template("coche.html", datos=datos, images=imagenes_limpias)
 
@@ -202,6 +192,7 @@ def panel():
         kilometros = request.form.get('kilometros')
         puertas = request.form.get('puertas')
         plazas = request.form.get('plazas')
+        
 
         coche_id = ModelUser.agregar_coche(
             db, marca, modelo, anio, precio_contado, precio_financiado, estado,
@@ -213,21 +204,22 @@ def panel():
             flash("Error al insertar el coche", "danger")
             return redirect('/panel')
 
-        carpeta_temp = os.path.join("static", "temp", str(current_user.id))
-        carpeta_final = os.path.join("static", "uploads", str(coche_id))
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        STATIC_DIR = os.path.join(BASE_DIR, "static")
+        fotos = request.files.getlist('fotos[]')
+        carpeta_final = os.path.join(STATIC_DIR, "uploads", str(coche_id))
         os.makedirs(carpeta_final, exist_ok=True)
 
-        if os.path.exists(carpeta_temp):
-            for foto_nombre in os.listdir(carpeta_temp):
-                origen = os.path.join(carpeta_temp, foto_nombre)
-                destino = os.path.join(carpeta_final, foto_nombre)
-                os.rename(origen, destino)
-
-                ruta_relativa = os.path.relpath(destino, "static")
-                cursor = db.connection.cursor()
-                cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
-                db.connection.commit()
-                cursor.close()
+        for foto in fotos:
+                if foto and foto.filename != '':
+                    filename = secure_filename(foto.filename)
+                    ruta_destino = os.path.join(carpeta_final, filename)
+                    foto.save(ruta_destino)
+                    ruta_relativa = os.path.relpath(ruta_destino, STATIC_DIR).replace("\\", "/")
+                    cursor = db.connection.cursor()
+                    cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
+                    db.connection.commit()
+                    cursor.close()
 
         flash("Coche insertado correctamente", "success")
         return redirect('/panel')
@@ -286,24 +278,6 @@ def eliminar_vehiculo(id):
 
         flash("Vehículo eliminado con éxito", "success")
         return redirect(url_for("ver_vehiculos"))
-    
-@app.route("/subir_foto_temp", methods=["POST"])
-def subir_foto_temp():
-    fotos = request.files.getlist("fotos[]")
-    if not fotos:
-        return jsonify({"error": "No se recibió ninguna foto"}), 400
-    
-    user_id = current_user.id
-    carpeta_temp = os.path.join(current_app.root_path, "static", "temp", str(user_id))
-    os.makedirs(carpeta_temp, exist_ok=True)
-    for foto in fotos:
-        if foto.filename != "":
-            filename = secure_filename(foto.filename)
-            ruta_foto = os.path.join(carpeta_temp, filename)
-            foto.save(ruta_foto)
-
-    return redirect(url_for("panel"))
-
 
 @app.errorhandler(404)
 def pagina_no_encontrada(e):

@@ -74,7 +74,6 @@ class ModelUser:
             data = cur.fetchone()
 
             if data:
-                print(data)
                 id = data[0]
                 nombre = data[1]
                 email = data[2]
@@ -113,7 +112,6 @@ class ModelUser:
             ))
             db.connection.commit()
             coche_id = cur.lastrowid
-            print(coche_id)
             cur.close()
             return coche_id
 
