@@ -50,7 +50,7 @@
     
             <!-- Botón hamburguesa solo visible en móvil -->
             <div class="md:hidden">
-                <button id="menu-toggle" class="text-white focus:outline-none">
+                <button aria-label="Abrir menú de navegación" id="menu-toggle" class="text-white focus:outline-none">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -73,7 +73,7 @@
             <!-- Menú lateral desde la derecha -->
             <div id="side-menu" class="fixed top-0 right-0 h-full w-64 bg-black transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-40">
                 <div class="p-6 flex flex-col space-y-4 h-full">
-                    <button id="close-menu" class="text-white self-end text-2xl">✕</button>
+                    <button aria-label="cerrar menú de navegación" id="close-menu" class="text-white self-end text-2xl">✕</button>
                     <a href="{{ url_for('inicio') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 transition-all duration-300 ease-in-out transform hover:scale-105">INICIO</a>
                     <a href="{{ url_for('somos') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 transition-all duration-300 ease-in-out transform hover:scale-105">QUIÉNES SOMOS</a>
                     <a href="{{ url_for('contacto') }}" class="text-white hover:bg-white hover:rounded hover:text-black p-2 transition-all duration-300 ease-in-out transform hover:scale-105">CONTACTO</a>
