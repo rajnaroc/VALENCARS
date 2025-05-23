@@ -1,7 +1,7 @@
 from flask import flash, request
 from .models.User import User
 from werkzeug.utils import secure_filename
-
+import os
 
 class ModelUser:
 
@@ -306,3 +306,54 @@ class ModelUser:
         combustibles = [row[0] for row in cursor.fetchall()]
         cursor.close()
         return combustibles
+    
+    @classmethod
+    def obtener_coche_por_id(cls, db, coche_id):
+        cursor = db.connection.cursor()
+        cursor.execute("SELECT * FROM coches WHERE id = %s", (coche_id,))
+        return cursor.fetchone()
+
+    @classmethod
+    def obtener_fotos_por_coche(cls, db, coche_id):
+        cursor = db.connection.cursor()
+        cursor.execute("SELECT * FROM fotos WHERE coche_id = %s", (coche_id,))
+        return cursor.fetchall()
+
+    @classmethod
+    def actualizar_coche(cls, db, coche_id, datos, nuevas_fotos=[]):
+        cursor = db.connection.cursor()
+        
+        # Actualizar datos del coche
+        query = """
+        UPDATE coches 
+        SET marca=%s, modelo=%s, estado=%s, precio_contado=%s, 
+            precio_financiado=%s, anio=%s, consumo=%s, combustible=%s, 
+            cambio=%s, kilometros=%s, puertas=%s, plazas=%s, 
+            motor=%s, descripcion=%s
+        WHERE id=%s
+        """
+        params = (
+            datos['marca'], datos['modelo'], datos['estado'],
+            datos['precio_contado'], datos['precio_financiado'],
+            datos['ano'], datos['consumo'], datos['combustible'],
+            datos['cambio'], datos['kilometros'], datos['puertas'],
+            datos['plazas'], datos['motor'], datos['comentario'],coche_id
+        )
+        cursor.execute(query, params)
+        
+        # Guardar nuevas fotos
+        for foto in nuevas_fotos:
+            if foto.filename != '':
+                filename = secure_filename(foto.filename)
+                filepath = os.path.join('static/uploads', filename)
+                foto.save(filepath)
+                
+                cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)",(coche_id, f"uploads/{filename}"))
+        
+        db.connection.commit()
+
+    @classmethod
+    def eliminar_foto(cls, db, foto_id):
+        cursor = db.connection.cursor()
+        cursor.execute("DELETE FROM fotos WHERE id = %s", (foto_id,))
+        db.connection.commit()
