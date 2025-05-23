@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Valencars, concesionario en Valencia especializado en coches nuevos y de ocasión. Encuentra las mejores ofertas, financiación a medida y servicio postventa. ¡Visítanos hoy!">
     <title> {% block title %}{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="16x16"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/webp" href="{{ url_for('static', filename='img/favicon.webp') }}" sizes="16x16"/>
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/fontawesome.min.css">
     <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-DnFzU5nXkW+fFpYFuf0WfQK5g5hPTGKhIaRk+m0KU+oOi+ZpQZmv4kl28Cko5rR9LwMGH9UkQocAlvRC1X1kUg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -42,7 +43,7 @@
             <!-- Logo alineado a la izquierda -->
             <a href="{{ url_for('inicio' ) }}">
             <div class="flex items-center space-x-2">
-                    <img class="w-14" src="{{url_for('static', filename='img/logo.png')}}" alt="logo valencars">
+                    <img class="w-14" src="{{url_for('static', filename='img/logo.webp')}}" alt="logo valencars">
                     <h1 class="text-white font-bold text-lg">VALENCARS</h1>
             </div>
             </a>

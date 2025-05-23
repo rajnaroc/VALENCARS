@@ -13,7 +13,7 @@
 
 <!-- Imagen del local -->
 <section class="px-6 mb-10">
-    <img src="/static/img/local.png" alt="Valencars Local" class="w-full rounded-md shadow">
+    <img src="/static/img/local.webp" alt="Valencars Local" class="w-800 rounded-md shadow">
 </section>
 
 <!-- Selección de vehículos -->
@@ -59,23 +59,23 @@
 
     </div>
 </section>
+
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const carousel = document.getElementById('carousel');
-        const slides = document.querySelectorAll('#carousel > div');
-        const total = slides.length;
-        let index = 0;
+const carousel = document.getElementById('carousel');
+const slides = document.querySelectorAll('#carousel > div');
+const total = slides.length;
+let index = 0;
 
-        function showSlide(i) {
-        const offset = -i * 100;
-        carousel.style.transform = `translateX(${offset}%)`;
-        }
+function showSlide(i) {
+  const offset = -i * 100;
+  carousel.style.transform = `translateX(${offset}%)`;
+}
 
-        setInterval(() => {
-        index = (index + 1) % total;
-        showSlide(index);
-        }, 10000); // 10 segundos
-    });
+setInterval(() => {
+  index = (index + 1) % total;
+  showSlide(index);
+}, 10000);
+
 </script>
 
 {% endblock %}

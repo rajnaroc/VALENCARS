@@ -82,7 +82,7 @@ def contacto():
         return render_template("contacto.html", form=contactForm)
 
 @app.route("/mensaje/<int:id>", methods=["GET"])
-def eleminar_mensaje(id):
+def eliminar_mensaje(id):
     if not current_user.is_authenticated:
         return redirect("/")
     
@@ -340,7 +340,7 @@ def ver_vehiculos():
 
         return render_template('vehiculos.html', coches=coches_con_fotos)
 
-@app.route("/eliminar_vehiculo/<int:id>")
+@app.route("/eliminar_vehiculo/<int:id>" , methods=["POST", "GET"])
 def eliminar_vehiculo(id):
     if not current_user.is_authenticated:
         return redirect("/")
