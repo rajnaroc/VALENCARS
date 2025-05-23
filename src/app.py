@@ -193,6 +193,34 @@ def catalogo():
                              'per_page': per_page
                          })
 
+@app.route('/panel/editar/<int:coche_id>', methods=['GET', 'POST'])
+def editar_coche(coche_id):
+    if request.method == 'GET':
+        # Obtener datos del coche
+        coche = ModelUser.obtener_coche_por_id(db, coche_id)
+        fotos = ModelUser.obtener_fotos_por_coche(db, coche_id)
+        if not coche:
+            flash('Coche no encontrado', 'warning')
+            return redirect(url_for('panel_admin'))
+            
+        return render_template('editar_coche.html', coche=coche, fotos=fotos)
+    
+    elif request.method == 'POST':
+        # Procesar actualización
+        datos = request.form.to_dict()
+        fotos = request.files.getlist('fotos[]')
+        
+        ModelUser.actualizar_coche(db, coche_id, datos, fotos)
+        flash('Coche actualizado correctamente', 'success')
+        return redirect(url_for('panel'))
+
+
+@app.route('/panel/eliminar-foto/<int:foto_id>', methods=['DELETE'])
+def eliminar_foto(foto_id):
+    ModelUser.eliminar_foto(db, foto_id)
+    return jsonify({'success': True}), 200
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     loginForm = loginform()
