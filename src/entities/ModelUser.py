@@ -228,3 +228,81 @@ class ModelUser:
         except Exception as e:
             print(e)
             return None
+
+    @classmethod
+    def obtener_coches_con_foto_principal_paginados(cls, db, marca='', precio_min='', precio_max='', 
+                                                anio_min='', anio_max='', combustible='',
+                                                page=1, per_page=6):
+        # Consulta SQL con orden explícito de columnas
+        query = """
+        SELECT SQL_CALC_FOUND_ROWS 
+            c.id, c.marca, c.modelo, c.precio_contado, c.anio, c.combustible,
+            (SELECT f.ruta FROM fotos f WHERE f.coche_id = c.id LIMIT 1) as ruta 
+        FROM coches c
+        WHERE 1=1
+        """
+        params = []
+        
+        # Aplicar filtros
+        if marca:
+            query += " AND c.marca = %s"
+            params.append(marca)
+        
+        if precio_min:
+            query += " AND c.precio_contado >= %s"
+            params.append(float(precio_min))
+        
+        if precio_max:
+            query += " AND c.precio_contado <= %s"
+            params.append(float(precio_max))
+        
+        if anio_min:
+            query += " AND c.anio >= %s"
+            params.append(int(anio_min))
+        
+        if anio_max:
+            query += " AND c.anio <= %s"
+            params.append(int(anio_max))
+        
+        if combustible:
+            query += " AND c.combustible = %s"
+            params.append(combustible)
+
+        # Paginación
+        query += " LIMIT %s OFFSET %s"
+        offset = (page - 1) * per_page
+        params.extend([per_page, offset])
+
+        cursor = db.connection.cursor()
+        cursor.execute(query, params)
+        
+        # Obtener resultados como tuplas
+        coches_tuples = cursor.fetchall()
+        
+        # Obtener total de registros
+        cursor.execute("SELECT FOUND_ROWS()")
+        total = cursor.fetchone()[0]  # Acceder por índice
+        cursor.close()
+
+        return {
+            'coches': coches_tuples,
+            'total_pages': (total + per_page - 1) // per_page,
+            'total_count': total
+        }
+    @classmethod
+    def obtener_marcas_unicas(cls, db):
+        cursor = db.connection.cursor()
+        cursor.execute("SELECT DISTINCT marca FROM coches ORDER BY marca")
+        # Acceder por índice (0 para la primera columna)
+        marcas = [row[0] for row in cursor.fetchall()]
+        cursor.close()
+        return marcas
+
+    @classmethod
+    def obtener_combustibles_unicos(cls, db):
+        cursor = db.connection.cursor()
+        cursor.execute("SELECT DISTINCT combustible FROM coches ORDER BY combustible")
+        # Acceder por índice (0 para la primera columna)
+        combustibles = [row[0] for row in cursor.fetchall()]
+        cursor.close()
+        return combustibles

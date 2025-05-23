@@ -30,21 +30,6 @@ def inject_toastr():
 def load_user(id):
     return ModelUser.get_by_id(db, id)
         
-@app.route("/", methods=["GET"])
-def catalogo():
-
-    coches = ModelUser.obtener_coches_con_foto_principal(db)
-    coches_limpios = []
-    for coche in coches:
-        if coche[-1] is not None:
-            coche = list(coche)
-            coche[-1] = coche[-1].replace('\\', '/')
-            coches_limpios.append(coche)
-        else:
-            coche = list(coche)
-            coche[-1] = "img/no_image.jpg"
-            coches_limpios.append(coche)
-    return render_template("catalogo.html",coches=coches_limpios)
 
 @app.route("/solicitudes", methods=["GET"])
 def solicitudes():
@@ -150,6 +135,63 @@ def inicio():
     images = [img[0] for img in fotos]
 
     return render_template("inicio.html", images=images)
+
+
+@app.route("/", methods=["GET", "POST"])
+@app.route("/catalogo", methods=["GET", "POST"])
+def catalogo():
+    # Obtener parámetros (POST tiene prioridad sobre GET)
+    filtros = {
+        'marca': request.form.get('marca', request.args.get('marca', '')),
+        'precio_min': request.form.get('precio_contado_min', request.args.get('precio_contado_min', '')),
+        'precio_max': request.form.get('precio_contado_max', request.args.get('precio_contado_max', '')),
+        'anio_min': request.form.get('anio_min', request.args.get('anio_min', '')),
+        'anio_max': request.form.get('anio_max', request.args.get('anio_max', '')),
+        'combustible': request.form.get('combustible', request.args.get('combustible', ''))
+    }
+    
+    # Paginación (siempre por GET)
+    page = request.args.get('page', 1, type=int)
+    per_page = 6
+
+    # Obtener datos con filtros
+    coches_data = ModelUser.obtener_coches_con_foto_principal_paginados(
+        db,
+        marca=filtros['marca'],
+        precio_min=filtros['precio_min'],
+        precio_max=filtros['precio_max'],
+        anio_min=filtros['anio_min'],
+        anio_max=filtros['anio_max'],
+        combustible=filtros['combustible'],
+        page=page,
+        per_page=per_page
+    )
+
+    # Procesar imágenes
+    coches_limpios = []
+    for coche_tuple in coches_data['coches']:
+        coche_list = list(coche_tuple)
+        if coche_list[6]:  # ruta está en la posición 6
+            coche_list[6] = coche_list[6].replace('\\', '/')
+        else:
+            coche_list[6] = "img/no_image.jpg"
+        coches_limpios.append(coche_list)
+
+    # Obtener opciones para filtros
+    marcas = ModelUser.obtener_marcas_unicas(db)
+    combustibles = ModelUser.obtener_combustibles_unicos(db)
+
+    return render_template("catalogo.html",
+                         coches=coches_limpios,
+                         marcas=marcas,
+                         combustibles=combustibles,
+                         filtros_actuales=filtros,
+                         pagination={
+                             'page': page,
+                             'pages': coches_data['total_pages'],
+                             'total': coches_data['total_count'],
+                             'per_page': per_page
+                         })
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
