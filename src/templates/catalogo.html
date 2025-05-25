@@ -161,16 +161,5 @@ document.querySelectorAll('#filtros-form select').forEach(select => {
         this.form.submit();
     });
 });
-
-// Para inputs numéricos, agregar un pequeño delay
-let inputTimer;
-document.querySelectorAll('#filtros-form input[type="number"]').forEach(input => {
-    input.addEventListener('input', function() {
-        clearTimeout(inputTimer);
-        inputTimer = setTimeout(() => {
-            this.form.submit();
-        }, 800); // 0.8 segundos después de dejar de escribir
-    });
-});
 </script>
 {% endblock %}
