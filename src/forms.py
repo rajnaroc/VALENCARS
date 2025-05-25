@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField,StringField,EmailField,PasswordField,SelectField, ValidationError
+from wtforms import SubmitField,StringField,EmailField,PasswordField,SelectField, ValidationError,IntegerField
 from wtforms.validators import DataRequired,Length,Email,Regexp
 
 def length_without_spaces(max_length):
@@ -55,7 +55,7 @@ class contactsForm(FlaskForm):
         DataRequired(message="El correo electrónico es obligatorio."),
         Email(message="Introduce un correo válido.")
     ])
-    telefono = StringField('Teléfono', validators=[
+    telefono = IntegerField('Teléfono', validators=[
         DataRequired(message="El teléfono es obligatorio."),
         length_without_spaces(9),
     ])
