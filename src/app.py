@@ -182,16 +182,16 @@ def catalogo():
     combustibles = ModelUser.obtener_combustibles_unicos(db)
 
     return render_template("catalogo.html",
-                         coches=coches_limpios,
-                         marcas=marcas,
-                         combustibles=combustibles,
-                         filtros_actuales=filtros,
-                         pagination={
-                             'page': page,
-                             'pages': coches_data['total_pages'],
-                             'total': coches_data['total_count'],
-                             'per_page': per_page
-                         })
+                        coches=coches_limpios,
+                        marcas=marcas,
+                        combustibles=combustibles,
+                        filtros_actuales=filtros,
+                        pagination={
+                            'page': page,
+                            'pages': coches_data['total_pages'],
+                            'total': coches_data['total_count'],
+                            'per_page': per_page
+                        })
 
 @app.route('/panel/editar/<int:coche_id>', methods=['GET', 'POST'])
 def editar_coche(coche_id):
