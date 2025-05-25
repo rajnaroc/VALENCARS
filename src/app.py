@@ -291,15 +291,18 @@ def panel():
         os.makedirs(carpeta_final, exist_ok=True)
 
         for foto in fotos:
-                if foto and foto.filename != '':
-                    filename = secure_filename(foto.filename)
-                    ruta_destino = os.path.join(carpeta_final, filename)
-                    foto.save(ruta_destino)
-                    ruta_relativa = os.path.relpath(ruta_destino, STATIC_DIR).replace("\\", "/")
-                    cursor = db.connection.cursor()
-                    cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
-                    db.connection.commit()
-                    cursor.close()
+            if foto and foto.filename != '':
+                filename = secure_filename(foto.filename)
+                contenido = foto.read()  # leer contenido binario
+                tipo = foto.mimetype
+
+                cursor = db.connection.cursor()
+                cursor.execute(
+                    "INSERT INTO fotos (coche_id, nombre, imagen, tipo_mime) VALUES (%s, %s, %s, %s)",
+                    (coche_id, filename, contenido, tipo)
+                )
+                db.connection.commit()
+                cursor.close()
 
         flash("Coche insertado correctamente", "success")
         return redirect('/panel')

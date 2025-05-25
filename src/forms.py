@@ -1,6 +1,15 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField,StringField,EmailField,PasswordField,SelectField
+from wtforms import SubmitField,StringField,EmailField,PasswordField,SelectField, ValidationError,IntegerField
 from wtforms.validators import DataRequired,Length,Email,Regexp
+
+def length_without_spaces(max_length):
+    def _length_without_spaces(form, field):
+        # Contar caracteres sin espacios
+        valor_sin_espacios = field.data.replace(' ', '') if field.data else ''
+        if len(valor_sin_espacios) > max_length:
+            raise ValidationError(f'El campo no debe superar {max_length} caracteres sin contar espacios.')
+    return _length_without_spaces
+
 
 class loginform(FlaskForm):
     email = EmailField("Email", validators=[
@@ -46,13 +55,13 @@ class contactsForm(FlaskForm):
         DataRequired(message="El correo electrónico es obligatorio."),
         Email(message="Introduce un correo válido.")
     ])
-    telefono = StringField('Teléfono', validators=[
+    telefono = IntegerField('Teléfono', validators=[
         DataRequired(message="El teléfono es obligatorio."),
-        Regexp('^[0-9]{9}$', message="El teléfono debe tener exactamente 9 dígitos.")
+        length_without_spaces(9),
     ])
     motivo = SelectField("Motivo", choices=[
         ('Comprar', 'Comprar'),
-        ('Venta', 'Venta'),
+        ('Vender', 'Vender'),
     ], validators=[DataRequired(message="Selecciona un motivo.")])
     
     descripcion = StringField("Descripción", validators=[
