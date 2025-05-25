@@ -85,7 +85,11 @@
         <p class="text-gray-500 uppercase flex items-center justify-center gap-2">
           <i class="fas {{ iconos[clave] }}"></i> {{ clave }}
         </p>
+        {% if clave == 'consumo' %}
+          <p class="text-gray-700">{{ datos[clave] }} L/100km </p>
+        {% else %}
         <p class="font-semibold">{{ datos[clave] }}</p>
+        {% endif %} 
       </div>
     {% endif %}
   {% endfor %}

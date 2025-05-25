@@ -15,7 +15,9 @@
             </select>
             <input type="number" placeholder="Precio Contado" class="p-2 rounded border" name="precio_contado" required />
             <input type="number" placeholder="Precio Financiado" class="p-2 rounded border" name="precio_financiado" required />
-            <input type="number" min="1900" max="2025" placeholder="Año" class="p-2 rounded border" name="ano" required />
+            <select id="yearSelect" name="ano" class="p-2 rounded border" required>
+                <option value="" disabled selected>Año</option>
+            </select>
             <input type="number" placeholder="Consumo" class="p-2 rounded border" name="consumo" />
             <select placeholder="Combustible" class="p-2 rounded border" name="combustible" required>
                 <option value="">Selecciona Combustible</option>
@@ -128,6 +130,14 @@ document.addEventListener('DOMContentLoaded', function() {
             imagenInput.focus();
         }
     });
+    
+    const select = document.getElementById("yearSelect");
+    for (let year = 2025; year >= 2000; year--) {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        select.appendChild(option);
+    }
 });
 </script>
 

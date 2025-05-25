@@ -61,7 +61,7 @@ class contactsForm(FlaskForm):
     ])
     motivo = SelectField("Motivo", choices=[
         ('Comprar', 'Comprar'),
-        ('Venta', 'Venta'),
+        ('Vender', 'Vender'),
     ], validators=[DataRequired(message="Selecciona un motivo.")])
     
     descripcion = StringField("Descripción", validators=[
