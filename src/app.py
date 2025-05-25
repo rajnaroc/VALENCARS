@@ -12,11 +12,14 @@ import os
 import shutil
 
 
+
 app = Flask(__name__)
 
 db = MySQL(app)
 
 toastr = Toastr(app)
+
+
 
 
 
