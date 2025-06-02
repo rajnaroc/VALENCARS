@@ -10,9 +10,7 @@ class ProductionConfig(Config):
     MYSQL_PASSWORD=os.getenv("MYSQL_PASSWORD")
     MYSQL_DB=os.getenv("MYSQL_DB")
     MYSQL_PORT = int(os.getenv("MYSQL_PORT", 3306))
-    WP_USER = os.getenv("WP_USER")
-    WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
-    WP_API_URL = "https://TUDOMINIO.COM/wp-json/wp/v2/media"
+
 
 class DevelopConfig(Config):
     DEBUG=True
@@ -21,9 +19,7 @@ class DevelopConfig(Config):
     MYSQL_PASSWORD=os.getenv("MYSQL_PASSWORD")
     MYSQL_DB=os.getenv("MYSQL_DB")
     MYSQL_PORT = int(os.getenv("MYSQL_PORT", 3306))
-    WP_USER = os.getenv("WP_USER")
-    WP_APP_PASSWORD = os.getenv("WP_APP_PASSWORD")
-    WP_API_URL = "https://TUDOMINIO.COM/wp-json/wp/v2/media"
+
 
 config = {
     "dev" : DevelopConfig,

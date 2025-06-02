@@ -9,9 +9,6 @@ from werkzeug.utils import secure_filename
 from flask_toastr import Toastr
 import os
 import shutil
-import requests
-
-
 
 
 app = Flask(__name__)
@@ -244,140 +241,104 @@ def login():
     return render_template("login.html", form=loginForm)
 
 
-
-CLIENT_ID = os.getenv('WP_CLIENT_ID')
-CLIENT_SECRET = os.getenv('WP_CLIENT_SECRET')
-REDIRECT_URI = os.getenv('WP_REDIRECT_URI')
-WP_SITE_ID = os.getenv('WP_SITE_ID')  # ejemplo: 'tusitio.wordpress.com'
-
-@app.route('/login_wp')
-def login_wp():
-    # Redirige a WordPress para autorizar app
-    url = (
-        f'https://public-api.wordpress.com/oauth2/authorize?client_id={CLIENT_ID}'
-        f'&redirect_uri={REDIRECT_URI}&response_type=code&scope=global'
-    )
-    return redirect(url)
-
-@app.route('/callback')
-def callback():
-    code = request.args.get('code')
-    if not code:
-        return "No code received", 400
-
-    data = {
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
-        'redirect_uri': REDIRECT_URI,
-        'code': code,
-        'grant_type': 'authorization_code'
-    }
-    response = requests.post('https://public-api.wordpress.com/oauth2/token', data=data)
-    token_info = response.json()
-
-    access_token = token_info.get('access_token')
-    if not access_token:
-        return f"Error obteniendo token: {token_info}", 400
-
-    # Guardamos token en session (puedes usar otro sistema)
-    session['wp_access_token'] = access_token
-    flash('Autenticación con WordPress completada', 'success')
-    return redirect(url_for('panel'))  # Ruta para subir coches e imágenes
-
-@app.route('/panel', methods=['GET', 'POST'])
+@app.route("/panel", methods=["GET", "POST"])
 def panel():
-    if 'wp_access_token' not in session:
-        flash('Por favor inicia sesión en WordPress primero', 'warning')
-        return redirect(url_for('login_wp'))
+    token = request.cookies.get("jwt_token")
+    has_access = Security.verify_token(token)
 
+    if not has_access:
+        flash("Sesion no válida. Inicia sesion nuevamente", "warning")
+        return redirect(url_for("login"))
     if request.method == 'GET':
-        return render_template('panel.html')
+        if not current_user.is_authenticated:
+            return redirect(url_for("login"))
+        return render_template("panel.html")
+        
+    if request.method == "POST":
+        marca = request.form.get('marca')
+        modelo = request.form.get('modelo')
+        anio = request.form.get('ano')
+        precio_contado = request.form.get('precio_contado')
+        precio_financiado = request.form.get('precio_financiado')
+        estado = request.form.get('estado')
+        descripcion = request.form.get('comentario')
+        motor = request.form.get('motor')
+        consumo = request.form.get('consumo')
+        cambio = request.form.get('cambio')
+        combustible = request.form.get('combustible')
+        kilometros = request.form.get('kilometros')
+        puertas = request.form.get('puertas')
+        plazas = request.form.get('plazas')
+        
 
-    # POST: Recibimos datos coche + imágenes
-    marca = request.form.get('marca')
-    modelo = request.form.get('modelo')
-    # ... otros campos ...
-    fotos = request.files.getlist('fotos[]')
-
-    # Guardar el coche en la DB (usa tu función real)
-    coche_id = ModelUser.agregar_coche(db, marca, modelo, ...)  # completa con tus campos
-
-    if not coche_id:
-        flash("Error al insertar el coche", "danger")
-        return redirect(url_for('panel'))
-
-    access_token = session['wp_access_token']
-
-    # Función para subir imagen a WP
-    def subir_imagen_wp(foto):
-        filename = secure_filename(foto.filename)
-        headers = {
-            'Authorization': f'Bearer {access_token}',
-            'Content-Disposition': f'attachment; filename={filename}',
-            'Content-Type': foto.mimetype
-        }
-        response = requests.post(
-            f'https://public-api.wordpress.com/rest/v1.1/sites/{WP_SITE_ID}/media/new',
-            headers=headers,
-            data=foto.read()
+        coche_id = ModelUser.agregar_coche(
+            db, marca, modelo, anio, precio_contado, precio_financiado, estado,
+            descripcion,motor, consumo, cambio,
+            combustible, kilometros, puertas, plazas
         )
-        return response
 
-    # Subir fotos y guardar URLs en DB
-    for foto in fotos:
-        if foto and foto.filename != '':
-            resp = subir_imagen_wp(foto)
-            if resp.status_code == 201:
-                url_imagen = resp.json().get('media', {}).get('source_url')
-                if url_imagen:
+        if not coche_id:
+            flash("Error al insertar el coche", "danger")
+            return redirect('/panel')
+
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        STATIC_DIR = os.path.join(BASE_DIR, "static")
+        fotos = request.files.getlist('fotos[]')
+        carpeta_final = os.path.join(STATIC_DIR, "uploads", str(coche_id))
+        os.makedirs(carpeta_final, exist_ok=True)
+
+        for foto in fotos:
+                if foto and foto.filename != '':
+                    filename = secure_filename(foto.filename)
+                    ruta_destino = os.path.join(carpeta_final, filename)
+                    foto.save(ruta_destino)
+                    ruta_relativa = os.path.relpath(ruta_destino, STATIC_DIR).replace("\\", "/")
                     cursor = db.connection.cursor()
-                    cursor.execute(
-                        "INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)",
-                        (coche_id, url_imagen)
-                    )
+                    cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
                     db.connection.commit()
                     cursor.close()
-                else:
-                    flash("Error al obtener URL de imagen desde WordPress", "danger")
-            else:
-                flash(f"Error subiendo imagen a WordPress: {resp.text}", "danger")
 
-    flash("Coche e imágenes insertados correctamente", "success")
-    return redirect(url_for('panel'))
-
+        flash("Coche insertado correctamente", "success")
+        return redirect('/panel')
+    else:
+        return jsonify({"error": "Unauthorized"}), 401
 
 @app.route('/vehiculos', methods=["POST", "GET"])
 def ver_vehiculos():
     if not current_user.is_authenticated:
         return redirect("/")
-    
-    cur = db.connection.cursor()
+    else:
+        cur = db.connection.cursor()
 
-    # Obtener todos los coches
-    cur.execute("SELECT * FROM coches")
-    coches = cur.fetchall()
+        # Obtener todos los coches
+        cur.execute("SELECT * FROM coches")
+        coches = cur.fetchall()
 
-    # Obtener todas las fotos con sus URLs (WordPress)
-    cur.execute("SELECT coche_id, ruta FROM fotos")
-    fotos = cur.fetchall()
-    cur.close()
+        # Obtener todas las fotos
+        cur.execute("SELECT coche_id , ruta FROM fotos")
+        fotos = cur.fetchall()
+        cur.close()
 
-    # Agrupar fotos por coche_id
-    fotos_por_coche = {}
-    for coche_id, ruta in fotos:
-        if coche_id not in fotos_por_coche:
-            fotos_por_coche[coche_id] = []
-        fotos_por_coche[coche_id].append(ruta)  # ya es una URL
+        # Agrupar fotos por id_coche
+        fotos_por_coche = {}
+        for foto in fotos:
+            id_coche = foto[0]
+            ruta = foto[1].replace("\\", "/")  # corregimos las barras
+            if id_coche not in fotos_por_coche:
+                fotos_por_coche[id_coche] = []
+            fotos_por_coche[id_coche].append(ruta)
+            
 
-    # Asociar fotos a coches
-    coches_con_fotos = []
-    for coche in coches:
-        id_coche = coche[0]
-        fotos = fotos_por_coche.get(id_coche, [])
-        coches_con_fotos.append((coche, fotos))
 
-    return render_template('vehiculos.html', coches=coches_con_fotos)
+            # Convertir lista de tuplas a lista de listas + añadir fotos
+        coches_con_fotos = []
+        for coche in coches:
+            id_coche = coche[0]
+            fotos = fotos_por_coche.get(id_coche, [])
+            coches_con_fotos.append((coche, fotos))
+        print(coches_con_fotos)
 
+        return render_template('vehiculos.html', coches=coches_con_fotos)
 
 @app.route("/eliminar_vehiculo/<int:id>" , methods=["POST", "GET"])
 def eliminar_vehiculo(id):

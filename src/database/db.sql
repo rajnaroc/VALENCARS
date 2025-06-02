@@ -1,17 +1,23 @@
 CREATE TABLE coches (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    año INT NOT NULL,
-    combustible VARCHAR(50) NOT NULL,
-    kilometros INT NOT NULL,
-    motor VARCHAR(50) NOT NULL,
-    color VARCHAR(30) NOT NULL,
-    consumo DECIMAL(5,2) NOT NULL,
-    cambio VARCHAR(20) NOT NULL,
-    puertas INT NOT NULL,
-    plazas INT NOT NULL,
-    precio DECIMAL(10,2) NOT NULL,
-    modelo VARCHAR(50) NOT NULL,
-    fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    marca VARCHAR(50),
+    modelo VARCHAR(50),
+    anio INT,
+    precio_financiado DECIMAL(10,2),
+    estado VARCHAR(50),
+    descripcion TEXT,
+    fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    admin_id INT,
+    motor INT,
+    precio_contado DECIMAL(10,2),
+    consumo DECIMAL(5,2),
+    cambio VARCHAR(50),
+    combustible VARCHAR(50),
+    kilometros INT,
+    puertas INT,
+    plazas INT,
+    tipo VARCHAR(15),
+    FOREIGN KEY (admin_id) REFERENCES admin(id)
 );
 
 CREATE TABLE fotos(
