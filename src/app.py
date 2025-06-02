@@ -152,12 +152,14 @@ def catalogo():
         'precio_max': request.form.get('precio_contado_max', request.args.get('precio_contado_max', '')),
         'anio_min': request.form.get('anio_min', request.args.get('anio_min', '')),
         'anio_max': request.form.get('anio_max', request.args.get('anio_max', '')),
-        'combustible': request.form.get('combustible', request.args.get('combustible', ''))
+        'combustible': request.form.get('combustible', request.args.get('combustible', '')),
+        'tipo': request.form.get('tipo', request.args.get('tipo', '')),
+        'cambio': request.form.get('cambio', request.args.get('cambio', ''))
     }
     
     # Paginación (siempre por GET)
     page = request.args.get('page', 1, type=int)
-    per_page = 6
+    per_page = 15
 
     # Obtener datos con filtros
     coches_data = ModelUser.obtener_coches_con_foto_principal_paginados(
@@ -168,6 +170,8 @@ def catalogo():
         anio_min=filtros['anio_min'],
         anio_max=filtros['anio_max'],
         combustible=filtros['combustible'],
+        tipo=filtros['tipo'],
+        cambio=filtros['cambio'],
         page=page,
         per_page=per_page
     )
@@ -185,11 +189,15 @@ def catalogo():
     # Obtener opciones para filtros
     marcas = ModelUser.obtener_marcas_unicas(db)
     combustibles = ModelUser.obtener_combustibles_unicos(db)
+    tipos = ModelUser.obtener_tipos_unicos(db)
+    cambios = ModelUser.obtener_cambios_unicos(db)
 
     return render_template("catalogo.html",
                         coches=coches_limpios,
                         marcas=marcas,
                         combustibles=combustibles,
+                        tipos=tipos,
+                        cambios=cambios,
                         filtros_actuales=filtros,
                         pagination={
                             'page': page,
@@ -215,6 +223,20 @@ def editar_coche(coche_id):
         datos = request.form.to_dict()
         fotos = request.files.getlist('fotos[]')
         
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        STATIC_DIR = os.path.join(BASE_DIR, "static")
+        fotos = request.files.getlist('fotos[]')
+        carpeta_final = os.path.join(STATIC_DIR, "uploads", str(coche_id))
+        os.makedirs(carpeta_final, exist_ok=True)
+        cursor = db.connection.cursor()
+        for foto in fotos:
+                if foto and foto.filename != '':
+                    filename = secure_filename(foto.filename)
+                    ruta_destino = os.path.join(carpeta_final, filename)
+                    foto.save(ruta_destino)
+                    ruta_relativa = os.path.relpath(ruta_destino, STATIC_DIR).replace("\\", "/")
+                    cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
+
         ModelUser.actualizar_coche(db, coche_id, datos, fotos)
         flash('Coche actualizado correctamente', 'success')
         return redirect(url_for('panel'))
@@ -288,7 +310,7 @@ def panel():
         fotos = request.files.getlist('fotos[]')
         carpeta_final = os.path.join(STATIC_DIR, "uploads", str(coche_id))
         os.makedirs(carpeta_final, exist_ok=True)
-
+        cursor = db.connection.cursor()
         for foto in fotos:
                 if foto and foto.filename != '':
                     filename = secure_filename(foto.filename)
@@ -331,7 +353,6 @@ def ver_vehiculos():
                 fotos_por_coche[id_coche] = []
             fotos_por_coche[id_coche].append(ruta)
             
-
 
             # Convertir lista de tuplas a lista de listas + añadir fotos
         coches_con_fotos = []

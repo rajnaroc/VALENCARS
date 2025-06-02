@@ -231,7 +231,7 @@ class ModelUser:
 
     @classmethod
     def obtener_coches_con_foto_principal_paginados(cls, db, marca='', precio_min='', precio_max='', 
-                                                anio_min='', anio_max='', combustible='',
+                                                anio_min='', anio_max='', combustible='', tipo='',cambio='',
                                                 page=1, per_page=6):
         # Consulta SQL con orden explícito de columnas
         query = """
@@ -267,6 +267,14 @@ class ModelUser:
         if combustible:
             query += " AND c.combustible = %s"
             params.append(combustible)
+
+        if tipo:
+            query += " AND c.tipo = %s"
+            params.append(tipo)
+        
+        if cambio:
+            query += " AND c.cambio = %s"
+            params.append(cambio)
 
         # Paginación
         query += " LIMIT %s OFFSET %s"
@@ -340,23 +348,27 @@ class ModelUser:
             datos['plazas'], datos['motor'], datos['comentario'],datos['tipo'],coche_id
         )
         cursor.execute(query, params)
-        
-        # Guardar nuevas fotos
-        for foto in nuevas_fotos:
-            if foto.filename != '':
-                filename = secure_filename(foto.filename)
-                contenido = foto.read()  # Leer el contenido binario
-                tipo_mime = foto.mimetype  # Obtener tipo MIME
-
-                cursor.execute("""
-                    INSERT INTO fotos (id_coche, imagen, nombre, tipo_mime) 
-                    VALUES (%s, %s, %s, %s)
-                """, (coche_id, contenido, filename, tipo_mime))
-        
         db.connection.commit()
+        cursor.close()
 
     @classmethod
     def eliminar_foto(cls, db, foto_id):
         cursor = db.connection.cursor()
         cursor.execute("DELETE FROM fotos WHERE id = %s", (foto_id,))
         db.connection.commit()
+    
+    @staticmethod
+    def obtener_tipos_unicos(db):
+        cursor = db.connection.cursor()
+        cursor.execute("SELECT DISTINCT tipo FROM coches WHERE tipo IS NOT NULL AND tipo != ''")
+        tipos = [row[0] for row in cursor.fetchall()]
+        cursor.close()
+        return tipos
+
+    @staticmethod
+    def obtener_cambios_unicos(db):
+        cursor = db.connection.cursor()
+        cursor.execute("SELECT DISTINCT cambio FROM coches WHERE cambio IS NOT NULL AND cambio != ''")
+        cambios = [row[0] for row in cursor.fetchall()]
+        cursor.close()
+        return cambios
