@@ -1,4 +1,5 @@
 from flask import Flask, app, request, jsonify, render_template, redirect, url_for,flash, make_response, current_app
+from numpy import imag
 from forms import loginform, contactsForm, registerform
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from config import config
@@ -9,15 +10,18 @@ from werkzeug.utils import secure_filename
 from flask_toastr import Toastr
 import os
 import shutil
+import requests
+
+
 
 
 app = Flask(__name__)
 
-app.config.from_object(config["produ"])
-
 db = MySQL(app)
 
 toastr = Toastr(app)
+
+
 
 
 
@@ -129,7 +133,7 @@ def coche(id):
 
 
 
-@app.route("/", methods=["GET"])
+@app.route("/inicio", methods=["GET"])
 def inicio():
     fotos = ModelUser.todas_fotos(db)
     
@@ -138,6 +142,7 @@ def inicio():
     return render_template("inicio.html", images=images)
 
 
+@app.route("/", methods=["GET", "POST"])
 @app.route("/catalogo", methods=["GET", "POST"])
 def catalogo():
     # Obtener parámetros (POST tiene prioridad sobre GET)
@@ -182,16 +187,16 @@ def catalogo():
     combustibles = ModelUser.obtener_combustibles_unicos(db)
 
     return render_template("catalogo.html",
-                         coches=coches_limpios,
-                         marcas=marcas,
-                         combustibles=combustibles,
-                         filtros_actuales=filtros,
-                         pagination={
-                             'page': page,
-                             'pages': coches_data['total_pages'],
-                             'total': coches_data['total_count'],
-                             'per_page': per_page
-                         })
+                        coches=coches_limpios,
+                        marcas=marcas,
+                        combustibles=combustibles,
+                        filtros_actuales=filtros,
+                        pagination={
+                            'page': page,
+                            'pages': coches_data['total_pages'],
+                            'total': coches_data['total_count'],
+                            'per_page': per_page
+                        })
 
 @app.route('/panel/editar/<int:coche_id>', methods=['GET', 'POST'])
 def editar_coche(coche_id):
@@ -277,31 +282,49 @@ def panel():
             combustible, kilometros, puertas, plazas
         )
 
-        if not coche_id:
-            flash("Error al insertar el coche", "danger")
-            return redirect('/panel')
+    if not coche_id:
+        flash("Error al insertar el coche", "danger")
+        return redirect(url_for('panel'))
 
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        STATIC_DIR = os.path.join(BASE_DIR, "static")
-        fotos = request.files.getlist('fotos[]')
-        carpeta_final = os.path.join(STATIC_DIR, "uploads", str(coche_id))
-        os.makedirs(carpeta_final, exist_ok=True)
+    access_token = session['wp_access_token']
 
-        for foto in fotos:
-                if foto and foto.filename != '':
-                    filename = secure_filename(foto.filename)
-                    ruta_destino = os.path.join(carpeta_final, filename)
-                    foto.save(ruta_destino)
-                    ruta_relativa = os.path.relpath(ruta_destino, STATIC_DIR).replace("\\", "/")
+    # Función para subir imagen a WP
+    def subir_imagen_wp(foto):
+        filename = secure_filename(foto.filename)
+        headers = {
+            'Authorization': f'Bearer {access_token}',
+            'Content-Disposition': f'attachment; filename={filename}',
+            'Content-Type': foto.mimetype
+        }
+        response = requests.post(
+            f'https://public-api.wordpress.com/rest/v1.1/sites/{WP_SITE_ID}/media/new',
+            headers=headers,
+            data=foto.read()
+        )
+        return response
+
+    # Subir fotos y guardar URLs en DB
+    for foto in fotos:
+        if foto and foto.filename != '':
+            resp = subir_imagen_wp(foto)
+            if resp.status_code == 201:
+                url_imagen = resp.json().get('media', {}).get('source_url')
+                if url_imagen:
                     cursor = db.connection.cursor()
-                    cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
+                    cursor.execute(
+                        "INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)",
+                        (coche_id, url_imagen)
+                    )
                     db.connection.commit()
                     cursor.close()
+                else:
+                    flash("Error al obtener URL de imagen desde WordPress", "danger")
+            else:
+                flash(f"Error subiendo imagen a WordPress: {resp.text}", "danger")
 
-        flash("Coche insertado correctamente", "success")
-        return redirect('/panel')
-    else:
-        return jsonify({"error": "Unauthorized"}), 401
+    flash("Coche e imágenes insertados correctamente", "success")
+    return redirect(url_for('panel'))
+
 
 @app.route('/vehiculos', methods=["POST", "GET"])
 def ver_vehiculos():
@@ -367,4 +390,5 @@ def logout():
     return redirect(url_for("login"))
 
 if __name__ == '__main__':
+    app.config.from_object(config["dev"])
     app.run()

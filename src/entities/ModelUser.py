@@ -345,10 +345,13 @@ class ModelUser:
         for foto in nuevas_fotos:
             if foto.filename != '':
                 filename = secure_filename(foto.filename)
-                filepath = os.path.join('static/uploads', filename)
-                foto.save(filepath)
-                
-                cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)",(coche_id, f"uploads/{filename}"))
+                contenido = foto.read()  # Leer el contenido binario
+                tipo_mime = foto.mimetype  # Obtener tipo MIME
+
+                cursor.execute("""
+                    INSERT INTO fotos (id_coche, imagen, nombre, tipo_mime) 
+                    VALUES (%s, %s, %s, %s)
+                """, (coche_id, contenido, filename, tipo_mime))
         
         db.connection.commit()
 
