@@ -10,7 +10,6 @@ from werkzeug.utils import secure_filename
 from flask_toastr import Toastr
 import os
 import shutil
-import requests
 
 
 
