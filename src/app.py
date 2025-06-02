@@ -274,53 +274,33 @@ def panel():
         kilometros = request.form.get('kilometros')
         puertas = request.form.get('puertas')
         plazas = request.form.get('plazas')
-        
+        tipo = request.form.get('tipo')
+
 
         coche_id = ModelUser.agregar_coche(
             db, marca, modelo, anio, precio_contado, precio_financiado, estado,
             descripcion,motor, consumo, cambio,
-            combustible, kilometros, puertas, plazas
+            combustible, kilometros, puertas, plazas,tipo
         )
+
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        STATIC_DIR = os.path.join(BASE_DIR, "static")
+        fotos = request.files.getlist('fotos[]')
+        carpeta_final = os.path.join(STATIC_DIR, "uploads", str(coche_id))
+        os.makedirs(carpeta_final, exist_ok=True)
+
+        for foto in fotos:
+                if foto and foto.filename != '':
+                    filename = secure_filename(foto.filename)
+                    ruta_destino = os.path.join(carpeta_final, filename)
+                    foto.save(ruta_destino)
+                    ruta_relativa = os.path.relpath(ruta_destino, STATIC_DIR).replace("\\", "/")
+                    cursor.execute("INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)", (coche_id, ruta_relativa))
 
     if not coche_id:
         flash("Error al insertar el coche", "danger")
         return redirect(url_for('panel'))
 
-    access_token = session['wp_access_token']
-
-    # Función para subir imagen a WP
-    def subir_imagen_wp(foto):
-        filename = secure_filename(foto.filename)
-        headers = {
-            'Authorization': f'Bearer {access_token}',
-            'Content-Disposition': f'attachment; filename={filename}',
-            'Content-Type': foto.mimetype
-        }
-        response = requests.post(
-            f'https://public-api.wordpress.com/rest/v1.1/sites/{WP_SITE_ID}/media/new',
-            headers=headers,
-            data=foto.read()
-        )
-        return response
-
-    # Subir fotos y guardar URLs en DB
-    for foto in fotos:
-        if foto and foto.filename != '':
-            resp = subir_imagen_wp(foto)
-            if resp.status_code == 201:
-                url_imagen = resp.json().get('media', {}).get('source_url')
-                if url_imagen:
-                    cursor = db.connection.cursor()
-                    cursor.execute(
-                        "INSERT INTO fotos (coche_id, ruta) VALUES (%s, %s)",
-                        (coche_id, url_imagen)
-                    )
-                    db.connection.commit()
-                    cursor.close()
-                else:
-                    flash("Error al obtener URL de imagen desde WordPress", "danger")
-            else:
-                flash(f"Error subiendo imagen a WordPress: {resp.text}", "danger")
 
     flash("Coche e imágenes insertados correctamente", "success")
     return redirect(url_for('panel'))

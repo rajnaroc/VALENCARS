@@ -94,21 +94,21 @@ class ModelUser:
     @classmethod
     def agregar_coche(cls, db, marca, modelo, anio, precio_contado, precio_financiado, estado, descripcion,
                     motor, consumo, cambio, combustible,
-                    kilometros, puertas, plazas):
+                    kilometros, puertas, plazas,tipo):
         try:
             cur = db.connection.cursor()
             cur.execute("""
                 INSERT INTO coches 
                 (marca, modelo, anio, precio_financiado, estado, descripcion, fecha_agregado,
                 motor, precio_contado, consumo, cambio, combustible,
-                kilometros, puertas, plazas)
+                kilometros, puertas, plazas,tipo)
                 VALUES (%s, %s, %s, %s, %s,
                         %s, NOW(), %s, %s, %s, %s, %s,
-                        %s, %s, %s)
+                        %s, %s, %s,%s)
             """, (
                 marca, modelo, anio, precio_financiado, estado, descripcion,
                 motor, precio_contado, consumo, cambio, combustible,
-                kilometros, puertas, plazas
+                kilometros, puertas, plazas,tipo
             ))
             db.connection.commit()
             coche_id = cur.lastrowid
@@ -329,7 +329,7 @@ class ModelUser:
         SET marca=%s, modelo=%s, estado=%s, precio_contado=%s, 
             precio_financiado=%s, anio=%s, consumo=%s, combustible=%s, 
             cambio=%s, kilometros=%s, puertas=%s, plazas=%s, 
-            motor=%s, descripcion=%s
+            motor=%s, descripcion=%s,tipo=%s
         WHERE id=%s
         """
         params = (
@@ -337,7 +337,7 @@ class ModelUser:
             datos['precio_contado'], datos['precio_financiado'],
             datos['ano'], datos['consumo'], datos['combustible'],
             datos['cambio'], datos['kilometros'], datos['puertas'],
-            datos['plazas'], datos['motor'], datos['comentario'],coche_id
+            datos['plazas'], datos['motor'], datos['comentario'],datos['tipo'],coche_id
         )
         cursor.execute(query, params)
         
