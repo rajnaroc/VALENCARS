@@ -16,6 +16,8 @@ import shutil
 
 app = Flask(__name__)
 
+app.config.from_object(config["dev"])
+
 db = MySQL(app)
 
 toastr = Toastr(app)
@@ -390,5 +392,4 @@ def logout():
     return redirect(url_for("login"))
 
 if __name__ == '__main__':
-    app.config.from_object(config["dev"])
     app.run()
